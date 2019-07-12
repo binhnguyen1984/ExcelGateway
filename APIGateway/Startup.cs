@@ -76,6 +76,8 @@ namespace APIGateway
                     .AddXForwardedHeaders()
                     .Send());
             });
+
+            app.Run(async ctx => await ctx.Response.WriteAsync("Excel API Gateway is listening..."));
         }
     }
 }

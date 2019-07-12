@@ -128,3 +128,4 @@ C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\bin\Debug\net472\System.T
 C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\obj\Debug\net472\APIGateway.csproj.CopyComplete
 C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\bin\Debug\net472\Microsoft.AspNetCore.HttpsPolicy.dll
 C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\bin\Debug\net472\Microsoft.AspNetCore.StaticFiles.dll
+C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\bin\Debug\net472\Microsoft.AspNetCore.Authentication.dll
