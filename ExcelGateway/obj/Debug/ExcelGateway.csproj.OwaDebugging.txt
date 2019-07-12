@@ -1,0 +1,7 @@
+False
+ac4a0778-dcee-47aa-8799-68a8e001f4a48a5f370c-851c-4fa1-b2bf-995e10eb5c48
+{296e11a1-7acb-4517-8f85-c5715d4e2a93}{40906d2c-5315-4c3f-99d4-fa7430df6538}
+{50acf504-e8a5-4e3d-a891-ddac9c74e59f}
+1.0.0.0
+ExcelGateway
+_layouts/15/

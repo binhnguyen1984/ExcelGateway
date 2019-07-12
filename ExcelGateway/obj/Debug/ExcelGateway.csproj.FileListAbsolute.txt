@@ -1,0 +1,2 @@
+C:\Users\lnztha01\source\repos\ExcelGateway\ExcelGateway\obj\Debug\ExcelGateway.csprojAssemblyReference.cache
+C:\Users\lnztha01\source\repos\ExcelGateway\ExcelGateway\obj\Debug\ExcelGateway.csproj.CoreCompileInputs.cache

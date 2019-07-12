@@ -1,0 +1,19 @@
+{
+  "Excel": {
+    "start_headers": 1,
+    "start_component_headers": 3,
+    "start_search_col_code": 65,
+    "start_component_col_code": 65,
+    "search_col_names_and_values": "Code:, 449, Prefix:, C, System:, AH, Group:, Casing",
+    "search_prop_names": "code, prefix,system,group",
+    "search_initial_values": "449,C,AH,Casing",
+    "component_col_names": "ComponentID, Project name, Person name, Design date, Drawing numbers, Comment, Locked",
+    "component_col_db": "componentID, designForProjectName, designByPersonName, designDate, drawingNumbers, comment, locked",
+    "start_update_col": 1,
+    "end_update_col": 5
+  },
+  "Database": {
+    "hdbURL": "/api/hdb/components",
+    "cdpURL": "/api/cdp/projects"
+  }
+}
