@@ -6,7 +6,7 @@ using System.Linq;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
-namespace ExcelProxy.Middlewares
+namespace APIGateway.Middlewares
 {
     public class ImpersonationMiddleWare
     {

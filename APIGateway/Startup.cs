@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ProxyKit;
 using System.Net.Http;
-using ExcelProxy.Middlewares;
+using APIGateway.Middlewares;
 using Microsoft.Extensions.Logging;
 
 namespace APIGateway
@@ -61,23 +61,23 @@ namespace APIGateway
             app.UseAuthentication();
             app.UseImpersonationMiddleWare();
             app.UseMvc();
-            app.Map("/api/hdb", app1 =>
-            {
-                app1.RunProxy(ctx => ctx
-                    .ForwardTo("https://grzsms216.andritz.com/services/api/")
-                    .AddXForwardedHeaders()
-                    .Send());
-            });
+            //app.Map("/api/hdb", app1 =>
+            //{
+            //    app1.RunProxy(ctx => ctx
+            //        .ForwardTo(Settings.hdbURL)
+            //        .AddXForwardedHeaders()
+            //        .Send());
+            //});
 
-            app.Map("/api/cdp", app2 =>
-            {
-                app2.RunProxy(ctx => ctx
-                    .ForwardTo("https://volta-dev.andritz.com/api/")
-                    .AddXForwardedHeaders()
-                    .Send());
-            });
+            //app.Map("/api/cdp", app2 =>
+            //{
+            //    app2.RunProxy(ctx => ctx
+            //        .ForwardTo(Settings.cdpURL)
+            //        .AddXForwardedHeaders()
+            //        .Send());
+            //});
 
-            app.Run(async ctx => await ctx.Response.WriteAsync("Excel API Gateway is listening..."));
+//            app.Run(async ctx => await ctx.Response.WriteAsync("Excel API Gateway is listening..."));
         }
     }
 }

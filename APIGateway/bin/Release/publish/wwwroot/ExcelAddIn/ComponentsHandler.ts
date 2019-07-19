@@ -99,7 +99,7 @@ export async function loadComponentsDetail() {
 
 function parseJSONComponents(data) {
     let message = data.message;
-    compList = message.components;
+    compList = message["components"];
     if (compList == null || compList.length == 0)
         return null;
     let compValues = new Array(compList.length);

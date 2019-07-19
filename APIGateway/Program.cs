@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore;
+﻿using APIGateway.Models;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
 namespace APIGateway
@@ -7,6 +8,8 @@ namespace APIGateway
     {
         public static void Main(string[] args)
         {
+            APICaller.InitializeAPIClient();
+            Settings.ReadExcelConfiguration();
             CreateWebHostBuilder(args).Build().Run();
         }
 

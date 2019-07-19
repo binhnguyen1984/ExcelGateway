@@ -36,7 +36,7 @@ export function empty(data) {
 }
 
 // this is kind of a pattern for handling contents in the current excel sheet
-export async function excelHandler(action) {
+export async function excelActionHandler(action) {
     try {
         await Excel.run(action);
     } catch (error) {

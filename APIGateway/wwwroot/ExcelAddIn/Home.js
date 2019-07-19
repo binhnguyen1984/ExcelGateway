@@ -35,60 +35,89 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ComponentsHandler = require("./ComponentsHandler");
+var APIHandler = require("./APIHandler");
 var Common = require("./Common");
-var FileHandler = require("./FileHandler");
 (function () {
     "use strict";
+    var searchValueLocs = [];
+    var importValueLocs = [];
+    var exportPaths = [];
+    var exportValueLocs = [];
     // The initialize function must be run each time a new page is loaded.
     Office.initialize = function (reason) {
         $(document).ready(function () {
-            FileHandler.asyncLoadFile("api/loadexcelconfig", initializeExcelData);
-            //loadExcelFile("./config.xlsx");
-            // Initialize the FabricUI notification mechanism and hide it
-            Common.initializeMessageBanner();
-            // If not using Excel 2016, use fallback logic.
-            if (!Office.context.requirements.isSetSupported('ExcelApi', 1.1)) {
-                $("#template-description").text("This sample allows reading/writing from/to the Excel sheet.");
-                $('#fetch-button-text').text("Fetch");
-                $('#fetch-button-desc').text("Fetch components");
-                $('#fetch-button').click(ComponentsHandler.loadComponentsDetail);
-                $('#put-button-text').text("Update");
-                $('#put-button-desc').text("Update components");
-                $('#put-button').click(ComponentsHandler.loadComponentsDetail);
-                return;
-            }
-            //$("#template-description").text("This sample will fetch all the components to the Excel sheet.");
-            $('#fetch-button-text').text("Fetch");
-            $('#fetch-button-desc').text("Fetch all the components.");
-            // Add a click event handler for the fetch button.
-            $('#fetch-button').click(ComponentsHandler.loadComponentsDetail);
-            $('#put-button-text').text("Update");
-            $('#put-button-desc').text("Update components.");
-            // Add a click event handler for the put button.
-            $('#put-button').click(ComponentsHandler.updateComponents);
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    loadExcelConfiguration(setExcelConfiguration);
+                    // Initialize the FabricUI notification mechanism and hide it
+                    Common.initializeMessageBanner();
+                    // If not using Excel 2016, use fallback logic.
+                    if (!Office.context.requirements.isSetSupported('ExcelApi', 1.1)) {
+                        $("#template-description").text("This sample allows reading/writing from/to the Excel sheet.");
+                        $('#fetch-button-text').text("Fetch");
+                        $('#fetch-button-desc').text("Fetch components");
+                        $('#fetch-button').click(APIHandler.loadComponentsDetail);
+                        $('#put-button-text').text("Update");
+                        $('#put-button-desc').text("Update components");
+                        $('#put-button').click(APIHandler.loadComponentsDetail);
+                        return [2 /*return*/];
+                    }
+                    //$("#template-description").text("This sample will fetch all the components to the Excel sheet.");
+                    $('#fetch-button-text').text("Fetch");
+                    $('#fetch-button-desc').text("Fetch all the components.");
+                    // Add a click event handler for the fetch button.
+                    $('#fetch-button').click(APIHandler.loadComponentsDetail);
+                    $('#put-button-text').text("Update");
+                    $('#put-button-desc').text("Update components.");
+                    // Add a click event handler for the put button.
+                    $('#put-button').click(APIHandler.updateComponents);
+                    return [2 /*return*/];
+                });
+            });
         });
     };
-    function initializeExcelData(config) {
+    function setExcelConfiguration(config) {
         return __awaiter(this, void 0, void 0, function () {
-            var config_data, excel_config, database_config;
+            var configDict;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        config_data = JSON.parse(config);
-                        excel_config = config_data.Excel;
-                        database_config = config_data.Database;
-                        ComponentsHandler.set_compopnents_configuration(excel_config);
-                        Common.set_urls(database_config);
-                        return [4 /*yield*/, setExcelHeaders()];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
+                configDict = JSON.parse(config);
+                processExcelSearchCriteria(configDict);
+                return [2 /*return*/];
             });
         });
     }
-    function setExcelHeaders() {
+    function loadExcelConfiguration(callback) {
+        //get configuration from the APIGateway
+        var Url = "ExcelAddin/api/LoadExcelConfig";
+        APIHandler.asyncAPICall(Url, callback);
+    }
+    function storeSearchValueLocations(searchProps) {
+        var valueLocs = [];
+        //add the texts to be displayed
+        for (var i = 0; i < searchProps.length; i++) {
+            valueLocs.push(searchProps[i]["ValueLocation"]);
+        }
+        searchValueLocs.push(valueLocs);
+    }
+    function setSearchTextsToExcelSheet(sheet, searchProps) {
+        for (var i = 0; i < searchProps.length; i++) {
+            var textLoc = searchProps[i]["CellName"];
+            var valueLoc = searchProps[i]["ValueLocation"];
+            //get a range that covers the search cells
+            var textRange = sheet.getRange(textLoc);
+            var valueRange = sheet.getRange(valueLoc);
+            textRange.values = [[searchProps[i]["DisplayText"]]];
+            //format text cell
+            textRange.format.autofitColumns();
+            textRange.format.font.bold = true;
+            textRange.format.fill.color = "yellow";
+            textRange.format.autofitColumns();
+            //format value cell
+            valueRange.values = [[searchProps[i]["DisplayText"]]];
+            valueRange.format.autofitColumns();
+        }
+    }
+    function processExcelSearchCriteria(configDict) {
         return __awaiter(this, void 0, void 0, function () {
             var _this = this;
             return __generator(this, function (_a) {
@@ -96,29 +125,21 @@ var FileHandler = require("./FileHandler");
                     case 0: 
                     // Run a batch operation against the Excel object model
                     return [4 /*yield*/, Common.excelHandler(function (ctx) { return __awaiter(_this, void 0, void 0, function () {
-                            var sheet, searchRange, col, cell, componentRange;
-                            return __generator(this, function (_a) {
-                                switch (_a.label) {
+                            var sheet, _i, _a, key, searchProps;
+                            return __generator(this, function (_b) {
+                                switch (_b.label) {
                                     case 0:
                                         sheet = ctx.workbook.worksheets.getActiveWorksheet();
-                                        searchRange = sheet.getRange(ComponentsHandler.startSearchColName + ComponentsHandler.startHeaders + ":" + ComponentsHandler.endSearchColName + ComponentsHandler.startHeaders);
-                                        searchRange.values = ComponentsHandler.search_cols;
+                                        //process the text to be displayed in search cells
+                                        for (_i = 0, _a = Object.keys(configDict); _i < _a.length; _i++) {
+                                            key = _a[_i];
+                                            searchProps = configDict[key];
+                                            storeSearchValueLocations(searchProps);
+                                            setSearchTextsToExcelSheet(sheet, searchProps);
+                                        }
                                         return [4 /*yield*/, ctx.sync()];
                                     case 1:
-                                        _a.sent();
-                                        for (col = 0; col < ComponentsHandler.search_cols[0].length / 2; col++) {
-                                            cell = searchRange.getCell(0, 2 * col);
-                                            cell.format.font.bold = true;
-                                            cell.format.fill.color = "yellow";
-                                        }
-                                        componentRange = sheet.getRange(ComponentsHandler.startCompColName + ComponentsHandler.startComponentHeaders + ":" + ComponentsHandler.endCompColName + ComponentsHandler.startComponentHeaders);
-                                        componentRange.values = ComponentsHandler.component_cols;
-                                        componentRange.format.font.bold = true;
-                                        componentRange.format.fill.color = "orange";
-                                        componentRange.format.autofitColumns();
-                                        return [4 /*yield*/, ctx.sync()];
-                                    case 2:
-                                        _a.sent();
+                                        _b.sent();
                                         return [2 /*return*/];
                                 }
                             });

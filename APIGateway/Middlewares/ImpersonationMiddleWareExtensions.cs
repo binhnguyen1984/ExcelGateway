@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ExcelProxy.Middlewares
+namespace APIGateway.Middlewares
 {
     public static class ImpersonationMiddleWareExtensions
     {

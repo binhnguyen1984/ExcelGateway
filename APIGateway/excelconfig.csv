@@ -1,2 +1,13 @@
-Path;Cell Names;Operations
-component.componentID;componentID;read
+Loaded Data Format;;;
+;;;
+Path;Cell Name;Database;Operations
+components.componentID;A4;HDB;read
+components.designForProjectName;B4;HDB;read/write
+components.designByPersonName;C4;HDB;read/write
+;;;
+Search criteria;;;
+components;;;
+componentID;A1;;
+;;;
+Datasheet Name;;;
+SLDS;;;

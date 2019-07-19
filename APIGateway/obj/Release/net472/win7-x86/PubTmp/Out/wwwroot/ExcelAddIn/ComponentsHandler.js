@@ -171,7 +171,7 @@ function loadComponentsDetail() {
 exports.loadComponentsDetail = loadComponentsDetail;
 function parseJSONComponents(data) {
     var message = data.message;
-    compList = message.components;
+    compList = message["components"];
     if (compList == null || compList.length == 0)
         return null;
     var compValues = new Array(compList.length);
