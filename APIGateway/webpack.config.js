@@ -2,7 +2,7 @@
 {
     let path = require('path');
 
-    const CleanWebpackPlugin = require('clean-webpack-plugin');
+    const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
     const bundleFolder = "wwwroot/ExcelAddIn/bundle/";
     const clientConfig = {
@@ -28,7 +28,7 @@
             extensions: [".tsx", ".ts", ".js"]
         },
         plugins: [
-            new CleanWebpackPlugin([bundleFolder])
+            new CleanWebpackPlugin()
         ],
         devtool: "inline-source-map"
     }

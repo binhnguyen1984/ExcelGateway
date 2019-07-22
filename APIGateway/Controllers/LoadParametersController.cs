@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using APIGateway.Models;
-using Microsoft.AspNetCore.Http;
+﻿using APIGateway.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace APIGateway.Controllers
 {
@@ -13,7 +9,6 @@ namespace APIGateway.Controllers
     [ApiController]
     public class LoadParametersController : ControllerBase
     {
-        // GET api/loadparameters/searchValues
         [HttpGet("{searchValues}")]
         public async Task<string> Get(string searchValues)
         {

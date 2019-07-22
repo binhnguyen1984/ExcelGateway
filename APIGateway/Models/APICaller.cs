@@ -1,9 +1,8 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace APIGateway.Models
@@ -11,10 +10,10 @@ namespace APIGateway.Models
     public sealed class APICaller
     {
         public static HttpClient APIClient;
-        public static  void InitializeAPIClient()
+        public static void InitializeAPIClient()
         {
             HttpClientHandler clientHandler = new HttpClientHandler();
-            clientHandler.ServerCertificateCustomValidationCallback+= (o, certificate, chain, errors) => true;
+            clientHandler.ServerCertificateCustomValidationCallback += (o, certificate, chain, errors) => true;
             clientHandler.UseDefaultCredentials = true;
             APIClient = new HttpClient(clientHandler);
             APIClient.DefaultRequestHeaders.Accept.Clear();
@@ -23,7 +22,7 @@ namespace APIGateway.Models
 
         public static async Task<JObject> FetchData(string Url)
         {
-           using(HttpResponseMessage response = await APIClient.GetAsync(Url))
+            using (HttpResponseMessage response = await APIClient.GetAsync(Url))
             {
                 if (response.IsSuccessStatusCode)
                     return JObject.Parse(await response.Content.ReadAsStringAsync());
@@ -31,9 +30,9 @@ namespace APIGateway.Models
             }
         }
 
-        public static async Task<JObject> UpdateData(string Url, JObject data)
+        public static async Task<JObject> UpdateData(string Url, string data)
         {
-            StringContent content = new StringContent(data.ToString());
+            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
             using (var response = await APIClient.PutAsync(Url, content))
             {
                 if (response.IsSuccessStatusCode) return JObject.Parse(await response.Content.ReadAsStringAsync());

@@ -35,101 +35,42 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ComponentsHandler = require("./ComponentsHandler");
+var ExcelHandler = require("./ExcelHandler");
 var Common = require("./Common");
-var FileHandler = require("./FileHandler");
 (function () {
     "use strict";
     // The initialize function must be run each time a new page is loaded.
     Office.initialize = function (reason) {
         $(document).ready(function () {
-            FileHandler.asyncLoadFile("api/loadexcelconfig", initializeExcelData);
-            //loadExcelFile("./config.xlsx");
-            // Initialize the FabricUI notification mechanism and hide it
-            Common.initializeMessageBanner();
-            // If not using Excel 2016, use fallback logic.
-            if (!Office.context.requirements.isSetSupported('ExcelApi', 1.1)) {
-                $("#template-description").text("This sample allows reading/writing from/to the Excel sheet.");
-                $('#fetch-button-text').text("Fetch");
-                $('#fetch-button-desc').text("Fetch components");
-                $('#fetch-button').click(ComponentsHandler.loadComponentsDetail);
-                $('#put-button-text').text("Update");
-                $('#put-button-desc').text("Update components");
-                $('#put-button').click(ComponentsHandler.loadComponentsDetail);
-                return;
-            }
-            //$("#template-description").text("This sample will fetch all the components to the Excel sheet.");
-            $('#fetch-button-text').text("Fetch");
-            $('#fetch-button-desc').text("Fetch all the components.");
-            // Add a click event handler for the fetch button.
-            $('#fetch-button').click(ComponentsHandler.loadComponentsDetail);
-            $('#put-button-text').text("Update");
-            $('#put-button-desc').text("Update components.");
-            // Add a click event handler for the put button.
-            $('#put-button').click(ComponentsHandler.updateComponents);
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    ExcelHandler.loadExcelConfiguration();
+                    // Initialize the FabricUI notification mechanism and hide it
+                    Common.initializeMessageBanner();
+                    // If not using Excel 2016, use fallback logic.
+                    if (!Office.context.requirements.isSetSupported('ExcelApi', 1.1)) {
+                        $("#template-description").text("This sample allows reading/writing from/to the Excel sheet.");
+                        $('#fetch-button-text').text("Fetch");
+                        $('#fetch-button-desc').text("Fetch components");
+                        $('#fetch-button').click(ExcelHandler.loadParameters);
+                        $('#put-button-text').text("Update");
+                        $('#put-button-desc').text("Update components");
+                        $('#put-button').click(ExcelHandler.updateParameters);
+                        return [2 /*return*/];
+                    }
+                    //$("#template-description").text("This sample will fetch all the components to the Excel sheet.");
+                    $('#fetch-button-text').text("Fetch");
+                    $('#fetch-button-desc').text("Fetch all the components.");
+                    // Add a click event handler for the fetch button.
+                    $('#fetch-button').click(ExcelHandler.loadParameters);
+                    $('#put-button-text').text("Update");
+                    $('#put-button-desc').text("Update components.");
+                    // Add a click event handler for the put button.
+                    $('#put-button').click(ExcelHandler.updateParameters);
+                    return [2 /*return*/];
+                });
+            });
         });
     };
-    function initializeExcelData(config) {
-        return __awaiter(this, void 0, void 0, function () {
-            var config_data, excel_config, database_config;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        config_data = JSON.parse(config);
-                        excel_config = config_data.Excel;
-                        database_config = config_data.Database;
-                        ComponentsHandler.set_compopnents_configuration(excel_config);
-                        Common.set_urls(database_config);
-                        return [4 /*yield*/, setExcelHeaders()];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    }
-    function setExcelHeaders() {
-        return __awaiter(this, void 0, void 0, function () {
-            var _this = this;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: 
-                    // Run a batch operation against the Excel object model
-                    return [4 /*yield*/, Common.excelHandler(function (ctx) { return __awaiter(_this, void 0, void 0, function () {
-                            var sheet, searchRange, col, cell, componentRange;
-                            return __generator(this, function (_a) {
-                                switch (_a.label) {
-                                    case 0:
-                                        sheet = ctx.workbook.worksheets.getActiveWorksheet();
-                                        searchRange = sheet.getRange(ComponentsHandler.startSearchColName + ComponentsHandler.startHeaders + ":" + ComponentsHandler.endSearchColName + ComponentsHandler.startHeaders);
-                                        searchRange.values = ComponentsHandler.search_cols;
-                                        return [4 /*yield*/, ctx.sync()];
-                                    case 1:
-                                        _a.sent();
-                                        for (col = 0; col < ComponentsHandler.search_cols[0].length / 2; col++) {
-                                            cell = searchRange.getCell(0, 2 * col);
-                                            cell.format.font.bold = true;
-                                            cell.format.fill.color = "yellow";
-                                        }
-                                        componentRange = sheet.getRange(ComponentsHandler.startCompColName + ComponentsHandler.startComponentHeaders + ":" + ComponentsHandler.endCompColName + ComponentsHandler.startComponentHeaders);
-                                        componentRange.values = ComponentsHandler.component_cols;
-                                        componentRange.format.font.bold = true;
-                                        componentRange.format.fill.color = "orange";
-                                        componentRange.format.autofitColumns();
-                                        return [4 /*yield*/, ctx.sync()];
-                                    case 2:
-                                        _a.sent();
-                                        return [2 /*return*/];
-                                }
-                            });
-                        }); })];
-                    case 1:
-                        // Run a batch operation against the Excel object model
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    }
 })();
 //# sourceMappingURL=Home.js.map

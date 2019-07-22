@@ -1,0 +1,2 @@
+bin\Debug\OfficeAppManifests\ExcelGatewayManifest.xml
+C:\Users\lnztha01\source\repos\ExcelGateway\ExcelGateway\bin\Debug\ExcelGateway.debugapp

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <App xmlns="http://schemas.microsoft.com/sharepoint/2012/app/manifest"
      Name="ExcelGateway"
-     ProductID="{77ad7399-68a1-48ff-8b87-b4da468c1a63}"
+     ProductID="{9acf2e73-6d06-4bc7-b0fd-844382c57536}"
      Version="1.0.0.0"
      SharePointMinVersion="15.0.0.0"
 >

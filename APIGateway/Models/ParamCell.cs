@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
-using static APIGateway.Models.Settings;
+﻿using Newtonsoft.Json.Linq;
 
 namespace APIGateway.Models
 {
@@ -12,7 +7,7 @@ namespace APIGateway.Models
         public string[] Props { get; private set; }
         public string Value { get; set; }
         public string[] ValueLocations { get; private set; }
-        public ParamCell(string path, string locStr) 
+        public ParamCell(string path, string locStr)
         {
             this.Props = path.Split('.');
             this.ValueLocations = locStr.Split(',');
@@ -48,7 +43,7 @@ namespace APIGateway.Models
         {
             JValue valueObj = GetDataObjectFromResponse(response);
             object value = valueObj.Value;
-            Value = value == null?"": value.ToString();
+            Value = value == null ? "" : value.ToString();
         }
 
         /// <summary>

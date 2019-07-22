@@ -27,8 +27,9 @@
           "Microsoft.AspNetCore.App": "2.1.1",
           "Microsoft.AspNetCore.Razor.Design": "2.1.2",
           "Microsoft.NETCore.App": "2.1.0",
+          "Microsoft.Office.Interop.Excel": "15.0.4795.1000",
           "Microsoft.TypeScript.MSBuild": "3.5.3",
-          "ProxyKit": "2.1.0"
+          "ProxyKit": "2.1.2"
         },
         "runtime": {
           "APIGateway.dll": {}
@@ -38,8 +39,19 @@
         }
       },
       "Microsoft.AspNetCore.Razor.Design/2.1.2": {},
+      "Microsoft.Office.Interop.Excel/15.0.4795.1000": {
+        "runtime": {
+          "lib/net20/Microsoft.Office.Interop.Excel.dll": {
+            "assemblyVersion": "15.0.0.0",
+            "fileVersion": "15.0.4795.1000"
+          }
+        },
+        "compile": {
+          "lib/net20/Microsoft.Office.Interop.Excel.dll": {}
+        }
+      },
       "Microsoft.TypeScript.MSBuild/3.5.3": {},
-      "ProxyKit/2.1.0": {
+      "ProxyKit/2.1.2": {
         "dependencies": {
           "Microsoft.AspNetCore.Http": "2.1.1",
           "Microsoft.AspNetCore.Http.Extensions": "2.1.1",
@@ -49,7 +61,7 @@
         "runtime": {
           "lib/netstandard2.0/ProxyKit.dll": {
             "assemblyVersion": "2.0.0.0",
-            "fileVersion": "2.1.0.0"
+            "fileVersion": "2.1.2.0"
           }
         },
         "compile": {
@@ -3192,6 +3204,13 @@
       "path": "microsoft.aspnetcore.razor.design/2.1.2",
       "hashPath": "microsoft.aspnetcore.razor.design.2.1.2.nupkg.sha512"
     },
+    "Microsoft.Office.Interop.Excel/15.0.4795.1000": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-DfceS96ustwfL8EOJNNRtpk6b0RylhjNpgeeemuvi9X4GYks2UTeAimjSrdFEfuqRo5ibZ4Sd0gJIeDr9gMa6Q==",
+      "path": "microsoft.office.interop.excel/15.0.4795.1000",
+      "hashPath": "microsoft.office.interop.excel.15.0.4795.1000.nupkg.sha512"
+    },
     "Microsoft.TypeScript.MSBuild/3.5.3": {
       "type": "package",
       "serviceable": true,
@@ -3199,12 +3218,12 @@
       "path": "microsoft.typescript.msbuild/3.5.3",
       "hashPath": "microsoft.typescript.msbuild.3.5.3.nupkg.sha512"
     },
-    "ProxyKit/2.1.0": {
+    "ProxyKit/2.1.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-2W6sp4Ep1x4lM6m8Mg3I911/Bagq+KZ/9XfkPytSWhPR17B0qKL4GARO1dR+I9AflgUiV/ejbbGstn02qnQjnw==",
-      "path": "proxykit/2.1.0",
-      "hashPath": "proxykit.2.1.0.nupkg.sha512"
+      "sha512": "sha512-xPsriDM5bOPZd5/I7FXwX8Qo9sjQJhUp8cEa3/dht9doE4D5nrozTjZv2WrRjGZTwR2xvc6O/hcJDl1RkD7ZeA==",
+      "path": "proxykit/2.1.2",
+      "hashPath": "proxykit.2.1.2.nupkg.sha512"
     },
     "Microsoft.AspNet.WebApi.Client/5.2.6": {
       "type": "package",

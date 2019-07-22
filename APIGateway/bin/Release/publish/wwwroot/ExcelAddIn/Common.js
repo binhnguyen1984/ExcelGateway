@@ -70,7 +70,7 @@ function empty(data) {
 }
 exports.empty = empty;
 // this is kind of a pattern for handling contents in the current excel sheet
-function excelHandler(action) {
+function excelActionHandler(action) {
     return __awaiter(this, void 0, void 0, function () {
         var error_1;
         return __generator(this, function (_a) {
@@ -90,7 +90,7 @@ function excelHandler(action) {
         });
     });
 }
-exports.excelHandler = excelHandler;
+exports.excelActionHandler = excelActionHandler;
 // Helper function for treating errors
 function errorHandler(error) {
     // Always be sure to catch any accumulated errors that bubble up from the Excel.run execution

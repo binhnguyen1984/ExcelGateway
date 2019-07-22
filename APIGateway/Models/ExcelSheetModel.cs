@@ -1,11 +1,10 @@
-﻿using Microsoft.Office.Interop.Excel;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
+using Syncfusion.XlsIO;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
+using System.IO;
 using System.Threading.Tasks;
 using static APIGateway.Models.Settings;
-using Excel = Microsoft.Office.Interop.Excel;
 
 namespace APIGateway.Models
 {
@@ -17,20 +16,19 @@ namespace APIGateway.Models
         private const string ReadWriteOpText = "READ/WRITE";
         private const string HdbName = "HDB";
         private List<ParamCell> ImportParamList { get; set; } //list of import parameters
-        private Workbook wb;
-        private Range range;
+        private IRange range;
+        private int RowCount, ColumnCount;
         private IDictionary<string, JObject> ExportLoadedCompList { get; set; } // a dictionary of components loaded from the database which are to be updated
         private IDictionary<string, string> SearchCompIDValues { get; set; }
 
         public IDictionary<string, SearchCompInfo> SearchParamsDict { get; private set; }
         public List<ParamCell> ExportParamList { get; private set; } //list of export parameters
-        public ExcelSheetModel(string configFile, string sheetName)
+        public ExcelSheetModel(string fileName)
         {
             InitializeData();
-            InitializeExcelHelper(configFile, sheetName);
+            InitializeExcelHelper(fileName);
             ReadConfiguration();
             InitializeExportLoadedCompList();
-            CleanUpExcelHelper();
         }
 
         private void InitializeExportLoadedCompList()
@@ -42,17 +40,6 @@ namespace APIGateway.Models
                     ExportLoadedCompList.Add(paramCell.Props[0], null);
             }
         }
-        private void CleanUpExcelHelper()
-        {
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-            //release com objects to fully kill excel process from running in the background
-            Marshal.ReleaseComObject(range);
-
-            //close and release
-            wb.Close();
-            Marshal.ReleaseComObject(wb);
-        }
 
         private void InitializeData()
         {
@@ -62,11 +49,18 @@ namespace APIGateway.Models
             this.SearchCompIDValues = new Dictionary<string, string>();
         }
 
-        private void InitializeExcelHelper(string configFile, string sheetName)
+        private void InitializeExcelHelper(string filePath)
         {
-            Excel.Application xlApp = new Excel.Application();
-            wb = xlApp.Workbooks.Open(configFile);
-            range = ((Worksheet)wb.Worksheets[sheetName]).UsedRange;
+            ExcelEngine excelEngine = new ExcelEngine();
+            IApplication application = excelEngine.Excel;
+            application.DefaultVersion = ExcelVersion.Excel2016;
+
+            FileStream configFile = new FileStream(filePath, FileMode.Open);
+            IWorkbook wb = application.Workbooks.Open(configFile);
+            IWorksheet ws = wb.Worksheets[0];
+            range = ws.Range;
+            RowCount = ws.Rows.Length;
+            ColumnCount = ws.Columns.Length;
         }
 
         private void ReadConfiguration()
@@ -84,11 +78,11 @@ namespace APIGateway.Models
 
         private bool FindFirstRowStartWithText(string text, ref int firstRow)
         {
-            for (int col = 1; col < range.Columns.Count; col++)
-                for (; firstRow <= range.Rows.Count; firstRow++)
+            for (int col = 1; col < ColumnCount; col++)
+                for (; firstRow <= RowCount; firstRow++)
                 {
-                    Range cell = (Range)range.Cells[firstRow, col];
-                    if (cell != null && cell.Value2 != null && string.Compare(cell.Value2.ToString(), text) == 0)
+                    var cell = range[firstRow, col];
+                    if (cell != null && cell.Value != null && string.Compare(cell.Value.ToString(), text) == 0)
                         return true;
                 }
             return false;
@@ -100,12 +94,12 @@ namespace APIGateway.Models
             if (FindFirstRowStartWithText(ComponentSectionText, ref firstRow))
             {
                 firstRow++;
-                while (firstRow <= range.Rows.Count)
+                while (firstRow <= RowCount)
                 {
                     object pathValue, valueLocValue, opStrValue;
-                    if ((pathValue=((Range)range.Cells[firstRow, 1]).Value2) == null ||
-                       (valueLocValue=((Range)range.Cells[firstRow, 2]).Value2) == null ||
-                       (opStrValue=((Range)range.Cells[firstRow, 3]).Value2) == null)
+                    if ((pathValue = range[firstRow, 1].Value) == null ||
+                       (valueLocValue = range[firstRow, 2].Value) == null ||
+                       (opStrValue = range[firstRow, 3].Value) == null)
                         break;
                     string path = pathValue.ToString();
                     string valueLocation = valueLocValue.ToString();
@@ -143,13 +137,13 @@ namespace APIGateway.Models
 
         private void ReadComponentSearchCriteria(ref int firstRow, ref List<SearchParamCell> searchCells)
         {
-            while (firstRow <= range.Rows.Count)
+            while (firstRow <= RowCount)
             {
                 object propNameValue, valueLocValue, cellLocValue, displayTextValue;
-                if ((propNameValue=((Range)range.Cells[firstRow, 1]).Value2) == null ||
-                    (valueLocValue=((Range)range.Cells[firstRow, 2]).Value2) == null ||
-                    (cellLocValue=((Range)range.Cells[firstRow, 3]).Value2) == null ||
-                    (displayTextValue=((Range)range.Cells[firstRow, 4]).Value2) == null)
+                if ((propNameValue = range[firstRow, 1].Value) == null ||
+                    (valueLocValue = range[firstRow, 2].Value) == null ||
+                    (cellLocValue = range[firstRow, 3].Value) == null ||
+                    (displayTextValue = range[firstRow, 4].Value) == null)
                     break;
 
                 string propName = propNameValue.ToString();
@@ -169,14 +163,14 @@ namespace APIGateway.Models
         private void ReadComponentAndDBNames(ref int firstRow, ref List<SearchParamCell> searchCells)
         {
             object compNameValue, dbNameValue, compIDNameValue;
-            if ((compNameValue=((Range)range.Cells[firstRow, 1]).Value2) == null ||
-                (dbNameValue = ((Range)range.Cells[firstRow, 2]).Value2) == null ||
-                (compIDNameValue=((Range)range.Cells[firstRow, 5]).Value2) == null)
+            if ((compNameValue = range[firstRow, 1].Value) == null ||
+                (dbNameValue = range[firstRow, 2].Value) == null ||
+                (compIDNameValue = range[firstRow, 5].Value) == null)
                 throw new Exception("Missing values in the search section");
             string compName = compNameValue.ToString();
             string dbName = dbNameValue.ToString();
             string compIDName = compIDNameValue.ToString();
-            if (compName.Length > 0 && dbName.Length > 0 && compIDName.Length>0)
+            if (compName.Length > 0 && dbName.Length > 0 && compIDName.Length > 0)
             {
                 DBCenters FromDB = GetDBIdentity(dbName);
                 UpdateCompInfo updateCompInfo = new UpdateCompInfo(FromDB, compIDName);
@@ -244,7 +238,7 @@ namespace APIGateway.Models
         /// <returns></returns>
         private string GetHDBSearchURL(string compName, string[] searchValues, ref int searchValueId)
         {
-            return hdbURL + compName + ".json?" + GetComponentFilterStr(compName, searchValues, ref searchValueId, GetHDBConstraint);
+            return HDBUrl + compName + ".json?" + GetComponentFilterStr(compName, searchValues, ref searchValueId, GetHDBConstraint);
         }
 
         /// <summary>
@@ -255,7 +249,7 @@ namespace APIGateway.Models
         /// <returns></returns>
         private string GetCDPSearchURL(string compName, string[] searchValues, ref int searchValueId)
         {
-            return cdpURL + compName + GetComponentFilterStr(compName, searchValues, ref searchValueId, GetCDPConstraint);
+            return CDPUrl + compName + GetComponentFilterStr(compName, searchValues, ref searchValueId, GetCDPConstraint);
         }
 
         /// <summary>
@@ -271,7 +265,7 @@ namespace APIGateway.Models
                 ExportLoadedCompList[compName] = componentDetails;
 
             //we save the value of the ID of the component if its parameters are to be updated to the database
-            if(ExportLoadedCompList.ContainsKey(compName))
+            if (ExportLoadedCompList.ContainsKey(compName))
             {
                 //get value of the componentID from the loaded component
                 string compIDValue = (string)componentDetails[compIDName];
@@ -316,12 +310,12 @@ namespace APIGateway.Models
 
         private string GetHDBPutUrl(string compName, string compID)
         {
-            return hdbURL + compName + "(" + compID + ")";
+            return HDBUrl + compName + "(" + compID + ")";
         }
 
         private string GetCDPPutUrl(string compName, string compID)
         {
-            return hdbURL + compName + "/" + compID;
+            return HDBUrl + compName + "/" + compID;
         }
 
         /// <summary>
@@ -337,11 +331,19 @@ namespace APIGateway.Models
                 //find all export parameters that belong to this component
                 List<ParamCell> tobeUpdatedParams = ExportParamList.FindAll(paramCell => string.Compare(paramCell.Props[0], compName) == 0);
 
+                //update parameters
+                int paramIndex = 0;
+                foreach (ParamCell paramCell in tobeUpdatedParams)
+                {
+                    paramCell.Value = paramValues[paramIndex];
+                    paramIndex++;
+                }
+
                 //get information about the component to be updated
                 UpdateCompInfo updateCompInfo = SearchParamsDict[compName].UpdateInfo;
 
                 //get the value of the componentID which should be in the search parameters
-                string compIDValue = SearchCompIDValues[compName];
+                string compIDValue = SearchCompIDValues[updateCompInfo.CompIDName];
 
                 //get the current loaded component
                 JObject loadedCompDetails = loadedComp.Value;
@@ -353,8 +355,8 @@ namespace APIGateway.Models
                 //make a query to the corresponding database server
                 string updateUrl = updateCompInfo.FromDB == DBCenters.HDB ? GetHDBPutUrl(compName, compIDValue) : GetCDPPutUrl(compName, compIDValue);
 
-                JObject response = await APICaller.UpdateData(updateUrl, loadedCompDetails);
-                int code =  (int)response["code"];
+                JObject response = await APICaller.UpdateData(updateUrl, loadedCompDetails.ToString());
+                int code = (int)response["code"];
                 if (code != 200) return code;
             }
             return 200;

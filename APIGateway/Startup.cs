@@ -1,13 +1,13 @@
+using APIGateway.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using ProxyKit;
 using System.Net.Http;
-using APIGateway.Middlewares;
-using Microsoft.Extensions.Logging;
 
 namespace APIGateway
 {
@@ -38,7 +38,7 @@ namespace APIGateway
                     console.IncludeScopes = true;
                 });
             });
-            services.AddMvcCore().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvcCore().AddJsonFormatters().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddProxy(httpClientBuilder =>
                 httpClientBuilder.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { ServerCertificateCustomValidationCallback = (_, __, ___, ____) => true, UseDefaultCredentials = true }));
         }
@@ -64,7 +64,7 @@ namespace APIGateway
             //app.Map("/api/hdb", app1 =>
             //{
             //    app1.RunProxy(ctx => ctx
-            //        .ForwardTo(Settings.hdbURL)
+            //        .ForwardTo(Settings.HDBUrl)
             //        .AddXForwardedHeaders()
             //        .Send());
             //});
@@ -72,12 +72,12 @@ namespace APIGateway
             //app.Map("/api/cdp", app2 =>
             //{
             //    app2.RunProxy(ctx => ctx
-            //        .ForwardTo(Settings.cdpURL)
+            //        .ForwardTo(Settings.CDPUrl)
             //        .AddXForwardedHeaders()
             //        .Send());
             //});
 
-//            app.Run(async ctx => await ctx.Response.WriteAsync("Excel API Gateway is listening..."));
+            //            app.Run(async ctx => await ctx.Response.WriteAsync("Excel API Gateway is listening..."));
         }
     }
 }

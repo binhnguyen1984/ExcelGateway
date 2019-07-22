@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using APIGateway.Models;
-using Microsoft.AspNetCore.Http;
+﻿using APIGateway.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace APIGateway.Controllers
 {
@@ -12,12 +8,10 @@ namespace APIGateway.Controllers
     [ApiController]
     public class UpdateParametersController : ControllerBase
     {
-        // PUT: api/UpdateParameters
         [HttpPut]
-        public string Put([FromBody] string value)
+        public async Task<int> Put([FromBody] string value)
         {
-            return "testing:"+value;
-            //return await Settings.ExcelModel.UpdateParametersAsync(value.Split(','));
+            return await Settings.ExcelModel.UpdateParametersAsync(value.Split(','));
         }
     }
 }
