@@ -21,8 +21,10 @@ namespace APIGateway.Models
         private IDictionary<string, JObject> ExportLoadedCompList { get; set; } // a dictionary of components loaded from the database which are to be updated
         private IDictionary<string, string> SearchCompIDValues { get; set; }
 
-        public IDictionary<string, SearchCompInfo> SearchParamsDict { get; private set; }
-        public IDictionary<string, List<ParamCell>> ExportParamDict { get; private set; } //list of export parameters
+        private IDictionary<string, SearchCompInfo> SearchParamsDict { get; set; }
+        private IDictionary<string, List<ParamCell>> ExportParamDict { get; set; } //list of export parameters
+        public List<SearchParamCell> ExcelSearchParamList { get; set; }
+        public List<string> ExcelExportLocationList { get; set; }
         public ExcelContent(string fileName)
         {
             InitializeData();
@@ -48,6 +50,8 @@ namespace APIGateway.Models
             this.ExportParamDict = new Dictionary<string, List<ParamCell>>();
             this.SearchParamsDict = new Dictionary<string, SearchCompInfo>();
             this.SearchCompIDValues = new Dictionary<string, string>();
+            this.ExcelExportLocationList = new List<string>();
+            this.ExcelSearchParamList = new List<SearchParamCell>();
         }
 
         private void InitializeExcelHelper(string filePath)
@@ -116,12 +120,17 @@ namespace APIGateway.Models
                         ParamCell cell = new ParamCell(path, valueLocation);
                         if (string.Compare(opStr, ReadWriteOpText) == 0)
                         {
-                            AddParamCell2Dict(cell,ImportParamDict);
-                            AddParamCell2Dict(cell,ExportParamDict);
+                            AddParamCell2Dict(cell, ImportParamDict);
+                            AddParamCell2Dict(cell, ExportParamDict);
+                            ExcelExportLocationList.Add(cell.ValueLocations[1]);
                         }
                         else if (string.Compare(opStr, ReadOpText) == 0)
                             AddParamCell2Dict(cell, ImportParamDict);
-                        else AddParamCell2Dict(cell, ExportParamDict);
+                        else
+                        {
+                            AddParamCell2Dict(cell, ExportParamDict);
+                            ExcelExportLocationList.Add(cell.ValueLocations[1]);
+                        }
                         firstRow++;
                     }
                     else break;
@@ -160,6 +169,7 @@ namespace APIGateway.Models
                 if (propName.Length > 0 && cellLocation.Length > 0 && valueLocation.Length > 0 && displayText.Length > 0)
                 {
                     SearchParamCell cell = new SearchParamCell(cellLocation, valueLocation, displayText, propName);
+                    ExcelSearchParamList.Add(cell);
                     searchCells.Add(cell);
                     firstRow++;
                 }

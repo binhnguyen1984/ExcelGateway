@@ -1,0 +1,145 @@
+Hosting environment: Development
+Content root path: C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway
+Now listening on: http://127.0.0.1:11789
+Application started. Press Ctrl+C to shut down.
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:00000001 RequestPath:/
+      Request starting HTTP/1.1 DEBUG http://localhost:2664/  0
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:00000001 RequestPath:/
+      Request finished in 69.639ms 200 
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:00000002 RequestPath:/ExcelAddin/
+      Request starting HTTP/1.1 OPTIONS http://localhost:44331/ExcelAddin/  
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:00000002 RequestPath:/ExcelAddin/
+      Request finished in 277.1468ms 404 
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:00000003 RequestPath:/ExcelAddin/Home.html
+      Request starting HTTP/1.1 GET http://localhost:44331/ExcelAddin/Home.html?_host_Info=Excel$Win32$16.01$en-US  
+info: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware[2]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:00000003 RequestPath:/ExcelAddin/Home.html
+      Sending file. Request path: '/ExcelAddin/Home.html'. Physical path: 'C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\wwwroot\ExcelAddin\Home.html'
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:00000003 RequestPath:/ExcelAddin/Home.html
+      Request finished in 41.3767ms 200 text/html
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:00000004 RequestPath:/ExcelAddin/Scripts/jquery-1.9.1.js
+      Request starting HTTP/1.1 GET http://localhost:44331/ExcelAddin/Scripts/jquery-1.9.1.js  
+info: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware[6]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:00000004 RequestPath:/ExcelAddin/Scripts/jquery-1.9.1.js
+      The file /ExcelAddin/Scripts/jquery-1.9.1.js was not modified
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:00000004 RequestPath:/ExcelAddin/Scripts/jquery-1.9.1.js
+      Request finished in 14.6563ms 304 application/javascript
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:00000005 RequestPath:/ExcelAddin/Scripts/FabricUI/MessageBanner.js
+      Request starting HTTP/1.1 GET http://localhost:44331/ExcelAddin/Scripts/FabricUI/MessageBanner.js  
+info: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware[6]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:00000005 RequestPath:/ExcelAddin/Scripts/FabricUI/MessageBanner.js
+      The file /ExcelAddin/Scripts/FabricUI/MessageBanner.js was not modified
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:00000005 RequestPath:/ExcelAddin/Scripts/FabricUI/MessageBanner.js
+      Request finished in 7.0348ms 304 application/javascript
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:00000006 RequestPath:/ExcelAddin/Home.css
+      Request starting HTTP/1.1 GET http://localhost:44331/ExcelAddin/Home.css  
+info: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware[6]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:00000006 RequestPath:/ExcelAddin/Home.css
+      The file /ExcelAddin/Home.css was not modified
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:00000006 RequestPath:/ExcelAddin/Home.css
+      Request finished in 4.4961ms 304 text/css
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:00000007 RequestPath:/ExcelAddin/bundle/Home.js
+      Request starting HTTP/1.1 GET http://localhost:44331/ExcelAddin/bundle/Home.js  
+info: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware[2]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:00000007 RequestPath:/ExcelAddin/bundle/Home.js
+      Sending file. Request path: '/ExcelAddin/bundle/Home.js'. Physical path: 'C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\wwwroot\ExcelAddin\bundle\Home.js'
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:00000007 RequestPath:/ExcelAddin/bundle/Home.js
+      Request finished in 7.2055ms 200 application/javascript
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:00000008 RequestPath:/ExcelAddin/api/loadexcelconfig
+      Request starting HTTP/1.1 GET http://localhost:44331/ExcelAddin/api/loadexcelconfig  
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:00000008 RequestPath:/ExcelAddin/api/loadexcelconfig => APIGateway.Controllers.LoadExcelConfigController.Get (APIGateway)
+      Route matched with {action = "Get", controller = "LoadExcelConfig"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.ActionResult`1[System.String] Get() on controller APIGateway.Controllers.LoadExcelConfigController (APIGateway).
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[1]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:00000008 RequestPath:/ExcelAddin/api/loadexcelconfig => APIGateway.Controllers.LoadExcelConfigController.Get (APIGateway)
+      Executing action method APIGateway.Controllers.LoadExcelConfigController.Get (APIGateway) - Validation state: Valid
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:00000008 RequestPath:/ExcelAddin/api/loadexcelconfig => APIGateway.Controllers.LoadExcelConfigController.Get (APIGateway)
+      Executed action method APIGateway.Controllers.LoadExcelConfigController.Get (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 137.5835ms.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:00000008 RequestPath:/ExcelAddin/api/loadexcelconfig => APIGateway.Controllers.LoadExcelConfigController.Get (APIGateway)
+      Executing ObjectResult, writing value of type 'System.String'.
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:00000008 RequestPath:/ExcelAddin/api/loadexcelconfig => APIGateway.Controllers.LoadExcelConfigController.Get (APIGateway)
+      Executed action APIGateway.Controllers.LoadExcelConfigController.Get (APIGateway) in 279.8518ms
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:00000008 RequestPath:/ExcelAddin/api/loadexcelconfig
+      Request finished in 329.2451ms 200 text/plain; charset=utf-8
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:00000009 RequestPath:/ExcelAddin/api/loadparameters/4743
+      Request starting HTTP/1.1 GET http://localhost:44331/ExcelAddin/api/loadparameters/4743  
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:00000009 RequestPath:/ExcelAddin/api/loadparameters/4743 => APIGateway.Controllers.LoadParametersController.Get (APIGateway)
+      Route matched with {action = "Get", controller = "LoadParameters"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.String] Get(System.String) on controller APIGateway.Controllers.LoadParametersController (APIGateway).
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[1]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:00000009 RequestPath:/ExcelAddin/api/loadparameters/4743 => APIGateway.Controllers.LoadParametersController.Get (APIGateway)
+      Executing action method APIGateway.Controllers.LoadParametersController.Get (APIGateway) - Validation state: Valid
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:00000009 RequestPath:/ExcelAddin/api/loadparameters/4743 => APIGateway.Controllers.LoadParametersController.Get (APIGateway)
+      Executed action method APIGateway.Controllers.LoadParametersController.Get (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 3834.5981ms.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:00000009 RequestPath:/ExcelAddin/api/loadparameters/4743 => APIGateway.Controllers.LoadParametersController.Get (APIGateway)
+      Executing ObjectResult, writing value of type 'System.String'.
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:00000009 RequestPath:/ExcelAddin/api/loadparameters/4743 => APIGateway.Controllers.LoadParametersController.Get (APIGateway)
+      Executed action APIGateway.Controllers.LoadParametersController.Get (APIGateway) in 3892.5224ms
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:00000009 RequestPath:/ExcelAddin/api/loadparameters/4743
+      Request finished in 3924.1249ms 200 text/plain; charset=utf-8
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:0000000A RequestPath:/ExcelAddin/api/updateparameters
+      Request starting HTTP/1.1 PUT http://localhost:44331/ExcelAddin/api/updateparameters application/json; charset=utf-8 2
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:0000000A RequestPath:/ExcelAddin/api/updateparameters => APIGateway.Controllers.UpdateParametersController.Put (APIGateway)
+      Route matched with {action = "Put", controller = "UpdateParameters"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Int32] Put(System.String) on controller APIGateway.Controllers.UpdateParametersController (APIGateway).
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[1]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:0000000A RequestPath:/ExcelAddin/api/updateparameters => APIGateway.Controllers.UpdateParametersController.Put (APIGateway)
+      Executing action method APIGateway.Controllers.UpdateParametersController.Put (APIGateway) - Validation state: Valid
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:0000000A RequestPath:/ExcelAddin/api/updateparameters => APIGateway.Controllers.UpdateParametersController.Put (APIGateway)
+      Executed action method APIGateway.Controllers.UpdateParametersController.Put (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 875.613ms.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:0000000A RequestPath:/ExcelAddin/api/updateparameters => APIGateway.Controllers.UpdateParametersController.Put (APIGateway)
+      Executing ObjectResult, writing value of type 'System.Int32'.
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:0000000A RequestPath:/ExcelAddin/api/updateparameters => APIGateway.Controllers.UpdateParametersController.Put (APIGateway)
+      Executed action APIGateway.Controllers.UpdateParametersController.Put (APIGateway) in 929.1497ms
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:0000000A RequestPath:/ExcelAddin/api/updateparameters
+      Request finished in 939.7646ms 200 application/json; charset=utf-8
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:0000000B RequestPath:/ExcelAddin/api/loadparameters/4743
+      Request starting HTTP/1.1 GET http://localhost:44331/ExcelAddin/api/loadparameters/4743  
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:0000000B RequestPath:/ExcelAddin/api/loadparameters/4743 => APIGateway.Controllers.LoadParametersController.Get (APIGateway)
+      Route matched with {action = "Get", controller = "LoadParameters"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.String] Get(System.String) on controller APIGateway.Controllers.LoadParametersController (APIGateway).
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[1]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:0000000B RequestPath:/ExcelAddin/api/loadparameters/4743 => APIGateway.Controllers.LoadParametersController.Get (APIGateway)
+      Executing action method APIGateway.Controllers.LoadParametersController.Get (APIGateway) - Validation state: Valid
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:0000000B RequestPath:/ExcelAddin/api/loadparameters/4743 => APIGateway.Controllers.LoadParametersController.Get (APIGateway)
+      Executed action method APIGateway.Controllers.LoadParametersController.Get (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 81.4177ms.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:0000000B RequestPath:/ExcelAddin/api/loadparameters/4743 => APIGateway.Controllers.LoadParametersController.Get (APIGateway)
+      Executing ObjectResult, writing value of type 'System.String'.
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:0000000B RequestPath:/ExcelAddin/api/loadparameters/4743 => APIGateway.Controllers.LoadParametersController.Get (APIGateway)
+      Executed action APIGateway.Controllers.LoadParametersController.Get (APIGateway) in 111.7102ms
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      => ConnectionId:0HLOF8MMBDAR7 => RequestId:0HLOF8MMBDAR7:0000000B RequestPath:/ExcelAddin/api/loadparameters/4743
+      Request finished in 118.6325ms 200 text/plain; charset=utf-8

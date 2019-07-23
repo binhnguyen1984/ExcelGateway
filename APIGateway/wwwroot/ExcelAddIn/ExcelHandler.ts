@@ -2,7 +2,7 @@
 import * as Common from "./Common";
 
 let searchValueLocs = [];
-let exportPaths = [];
+//let exportPaths = [];
 let exportValueLocs = [];
 
 
@@ -88,22 +88,22 @@ async function excelConfigHandler(config: string) {
 }
 
 
-function storeSearchValueLocations(searchProps) {
+function storeSearchValueLocations(searchParamCells) {
     let valueLocs = [];
     //add the texts to be displayed
-    for (var i = 0; i < searchProps.length; i++) {
-        valueLocs.push(searchProps[i]["ValueLocation"]);
+    for (var i = 0; i < searchParamCells.length; i++) {
+        valueLocs.push(searchParamCells[i]["ValueLocation"]);
     }
     searchValueLocs.push(valueLocs);
 }
 
-function setSearchTextsToExcelSheet(sheet, searchProps) {
-    for (let i = 0; i < searchProps.length; i++) {
-        let textLoc = searchProps[i]["CellLocation"];
+function setSearchTextsToExcelSheet(sheet, searchParamCells) {
+    for (let i = 0; i < searchParamCells.length; i++) {
+        let textLoc = searchParamCells[i]["CellLocation"];
 
         //get a range that covers the search cells
         let textRange = sheet.getRange(textLoc);
-        textRange.values = [[searchProps[i]["DisplayText"]]];
+        textRange.values = [[searchParamCells[i]["DisplayText"]]];
 
         //format text cell
         //textRange.format.autofitColumns(); // this does not seem to be supported in Excel 2016
@@ -112,29 +112,26 @@ function setSearchTextsToExcelSheet(sheet, searchProps) {
     }
 }
 
-async function processExcelSearchCriteria(searchCellDict) {
+async function processExcelSearchCriteria(searchParamCells) {
     // Run a batch operation against the Excel object model
     await Common.excelActionHandler(async ctx => {
         // Create a proxy object for the active sheet
         let sheet = ctx.workbook.worksheets.getActiveWorksheet();
 
         //process the text to be displayed in search cells
-        for (const key of Object.keys(searchCellDict)) {
-            const searchProps = searchCellDict[key]["SearchParamList"];
-            storeSearchValueLocations(searchProps);
-            setSearchTextsToExcelSheet(sheet, searchProps);
-        }
+        storeSearchValueLocations(searchParamCells);
+        setSearchTextsToExcelSheet(sheet, searchParamCells);
         return await ctx.sync();
     });
 }
 
-async function processExportParameters(exportParamList) {
+async function processExportParameters(exportParamLocs) {
     // Run a batch operation against the Excel object model
     await Common.excelActionHandler(async ctx => {
         //process the text to be displayed in search cells
-        for (let i = 0; i < exportParamList.length; i++) {
-            exportPaths.push(exportParamList[i]["Props"]);
-            exportValueLocs.push(exportParamList[i]["ValueLocations"][1]);
+        for (let i = 0; i < exportParamLocs.length; i++) {
+            //exportPaths.push(exportParamList[i]["Props"]);
+            exportValueLocs.push(exportParamLocs[i]);
         }
         return await ctx.sync();
     });

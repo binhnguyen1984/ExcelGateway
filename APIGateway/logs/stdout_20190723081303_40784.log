@@ -1,0 +1,10 @@
+Hosting environment: Development
+Content root path: C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway
+Now listening on: http://127.0.0.1:7693
+Application started. Press Ctrl+C to shut down.
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      => ConnectionId:0HLOF8MDAJLND => RequestId:0HLOF8MDAJLND:00000001 RequestPath:/
+      Request starting HTTP/1.1 DEBUG http://localhost:2664/  0
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      => ConnectionId:0HLOF8MDAJLND => RequestId:0HLOF8MDAJLND:00000001 RequestPath:/
+      Request finished in 97.8001ms 200 
