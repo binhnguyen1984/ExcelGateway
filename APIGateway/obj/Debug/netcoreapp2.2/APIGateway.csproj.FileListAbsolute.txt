@@ -19,3 +19,4 @@ C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\obj\Debug\netcoreapp2.2\A
 C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\bin\Debug\netcoreapp2.2\APIGateway.pdb
 C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\obj\Debug\netcoreapp2.2\APIGateway.dll
 C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\obj\Debug\netcoreapp2.2\APIGateway.pdb
+C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\bin\Debug\netcoreapp2.2\excelconfig.xls

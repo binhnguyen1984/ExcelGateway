@@ -6,12 +6,12 @@
         public static string HDBUrl = "https://grzsms216.andritz.com/services/api/";
         public static string CDPUrl = "https://volta-dev.andritz.com/api/";
         private const string ExcelConfigFileName = "excelconfig.xls";
-        public static ExcelSheetModel ExcelModel;
+        public static ExcelContent ExcelModel;
         public static object[] ExcelConfig;
         public static void ReadExcelConfiguration()
         {
-            ExcelModel = new ExcelSheetModel(ExcelConfigFileName);
-            ExcelConfig = new object[2] { ExcelModel.SearchParamsDict, ExcelModel.ExportParamList };
+            ExcelModel = new ExcelContent(ExcelConfigFileName);
+            ExcelConfig = new object[2] { ExcelModel.SearchParamsDict, ExcelModel.ExportParamDict };
         }
     }
 }

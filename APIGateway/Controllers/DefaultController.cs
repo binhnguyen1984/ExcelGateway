@@ -2,10 +2,10 @@
 
 namespace APIGateway.Controllers
 {
-    [Route("")]
     [ApiController]
     public class DefaultController : ControllerBase
     {
+        [Route("")]
         [HttpGet]
         public string Get()
         {
