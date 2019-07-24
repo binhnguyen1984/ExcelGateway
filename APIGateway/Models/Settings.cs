@@ -11,7 +11,7 @@
         public static void ReadExcelConfiguration()
         {
             ExcelModel = new ExcelContent(ExcelConfigFileName);
-            ExcelConfig = new object[2] { ExcelModel.ExcelSearchParamList, ExcelModel.ExcelExportLocationList};
+            ExcelConfig = new object[2] { ExcelModel.ExcelSearchParamList, ExcelModel.ExcelExportLocationList };
         }
     }
 }

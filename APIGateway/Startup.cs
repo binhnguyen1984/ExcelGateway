@@ -38,7 +38,7 @@ namespace APIGateway
                     console.IncludeScopes = true;
                 });
             });
-            services.AddMvcCore().AddJsonFormatters().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvcCore().WithRazorPagesRoot("/HomePage").AddAuthorization().AddRazorPages(options => options.Conventions.AddPageRoute("/IndexPage", "")).AddJsonFormatters().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddProxy(httpClientBuilder =>
             httpClientBuilder.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { ServerCertificateCustomValidationCallback = (_, __, ___, ____) => true, UseDefaultCredentials = true }));
         }
@@ -76,8 +76,6 @@ namespace APIGateway
             //        .AddXForwardedHeaders()
             //        .Send());
             //});
-
-            //            app.Run(async ctx => await ctx.Response.WriteAsync("Excel API Gateway is listening..."));
         }
     }
 }

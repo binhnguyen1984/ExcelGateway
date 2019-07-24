@@ -21,3 +21,7 @@ C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\obj\Release\netcoreapp2.2
 C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\obj\Release\netcoreapp2.2\APIGateway.pdb
 C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\bin\Release\netcoreapp2.2\excelconfig.xls
 C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\bin\Release\netcoreapp2.2\web.config
+C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\bin\Release\netcoreapp2.2\wwwroot\ExcelAddIn\APIHandler.ts
+C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\bin\Release\netcoreapp2.2\wwwroot\ExcelAddIn\ExcelHandler.ts
+C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\bin\Release\netcoreapp2.2\wwwroot\ExcelAddIn\Home.ts
+C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\bin\Release\netcoreapp2.2\wwwroot\ExcelAddIn\Common.ts

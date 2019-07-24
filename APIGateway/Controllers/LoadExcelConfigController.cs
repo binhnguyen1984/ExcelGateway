@@ -11,7 +11,6 @@ namespace APIGateway.Controllers
         [HttpGet]
         public ActionResult<string> Get()
         {
-            //return System.Security.Principal.WindowsIdentity.GetCurrent().Name + ":" +User.Identity.Name+":"+ System.Security.Principal.WindowsIdentity.GetCurrent().AuthenticationType;            
             return JsonConvert.SerializeObject(Settings.ExcelConfig);
         }
     }

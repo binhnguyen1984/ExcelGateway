@@ -2,3 +2,4 @@ Hosting environment: Production
 Content root path: C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\bin\Release\publish
 Now listening on: http://127.0.0.1:35458
 Application started. Press Ctrl+C to shut down.
+Application is shutting down...

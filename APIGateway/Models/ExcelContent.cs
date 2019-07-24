@@ -15,16 +15,16 @@ namespace APIGateway.Models
         private const string ReadOpText = "READ";
         private const string ReadWriteOpText = "READ/WRITE";
         private const string HdbName = "HDB";
-        private IDictionary<string,List<ParamCell>> ImportParamDict { get; set; } //list of import parameters
+        private IDictionary<string, List<ParamCell>> ImportParamDict { get; set; } //list of import parameters
+        private IDictionary<string, List<ParamCell>> ExportParamDict { get; set; } //list of export parameters
         private IRange range;
         private int RowCount, ColumnCount;
         private IDictionary<string, JObject> ExportLoadedCompList { get; set; } // a dictionary of components loaded from the database which are to be updated
         private IDictionary<string, string> SearchCompIDValues { get; set; }
-
         private IDictionary<string, SearchCompInfo> SearchParamsDict { get; set; }
-        private IDictionary<string, List<ParamCell>> ExportParamDict { get; set; } //list of export parameters
         public List<SearchParamCell> ExcelSearchParamList { get; set; }
         public List<string> ExcelExportLocationList { get; set; }
+
         public ExcelContent(string fileName)
         {
             InitializeData();
@@ -37,7 +37,7 @@ namespace APIGateway.Models
         {
             ExportLoadedCompList = new Dictionary<string, JObject>();
             foreach (List<ParamCell> paramCells in ExportParamDict.Values)
-                foreach(ParamCell paramCell in paramCells)
+                foreach (ParamCell paramCell in paramCells)
                 {
                     if (!ExportLoadedCompList.ContainsKey(paramCell.Props[0]))
                         ExportLoadedCompList.Add(paramCell.Props[0], null);
@@ -97,7 +97,7 @@ namespace APIGateway.Models
         {
             if (paramDict.Keys.Contains(cell.Props[0]))
                 paramDict[cell.Props[0]].Add(cell);
-            else paramDict.Add(cell.Props[0], new List<ParamCell>() { cell});
+            else paramDict.Add(cell.Props[0], new List<ParamCell>() { cell });
         }
         private void ReadDataCellList(ref int firstRow)
         {

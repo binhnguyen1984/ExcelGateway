@@ -3565,6 +3565,21 @@
           }
         }
       },
+      "System.Net.Http.WinHttpHandler/4.5.4": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/System.Net.Http.WinHttpHandler.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Net.Http.WinHttpHandler.dll": {}
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/netstandard2.0/System.Net.Http.WinHttpHandler.dll": {
+            "assetType": "runtime",
+            "rid": "win"
+          }
+        }
+      },
       "System.Net.Primitives/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -9614,6 +9629,29 @@
         "system.net.http.nuspec"
       ]
     },
+    "System.Net.Http.WinHttpHandler/4.5.4": {
+      "sha512": "ugUKd9n5hb6MDmzhW8At0TTilHYsfYP0aLDv+mKAkbWtrivRj3X5KjkkDa+QO9gTOoNhdTEsZdycofPUNgVyKw==",
+      "type": "package",
+      "path": "system.net.http.winhttphandler/4.5.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net46/System.Net.Http.WinHttpHandler.dll",
+        "lib/net461/System.Net.Http.WinHttpHandler.dll",
+        "lib/netstandard1.3/System.Net.Http.WinHttpHandler.dll",
+        "lib/netstandard2.0/System.Net.Http.WinHttpHandler.dll",
+        "runtimes/win/lib/net46/System.Net.Http.WinHttpHandler.dll",
+        "runtimes/win/lib/net461/System.Net.Http.WinHttpHandler.dll",
+        "runtimes/win/lib/netstandard1.3/System.Net.Http.WinHttpHandler.dll",
+        "runtimes/win/lib/netstandard2.0/System.Net.Http.WinHttpHandler.dll",
+        "system.net.http.winhttphandler.4.5.4.nupkg.sha512",
+        "system.net.http.winhttphandler.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
     "System.Net.Primitives/4.3.0": {
       "sha512": "DQV47No7uqXRvWFkvdjFbTp/8jEQJTdb/+b5ulGlF8dDwSnC4ppsCnuakUi1Nl0bxmG0x0F0aJdBdSU7daM2PA==",
       "type": "package",
@@ -12297,7 +12335,8 @@
       "Microsoft.NETCore.App >= 2.2.0",
       "Microsoft.TypeScript.MSBuild >= 3.5.3",
       "ProxyKit >= 2.1.2",
-      "Syncfusion.XlsIO.Net.Core >= 17.2.0.35"
+      "Syncfusion.XlsIO.Net.Core >= 17.2.0.35",
+      "System.Net.Http.WinHttpHandler >= 4.5.4"
     ]
   },
   "packageFolders": {
@@ -12370,6 +12409,10 @@
           "Syncfusion.XlsIO.Net.Core": {
             "target": "Package",
             "version": "[17.2.0.35, )"
+          },
+          "System.Net.Http.WinHttpHandler": {
+            "target": "Package",
+            "version": "[4.5.4, )"
           }
         },
         "imports": [

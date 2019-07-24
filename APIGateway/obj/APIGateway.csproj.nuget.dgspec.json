@@ -70,6 +70,10 @@
             "Syncfusion.XlsIO.Net.Core": {
               "target": "Package",
               "version": "[17.2.0.35, )"
+            },
+            "System.Net.Http.WinHttpHandler": {
+              "target": "Package",
+              "version": "[4.5.4, )"
             }
           },
           "imports": [

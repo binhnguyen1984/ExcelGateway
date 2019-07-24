@@ -12,6 +12,7 @@ namespace APIGateway.Models
         public static HttpClient APIClient;
         public static void InitializeAPIClient()
         {
+            AppContext.SetSwitch("System.Net.Http.UseSocketsHttpHandler", false); //this line is needed for impersonation to work
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback += (o, certificate, chain, errors) => true;
             clientHandler.UseDefaultCredentials = true;

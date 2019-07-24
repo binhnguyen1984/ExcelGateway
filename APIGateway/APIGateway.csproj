@@ -21,21 +21,38 @@
     </PackageReference>
     <PackageReference Include="ProxyKit" Version="2.1.2" />
     <PackageReference Include="Syncfusion.XlsIO.Net.Core" Version="17.2.0.35" />
+    <PackageReference Include="System.Net.Http.WinHttpHandler" Version="4.5.4" />
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="wwwroot\ExcelAddIn\APIHandler.ts" />
-    <TypeScriptCompile Include="wwwroot\ExcelAddIn\Common.ts" />
-    <TypeScriptCompile Include="wwwroot\ExcelAddIn\ExcelHandler.ts">
+    <None Include="wwwroot\ExcelAddIn\Common.ts">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\ExcelAddIn\ExcelHandler.ts">
       <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="wwwroot\ExcelAddIn\Home.ts" />
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
     <None Update="excelconfig.xls">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Update="wwwroot\ExcelAddIn\APIHandler.ts">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </TypeScriptCompile>
+    <TypeScriptCompile Update="wwwroot\ExcelAddIn\Common.ts">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </TypeScriptCompile>
+    <TypeScriptCompile Update="wwwroot\ExcelAddIn\ExcelHandler.ts">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </TypeScriptCompile>
+    <TypeScriptCompile Update="wwwroot\ExcelAddIn\Home.ts">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </TypeScriptCompile>
   </ItemGroup>
 
 </Project>
