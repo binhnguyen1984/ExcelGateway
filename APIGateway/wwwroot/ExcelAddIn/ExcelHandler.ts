@@ -95,8 +95,9 @@ function handleExportParamsFeedback(responseCode) {
 
 async function excelConfigHandler(config: string) {
     let configArr = JSON.parse(config);
-    processExcelSearchCriteria(configArr[0]);
-    processExportParameters(configArr[1]);
+    await processExcelSearchCriteria(configArr[0]);
+    await processExportParameters(configArr[1]);
+    Common.showNotification("Message:", "The configuration has been loaded... ");
 }
 
 
