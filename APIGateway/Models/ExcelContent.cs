@@ -25,12 +25,17 @@ namespace APIGateway.Models
         public List<SearchParamCell> ExcelSearchParamList { get; set; }
         public List<string> ExcelExportLocationList { get; set; }
 
-        public ExcelContent(string fileName)
+        public ExcelContent(IWorksheet ws)
         {
+            InitializeExcelHelper(ws);
             InitializeData();
-            InitializeExcelHelper(fileName);
             ReadConfiguration();
             InitializeExportLoadedCompList();
+        }
+
+        public object[] GetExcelConfig()
+        {
+            return new object[] { this.ExcelSearchParamList, this.ExcelExportLocationList };
         }
 
         private void InitializeExportLoadedCompList()
@@ -54,15 +59,15 @@ namespace APIGateway.Models
             this.ExcelSearchParamList = new List<SearchParamCell>();
         }
 
-        private void InitializeExcelHelper(string filePath)
+        private void InitializeExcelHelper(IWorksheet ws)
         {
-            ExcelEngine excelEngine = new ExcelEngine();
-            IApplication application = excelEngine.Excel;
-            application.DefaultVersion = ExcelVersion.Excel2016;
+            //ExcelEngine excelEngine = new ExcelEngine();
+            //IApplication application = excelEngine.Excel;
+            //application.DefaultVersion = ExcelVersion.Excel2016;
 
-            FileStream configFile = new FileStream(filePath, FileMode.Open);
-            IWorkbook wb = application.Workbooks.Open(configFile);
-            IWorksheet ws = wb.Worksheets[0];
+            //FileStream configFile = new FileStream(filePath, FileMode.Open);
+            //IWorkbook wb = application.Workbooks.Open(configFile);
+            //IWorksheet ws = wb.Worksheets[0];
             range = ws.Range;
             RowCount = ws.Rows.Length;
             ColumnCount = ws.Columns.Length;

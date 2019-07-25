@@ -1,0 +1,87 @@
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[0]
+      User profile is available. Using 'C:\Users\lnztha01\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+Hosting environment: Development
+Content root path: C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway
+Now listening on: http://127.0.0.1:11072
+Application started. Press Ctrl+C to shut down.
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      => ConnectionId:0HLOGRSQ5P0FB => RequestId:0HLOGRSQ5P0FB:00000001 RequestPath:/ExcelAddin/
+      Request starting HTTP/1.1 OPTIONS http://localhost:44331/ExcelAddin/  
+fail: Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware[1]
+      => ConnectionId:0HLOGRSQ5P0FB => RequestId:0HLOGRSQ5P0FB:00000001 RequestPath:/ExcelAddin/
+      An unhandled exception has occurred while executing the request.
+System.InvalidOperationException: The constraint reference 'string' could not be resolved to a type. Register the constraint type with 'Microsoft.AspNetCore.Routing.RouteOptions.ConstraintMap'.
+   at Microsoft.AspNetCore.Routing.DefaultParameterPolicyFactory.Create(RoutePatternParameterPart parameter, String inlineText)
+   at Microsoft.AspNetCore.Routing.ParameterPolicyFactory.Create(RoutePatternParameterPart parameter, RoutePatternParameterPolicyReference reference)
+   at Microsoft.AspNetCore.Routing.Matching.DfaMatcherBuilder.CreateCandidate(Endpoint endpoint, Int32 score)
+   at Microsoft.AspNetCore.Routing.Matching.DfaMatcherBuilder.CreateCandidates(IReadOnlyList`1 endpoints)
+   at Microsoft.AspNetCore.Routing.Matching.DfaMatcherBuilder.AddNode(DfaNode node, DfaState[] states, Int32 exitDestination)
+   at Microsoft.AspNetCore.Routing.Matching.DfaMatcherBuilder.AddNode(DfaNode node, DfaState[] states, Int32 exitDestination)
+   at Microsoft.AspNetCore.Routing.Matching.DfaMatcherBuilder.<AddNode>g__Transition|18_0(DfaNode next, <>c__DisplayClass18_0& )
+   at Microsoft.AspNetCore.Routing.Matching.DfaMatcherBuilder.AddNode(DfaNode node, DfaState[] states, Int32 exitDestination)
+   at Microsoft.AspNetCore.Routing.Matching.DfaMatcherBuilder.AddNode(DfaNode node, DfaState[] states, Int32 exitDestination)
+   at Microsoft.AspNetCore.Routing.Matching.DfaMatcherBuilder.AddNode(DfaNode node, DfaState[] states, Int32 exitDestination)
+   at Microsoft.AspNetCore.Routing.Matching.DfaMatcherBuilder.AddNode(DfaNode node, DfaState[] states, Int32 exitDestination)
+   at Microsoft.AspNetCore.Routing.Matching.DfaMatcherBuilder.Build()
+   at Microsoft.AspNetCore.Routing.Matching.DataSourceDependentMatcher.CreateMatcher(IReadOnlyList`1 endpoints)
+   at Microsoft.AspNetCore.Routing.DataSourceDependentCache`1.Initialize()
+   at System.Threading.LazyInitializer.EnsureInitializedCore[T](T& target, Boolean& initialized, Object& syncLock, Func`1 valueFactory)
+   at Microsoft.AspNetCore.Routing.Matching.DataSourceDependentMatcher..ctor(EndpointDataSource dataSource, Lifetime lifetime, Func`1 matcherBuilderFactory)
+   at Microsoft.AspNetCore.Routing.Matching.DfaMatcherFactory.CreateMatcher(EndpointDataSource dataSource)
+   at Microsoft.AspNetCore.Routing.EndpointRoutingMiddleware.InitializeCoreAsync()
+--- End of stack trace from previous location where exception was thrown ---
+   at Microsoft.AspNetCore.Routing.EndpointRoutingMiddleware.Invoke(HttpContext httpContext)
+   at APIGateway.Middlewares.ImpersonationMiddleWare.<>c__DisplayClass2_0.<<Invoke>b__0>d.MoveNext() in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Middlewares\ImpersonationMiddleWare.cs:line 31
+--- End of stack trace from previous location where exception was thrown ---
+   at APIGateway.Middlewares.ImpersonationMiddleWare.Invoke(HttpContext context) in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Middlewares\ImpersonationMiddleWare.cs:line 24
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      => ConnectionId:0HLOGRSQ5P0FB => RequestId:0HLOGRSQ5P0FB:00000001 RequestPath:/ExcelAddin/
+      Request finished in 117.9179ms 500 text/html; charset=utf-8
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      => ConnectionId:0HLOGRSQ5P0FC => RequestId:0HLOGRSQ5P0FC:00000001 RequestPath:/ExcelAddin/Home.html
+      Request starting HTTP/1.1 GET http://localhost:44331/ExcelAddin/Home.html?_host_Info=Excel$Win32$16.01$en-US  
+info: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware[2]
+      => ConnectionId:0HLOGRSQ5P0FC => RequestId:0HLOGRSQ5P0FC:00000001 RequestPath:/ExcelAddin/Home.html
+      Sending file. Request path: '/ExcelAddin/Home.html'. Physical path: 'C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\wwwroot\ExcelAddin\Home.html'
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      => ConnectionId:0HLOGRSQ5P0FC => RequestId:0HLOGRSQ5P0FC:00000001 RequestPath:/ExcelAddin/Home.html
+      Request finished in 13.2851ms 200 text/html
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      => ConnectionId:0HLOGRSQ5P0FC => RequestId:0HLOGRSQ5P0FC:00000002 RequestPath:/ExcelAddin/Scripts/jquery-1.9.1.js
+      Request starting HTTP/1.1 GET http://localhost:44331/ExcelAddin/Scripts/jquery-1.9.1.js  
+info: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware[2]
+      => ConnectionId:0HLOGRSQ5P0FC => RequestId:0HLOGRSQ5P0FC:00000002 RequestPath:/ExcelAddin/Scripts/jquery-1.9.1.js
+      Sending file. Request path: '/ExcelAddin/Scripts/jquery-1.9.1.js'. Physical path: 'C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\wwwroot\ExcelAddin\Scripts\jquery-1.9.1.js'
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      => ConnectionId:0HLOGRSQ5P0FC => RequestId:0HLOGRSQ5P0FC:00000002 RequestPath:/ExcelAddin/Scripts/jquery-1.9.1.js
+      Request finished in 33.8808ms 200 application/javascript
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      => ConnectionId:0HLOGRSQ5P0FD => RequestId:0HLOGRSQ5P0FD:00000001 RequestPath:/ExcelAddin/Scripts/FabricUI/MessageBanner.js
+      Request starting HTTP/1.1 GET http://localhost:44331/ExcelAddin/Scripts/FabricUI/MessageBanner.js  
+info: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware[2]
+      => ConnectionId:0HLOGRSQ5P0FD => RequestId:0HLOGRSQ5P0FD:00000001 RequestPath:/ExcelAddin/Scripts/FabricUI/MessageBanner.js
+      Sending file. Request path: '/ExcelAddin/Scripts/FabricUI/MessageBanner.js'. Physical path: 'C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\wwwroot\ExcelAddin\Scripts\FabricUI\MessageBanner.js'
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      => ConnectionId:0HLOGRSQ5P0FD => RequestId:0HLOGRSQ5P0FD:00000001 RequestPath:/ExcelAddin/Scripts/FabricUI/MessageBanner.js
+      Request finished in 4.8687ms 200 application/javascript
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      => ConnectionId:0HLOGRSQ5P0FD => RequestId:0HLOGRSQ5P0FD:00000002 RequestPath:/ExcelAddin/Home.css
+      Request starting HTTP/1.1 GET http://localhost:44331/ExcelAddin/Home.css  
+info: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware[2]
+      => ConnectionId:0HLOGRSQ5P0FD => RequestId:0HLOGRSQ5P0FD:00000002 RequestPath:/ExcelAddin/Home.css
+      Sending file. Request path: '/ExcelAddin/Home.css'. Physical path: 'C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\wwwroot\ExcelAddin\Home.css'
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      => ConnectionId:0HLOGRSQ5P0FD => RequestId:0HLOGRSQ5P0FD:00000002 RequestPath:/ExcelAddin/Home.css
+      Request finished in 2.0535ms 200 text/css
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      => ConnectionId:0HLOGRSQ5P0FC => RequestId:0HLOGRSQ5P0FC:00000003 RequestPath:/ExcelAddin/bundle/Home.js
+      Request starting HTTP/1.1 GET http://localhost:44331/ExcelAddin/bundle/Home.js  
+info: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware[2]
+      => ConnectionId:0HLOGRSQ5P0FC => RequestId:0HLOGRSQ5P0FC:00000003 RequestPath:/ExcelAddin/bundle/Home.js
+      Sending file. Request path: '/ExcelAddin/bundle/Home.js'. Physical path: 'C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\wwwroot\ExcelAddin\bundle\Home.js'
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      => ConnectionId:0HLOGRSQ5P0FC => RequestId:0HLOGRSQ5P0FC:00000003 RequestPath:/ExcelAddin/bundle/Home.js
+      Request finished in 2.2313ms 200 application/javascript

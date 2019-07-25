@@ -9,10 +9,10 @@ namespace APIGateway.Controllers
     [ApiController]
     public class LoadParametersController : ControllerBase
     {
-        [HttpGet("{searchValues}")]
-        public async Task<string> Get(string searchValues)
+        [HttpGet("{sheetName}")]
+        public async Task<string> Get(string sheetName, string searchValues)
         {
-            return JsonConvert.SerializeObject(await Settings.ExcelModel.FetchParamsFromDBAsync(searchValues.Split(',')));
+            return JsonConvert.SerializeObject(await Settings.LoadParametersAsync(sheetName,searchValues.Split(',')));
         }
     }
 }

@@ -25,3 +25,17 @@ C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\bin\Release\netcoreapp2.2
 C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\bin\Release\netcoreapp2.2\wwwroot\ExcelAddIn\ExcelHandler.ts
 C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\bin\Release\netcoreapp2.2\wwwroot\ExcelAddIn\Home.ts
 C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\bin\Release\netcoreapp2.2\wwwroot\ExcelAddIn\Common.ts
+C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\bin\Release\netcoreapp2.2\APIGateway.Views.dll
+C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\bin\Release\netcoreapp2.2\APIGateway.Views.pdb
+C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\obj\Release\netcoreapp2.2\APIGateway.TagHelpers.input.cache
+C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\obj\Release\netcoreapp2.2\APIGateway.TagHelpers.output.cache
+C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\obj\Release\netcoreapp2.2\APIGateway.RazorCoreGenerate.cache
+C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\obj\Release\netcoreapp2.2\Razor\HomePage\Index.cshtml.g.cs
+C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\obj\Release\netcoreapp2.2\Razor\HomePage\Shared\_CookieConsentPartial.cshtml.g.cs
+C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\obj\Release\netcoreapp2.2\Razor\HomePage\Shared\_Layout.cshtml.g.cs
+C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\obj\Release\netcoreapp2.2\Razor\HomePage\Shared\_ValidationScriptsPartial.cshtml.g.cs
+C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\obj\Release\netcoreapp2.2\Razor\HomePage\_ViewImports.cshtml.g.cs
+C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\obj\Release\netcoreapp2.2\Razor\HomePage\_ViewStart.cshtml.g.cs
+C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\obj\Release\netcoreapp2.2\APIGateway.RazorTargetAssemblyInfo.cs
+C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\obj\Release\netcoreapp2.2\APIGateway.Views.pdb
+C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\obj\Release\netcoreapp2.2\APIGateway.csproj.CopyComplete

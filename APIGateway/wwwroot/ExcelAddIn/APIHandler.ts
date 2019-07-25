@@ -3,7 +3,8 @@
     xhr.overrideMimeType("application/json");
     xhr.open("GET", apiURL, true);
     xhr.onload = async function () {
-        if (xhr.readyState == 4 && xhr.status == 200)
+        if (
+            xhr.readyState == 4 && xhr.status == 200)
             await callback(xhr.responseText);
     }
     xhr.send(null);

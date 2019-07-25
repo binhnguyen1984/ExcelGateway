@@ -8,10 +8,10 @@ namespace APIGateway.Controllers
     [ApiController]
     public class LoadExcelConfigController : ControllerBase
     {
-        [HttpGet]
-        public ActionResult<string> Get()
+        [HttpGet("{sheetName}")]
+        public ActionResult<string> Get(string sheetName)
         {
-            return JsonConvert.SerializeObject(Settings.ExcelConfig);
+            return JsonConvert.SerializeObject(Settings.LoadExcelConfiguration(sheetName));
         }
     }
 }

@@ -9,7 +9,7 @@ namespace APIGateway
         public static void Main(string[] args)
         {
             APICaller.InitializeAPIClient();
-            Settings.ReadExcelConfiguration();
+            Settings.LoadAllExcelConfigs();
             CreateWebHostBuilder(args).Build().Run();
         }
 

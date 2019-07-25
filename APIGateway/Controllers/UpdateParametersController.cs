@@ -8,10 +8,10 @@ namespace APIGateway.Controllers
     [ApiController]
     public class UpdateParametersController : ControllerBase
     {
-        [HttpPut]
-        public async Task<int> Put([FromBody] string value)
+        [HttpPut("{sheetName}")]
+        public async Task<int> Put(string sheetName, [FromBody] string value)
         {
-            return await Settings.ExcelModel.UpdateParametersAsync(value.Split(','));
+            return await Settings.UpdateParametersAsync(sheetName,value.Split(','));
         }
     }
 }
