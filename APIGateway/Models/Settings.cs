@@ -19,13 +19,8 @@ namespace APIGateway.Models
         }
 
         public static void LoadAllExcelConfigs()
-        {
-            ExcelEngine excelEngine = new ExcelEngine();
-            IApplication application = excelEngine.Excel;
-            application.DefaultVersion = ExcelVersion.Excel2016;
-
-            FileStream configFile = new FileStream(ConfigFile, FileMode.Open);
-            IWorkbook wb = application.Workbooks.Open(configFile);
+        {        
+            IWorkbook wb = GetExcelWorkBook();
             foreach(IWorksheet ws in wb.Worksheets)
             {
                 if (!ExcelConfigDict.Keys.Contains(ws.Name))
@@ -33,9 +28,33 @@ namespace APIGateway.Models
             }
         }
 
+        private static IWorkbook GetExcelWorkBook()
+        {
+            ExcelEngine excelEngine = new ExcelEngine();
+            IApplication application = excelEngine.Excel;
+            application.DefaultVersion = ExcelVersion.Excel2016;
+
+            FileStream configFile = new FileStream(ConfigFile, FileMode.Open);
+            return application.Workbooks.Open(configFile);  
+        }
         private static ExcelContent GetExcelContent(string sheetName)
         {
-            if (!ExcelConfigDict.Keys.Contains(sheetName)) throw new System.Exception("Could not find configuration for sheet "+sheetName);
+            if (!ExcelConfigDict.Keys.Contains(sheetName))
+            {
+                //try to re-load the configuration file and look for the sheet as the file could have been updated in the mean time
+                IWorkbook wb = GetExcelWorkBook();
+                foreach (IWorksheet ws in wb.Worksheets)
+                {
+                    if (string.Compare(ws.Name, sheetName) == 0)
+                    {
+                        ExcelContent excelContent = new ExcelContent(ws);
+                        ExcelConfigDict.Add(ws.Name, excelContent);
+                        return excelContent;
+                    }
+                }
+                //did not succeed, so there is no configuration for this sheet
+                throw new System.Exception("No configuration was found for sheet " + sheetName);
+            }
             return ExcelConfigDict[sheetName];
         }
         public static async Task<List<ParamCell>> LoadParametersAsync(string sheetName, string[] searchValues)
