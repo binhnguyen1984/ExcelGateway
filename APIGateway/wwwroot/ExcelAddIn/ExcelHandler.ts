@@ -10,11 +10,17 @@ export function loadExcelConfiguration(sheetName) {
     APIHandler.asyncApiGetCall("api/loadexcelconfig/" + sheetName, excelConfigHandler);
 }
 
-export function loadParameters(sheetName) {
+export async function loadParameters(sheetName) {
     Common.showNotification("Message", "Data is loading ...")
-    getSearchValues().then(data => {
-        APIHandler.asyncApiGetCall("api/loadparameters/" + sheetName +"?searchValues=" + data, setParameters);
-    });
+    let data = await getSearchValues();
+    APIHandler.asyncApiGetCall("api/loadparameters/" + sheetName +"?searchValues=" + data, setParameters);
+}
+
+async function excelConfigHandler(config: string) {
+    let configArr = JSON.parse(config);
+    await processExcelSearchCriteria(configArr[0]);
+    await processExportParameters(configArr[1]);
+    Common.showNotification("Message:", "The configuration has been loaded");
 }
 
 export async function getSheetName() {
@@ -46,7 +52,6 @@ async function getSearchValues() {
 
 async function setParameters(paramStr) {
     await Common.excelActionHandler(async (ctx) => {
-        Common.showNotification("Message", "Data has been loaded.");
         let parameters = JSON.parse(paramStr);
         let sheet = ctx.workbook.worksheets.getActiveWorksheet();
         for (let i = 0; i < parameters.length; i++) {
@@ -60,6 +65,7 @@ async function setParameters(paramStr) {
             //    exportRange.values = [[value]];
             //}
         }
+        Common.showNotification("Message", "Data has been loaded.");
         await ctx.sync();
     });
 }
@@ -79,9 +85,10 @@ async function getExportParameters() {
     return exportParams.toString();
 }
 
-export function updateParameters(sheetName) {
+export async function updateParameters(sheetName) {
     Common.showNotification("Message:", "Updating the components... ");
-    getExportParameters().then(exportParams => APIHandler.syncApiPutCall("api/updateparameters/" + sheetName, exportParams, handleExportParamsFeedback));
+    let exportParams = await getExportParameters();
+    APIHandler.syncApiPutCall("api/updateparameters/" + sheetName, exportParams, handleExportParamsFeedback);
 }
 
 function handleExportParamsFeedback(responseCode) {
@@ -92,14 +99,6 @@ function handleExportParamsFeedback(responseCode) {
     }
     else Common.showNotification("Message:", "Updating succeeded!");
 }
-
-async function excelConfigHandler(config: string) {
-    let configArr = JSON.parse(config);
-    await processExcelSearchCriteria(configArr[0]);
-    await processExportParameters(configArr[1]);
-    Common.showNotification("Message:", "The configuration has been loaded... ");
-}
-
 
 function storeSearchValueLocations(searchParamCells) {
     let valueLocs = [];

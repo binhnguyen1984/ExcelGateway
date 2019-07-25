@@ -1,0 +1,90 @@
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[0]
+      User profile is available. Using 'C:\Users\lnztha01\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+Hosting environment: Development
+Content root path: C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway
+Now listening on: http://127.0.0.1:31556
+Application started. Press Ctrl+C to shut down.
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      => ConnectionId:0HLOH0FP2N6K2 => RequestId:0HLOH0FP2N6K2:00000001 RequestPath:/
+      Request starting HTTP/1.1 DEBUG http://localhost:2664/  0
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      => ConnectionId:0HLOH0FP2N6K2 => RequestId:0HLOH0FP2N6K2:00000001 RequestPath:/
+      Request finished in 37.2795ms 200 
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      => ConnectionId:0HLOH0FP2N6K2 => RequestId:0HLOH0FP2N6K2:00000002 RequestPath:/ExcelAddin/
+      Request starting HTTP/1.1 OPTIONS http://localhost:44331/ExcelAddin/  
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      => ConnectionId:0HLOH0FP2N6K2 => RequestId:0HLOH0FP2N6K2:00000002 RequestPath:/ExcelAddin/
+      Request finished in 97.8547ms 404 
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      => ConnectionId:0HLOH0FP2N6K2 => RequestId:0HLOH0FP2N6K2:00000003 RequestPath:/ExcelAddin/Home.html
+      Request starting HTTP/1.1 GET http://localhost:44331/ExcelAddin/Home.html?_host_Info=Excel$Win32$16.01$en-US  
+info: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware[2]
+      => ConnectionId:0HLOH0FP2N6K2 => RequestId:0HLOH0FP2N6K2:00000003 RequestPath:/ExcelAddin/Home.html
+      Sending file. Request path: '/ExcelAddin/Home.html'. Physical path: 'C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\wwwroot\ExcelAddin\Home.html'
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      => ConnectionId:0HLOH0FP2N6K2 => RequestId:0HLOH0FP2N6K2:00000003 RequestPath:/ExcelAddin/Home.html
+      Request finished in 27.1644ms 200 text/html
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      => ConnectionId:0HLOH0FP2N6K2 => RequestId:0HLOH0FP2N6K2:00000004 RequestPath:/ExcelAddin/Scripts/jquery-1.9.1.js
+      Request starting HTTP/1.1 GET http://localhost:44331/ExcelAddin/Scripts/jquery-1.9.1.js  
+info: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware[6]
+      => ConnectionId:0HLOH0FP2N6K2 => RequestId:0HLOH0FP2N6K2:00000004 RequestPath:/ExcelAddin/Scripts/jquery-1.9.1.js
+      The file /ExcelAddin/Scripts/jquery-1.9.1.js was not modified
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      => ConnectionId:0HLOH0FP2N6K2 => RequestId:0HLOH0FP2N6K2:00000004 RequestPath:/ExcelAddin/Scripts/jquery-1.9.1.js
+      Request finished in 12.9947ms 304 application/javascript
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      => ConnectionId:0HLOH0FP2N6K2 => RequestId:0HLOH0FP2N6K2:00000005 RequestPath:/ExcelAddin/Scripts/FabricUI/MessageBanner.js
+      Request starting HTTP/1.1 GET http://localhost:44331/ExcelAddin/Scripts/FabricUI/MessageBanner.js  
+info: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware[6]
+      => ConnectionId:0HLOH0FP2N6K2 => RequestId:0HLOH0FP2N6K2:00000005 RequestPath:/ExcelAddin/Scripts/FabricUI/MessageBanner.js
+      The file /ExcelAddin/Scripts/FabricUI/MessageBanner.js was not modified
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      => ConnectionId:0HLOH0FP2N6K2 => RequestId:0HLOH0FP2N6K2:00000005 RequestPath:/ExcelAddin/Scripts/FabricUI/MessageBanner.js
+      Request finished in 7.245ms 304 application/javascript
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      => ConnectionId:0HLOH0FP2N6K2 => RequestId:0HLOH0FP2N6K2:00000006 RequestPath:/ExcelAddin/Home.css
+      Request starting HTTP/1.1 GET http://localhost:44331/ExcelAddin/Home.css  
+info: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware[6]
+      => ConnectionId:0HLOH0FP2N6K2 => RequestId:0HLOH0FP2N6K2:00000006 RequestPath:/ExcelAddin/Home.css
+      The file /ExcelAddin/Home.css was not modified
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      => ConnectionId:0HLOH0FP2N6K2 => RequestId:0HLOH0FP2N6K2:00000006 RequestPath:/ExcelAddin/Home.css
+      Request finished in 6.6729ms 304 text/css
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      => ConnectionId:0HLOH0FP2N6K3 => RequestId:0HLOH0FP2N6K3:00000001 RequestPath:/ExcelAddin/bundle/Home.js
+      Request starting HTTP/1.1 GET http://localhost:44331/ExcelAddin/bundle/Home.js  
+info: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware[6]
+      => ConnectionId:0HLOH0FP2N6K3 => RequestId:0HLOH0FP2N6K3:00000001 RequestPath:/ExcelAddin/bundle/Home.js
+      The file /ExcelAddin/bundle/Home.js was not modified
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      => ConnectionId:0HLOH0FP2N6K3 => RequestId:0HLOH0FP2N6K3:00000001 RequestPath:/ExcelAddin/bundle/Home.js
+      Request finished in 5.167ms 304 application/javascript
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      => ConnectionId:0HLOH0FP2N6K2 => RequestId:0HLOH0FP2N6K2:00000007 RequestPath:/ExcelAddin/api/loadexcelconfig/Sheet1
+      Request starting HTTP/1.1 GET http://localhost:44331/ExcelAddin/api/loadexcelconfig/Sheet1  
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      => ConnectionId:0HLOH0FP2N6K2 => RequestId:0HLOH0FP2N6K2:00000007 RequestPath:/ExcelAddin/api/loadexcelconfig/Sheet1
+      Executing endpoint 'APIGateway.Controllers.LoadExcelConfigController.Get (APIGateway)'
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
+      => ConnectionId:0HLOH0FP2N6K2 => RequestId:0HLOH0FP2N6K2:00000007 RequestPath:/ExcelAddin/api/loadexcelconfig/Sheet1 => APIGateway.Controllers.LoadExcelConfigController.Get (APIGateway)
+      Route matched with {action = "Get", controller = "LoadExcelConfig", page = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.ActionResult`1[System.String] Get(System.String) on controller APIGateway.Controllers.LoadExcelConfigController (APIGateway).
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[1]
+      => ConnectionId:0HLOH0FP2N6K2 => RequestId:0HLOH0FP2N6K2:00000007 RequestPath:/ExcelAddin/api/loadexcelconfig/Sheet1 => APIGateway.Controllers.LoadExcelConfigController.Get (APIGateway)
+      Executing action method APIGateway.Controllers.LoadExcelConfigController.Get (APIGateway) - Validation state: Valid
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
+      => ConnectionId:0HLOH0FP2N6K2 => RequestId:0HLOH0FP2N6K2:00000007 RequestPath:/ExcelAddin/api/loadexcelconfig/Sheet1 => APIGateway.Controllers.LoadExcelConfigController.Get (APIGateway)
+      Executed action method APIGateway.Controllers.LoadExcelConfigController.Get (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 91.2086ms.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      => ConnectionId:0HLOH0FP2N6K2 => RequestId:0HLOH0FP2N6K2:00000007 RequestPath:/ExcelAddin/api/loadexcelconfig/Sheet1 => APIGateway.Controllers.LoadExcelConfigController.Get (APIGateway)
+      Executing ObjectResult, writing value of type 'System.String'.
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
+      => ConnectionId:0HLOH0FP2N6K2 => RequestId:0HLOH0FP2N6K2:00000007 RequestPath:/ExcelAddin/api/loadexcelconfig/Sheet1 => APIGateway.Controllers.LoadExcelConfigController.Get (APIGateway)
+      Executed action APIGateway.Controllers.LoadExcelConfigController.Get (APIGateway) in 223.3879ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      => ConnectionId:0HLOH0FP2N6K2 => RequestId:0HLOH0FP2N6K2:00000007 RequestPath:/ExcelAddin/api/loadexcelconfig/Sheet1
+      Executed endpoint 'APIGateway.Controllers.LoadExcelConfigController.Get (APIGateway)'
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      => ConnectionId:0HLOH0FP2N6K2 => RequestId:0HLOH0FP2N6K2:00000007 RequestPath:/ExcelAddin/api/loadexcelconfig/Sheet1
+      Request finished in 268.9666ms 200 text/plain; charset=utf-8

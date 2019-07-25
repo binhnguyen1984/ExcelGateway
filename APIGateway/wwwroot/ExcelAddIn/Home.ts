@@ -31,8 +31,9 @@ async function loadExcelConfiguration() {
     sheetName = await ExcelHandler.getSheetName();
     ExcelHandler.loadExcelConfiguration(sheetName);
 }
-function loadParameters() {
-    ExcelHandler.loadParameters(sheetName);
+
+async function loadParameters() {
+    await ExcelHandler.loadParameters(sheetName);
 }
 
 function updateParameters() {
