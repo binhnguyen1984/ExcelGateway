@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using ProxyKit;
-using System.Net.Http;
+//using ProxyKit;
+//using System.Net.Http;
 
 namespace APIGateway
 {
@@ -39,8 +39,8 @@ namespace APIGateway
                 });
             });
             services.AddMvcCore().WithRazorPagesRoot("/HomePage").AddAuthorization().AddRazorPages(options => options.Conventions.AddPageRoute("/IndexPage", "")).AddJsonFormatters().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddProxy(httpClientBuilder =>
-            httpClientBuilder.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { ServerCertificateCustomValidationCallback = (_, __, ___, ____) => true, UseDefaultCredentials = true }));
+            //services.AddProxy(httpClientBuilder =>
+            //httpClientBuilder.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { ServerCertificateCustomValidationCallback = (_, __, ___, ____) => true, UseDefaultCredentials = true }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -72,7 +72,7 @@ namespace APIGateway
             //app.Map("/api/cdp", app2 =>
             //{
             //    app2.RunProxy(ctx => ctx
-            //        .ForwardTo(Settings.CDPUrl)
+            //        .ForwardTo(Models.Settings.CDPUrl)
             //        .AddXForwardedHeaders()
             //        .Send());
             //});
