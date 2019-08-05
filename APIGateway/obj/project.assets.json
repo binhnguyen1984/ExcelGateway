@@ -2,6 +2,33 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v2.2": {
+      "IdentityModel/3.10.10": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "11.0.1",
+          "System.Text.Encodings.Web": "4.5.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/IdentityModel.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/IdentityModel.dll": {}
+        }
+      },
+      "IdentityModel.OidcClient/2.9.0": {
+        "type": "package",
+        "dependencies": {
+          "IdentityModel": "3.10.0",
+          "Microsoft.Extensions.Logging": "2.0.0",
+          "System.IdentityModel.Tokens.Jwt": "5.2.1"
+        },
+        "compile": {
+          "lib/netstandard2.0/IdentityModel.OidcClient.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/IdentityModel.OidcClient.dll": {}
+        }
+      },
       "Microsoft.AspNet.WebApi.Client/5.2.6": {
         "type": "package",
         "dependencies": {
@@ -3565,21 +3592,6 @@
           }
         }
       },
-      "System.Net.Http.WinHttpHandler/4.5.4": {
-        "type": "package",
-        "compile": {
-          "lib/netstandard2.0/System.Net.Http.WinHttpHandler.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/System.Net.Http.WinHttpHandler.dll": {}
-        },
-        "runtimeTargets": {
-          "runtimes/win/lib/netstandard2.0/System.Net.Http.WinHttpHandler.dll": {
-            "assetType": "runtime",
-            "rid": "win"
-          }
-        }
-      },
       "System.Net.Primitives/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -4514,6 +4526,46 @@
     }
   },
   "libraries": {
+    "IdentityModel/3.10.10": {
+      "sha512": "1CZDkFEZC5hU615GrTXLoamLlLlZVNURnjbdjELw3keSRcPufSIwP5NI0f8quUBV/beuKy9yIqYemmMIDIY87w==",
+      "type": "package",
+      "path": "identitymodel/3.10.10",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "identitymodel.3.10.10.nupkg.sha512",
+        "identitymodel.nuspec",
+        "lib/net452/IdentityModel.dll",
+        "lib/net452/IdentityModel.pdb",
+        "lib/net452/IdentityModel.xml",
+        "lib/netstandard1.4/IdentityModel.dll",
+        "lib/netstandard1.4/IdentityModel.pdb",
+        "lib/netstandard1.4/IdentityModel.xml",
+        "lib/netstandard2.0/IdentityModel.dll",
+        "lib/netstandard2.0/IdentityModel.pdb",
+        "lib/netstandard2.0/IdentityModel.xml"
+      ]
+    },
+    "IdentityModel.OidcClient/2.9.0": {
+      "sha512": "vYRs9AAZlLeD+pFguOoMhcrWSL7utKyXTKjLBK0tq4FYib8aSqFlstxZbxuCQJo5f/+5EIJN4knE5CuZjIv0dA==",
+      "type": "package",
+      "path": "identitymodel.oidcclient/2.9.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "identitymodel.oidcclient.2.9.0.nupkg.sha512",
+        "identitymodel.oidcclient.nuspec",
+        "lib/net452/IdentityModel.OidcClient.dll",
+        "lib/net452/IdentityModel.OidcClient.pdb",
+        "lib/net452/IdentityModel.OidcClient.xml",
+        "lib/netstandard1.4/IdentityModel.OidcClient.dll",
+        "lib/netstandard1.4/IdentityModel.OidcClient.pdb",
+        "lib/netstandard1.4/IdentityModel.OidcClient.xml",
+        "lib/netstandard2.0/IdentityModel.OidcClient.dll",
+        "lib/netstandard2.0/IdentityModel.OidcClient.pdb",
+        "lib/netstandard2.0/IdentityModel.OidcClient.xml"
+      ]
+    },
     "Microsoft.AspNet.WebApi.Client/5.2.6": {
       "sha512": "owAlEIUZXWSnkK8Z1c+zR47A0X6ykF4XjbPok4lQKNuciUfHLGPd6QnI+rt/8KlQ17PmF+I4S3f+m+Qe4IvViw==",
       "type": "package",
@@ -9629,29 +9681,6 @@
         "system.net.http.nuspec"
       ]
     },
-    "System.Net.Http.WinHttpHandler/4.5.4": {
-      "sha512": "ugUKd9n5hb6MDmzhW8At0TTilHYsfYP0aLDv+mKAkbWtrivRj3X5KjkkDa+QO9gTOoNhdTEsZdycofPUNgVyKw==",
-      "type": "package",
-      "path": "system.net.http.winhttphandler/4.5.4",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "lib/net46/System.Net.Http.WinHttpHandler.dll",
-        "lib/net461/System.Net.Http.WinHttpHandler.dll",
-        "lib/netstandard1.3/System.Net.Http.WinHttpHandler.dll",
-        "lib/netstandard2.0/System.Net.Http.WinHttpHandler.dll",
-        "runtimes/win/lib/net46/System.Net.Http.WinHttpHandler.dll",
-        "runtimes/win/lib/net461/System.Net.Http.WinHttpHandler.dll",
-        "runtimes/win/lib/netstandard1.3/System.Net.Http.WinHttpHandler.dll",
-        "runtimes/win/lib/netstandard2.0/System.Net.Http.WinHttpHandler.dll",
-        "system.net.http.winhttphandler.4.5.4.nupkg.sha512",
-        "system.net.http.winhttphandler.nuspec",
-        "useSharedDesignerContext.txt",
-        "version.txt"
-      ]
-    },
     "System.Net.Primitives/4.3.0": {
       "sha512": "DQV47No7uqXRvWFkvdjFbTp/8jEQJTdb/+b5ulGlF8dDwSnC4ppsCnuakUi1Nl0bxmG0x0F0aJdBdSU7daM2PA==",
       "type": "package",
@@ -12330,13 +12359,14 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.2": [
+      "IdentityModel >= 3.10.10",
+      "IdentityModel.OidcClient >= 2.9.0",
       "Microsoft.AspNetCore.App >= 2.2.0",
       "Microsoft.AspNetCore.Razor.Design >= 2.2.0",
       "Microsoft.NETCore.App >= 2.2.0",
       "Microsoft.TypeScript.MSBuild >= 3.5.3",
       "ProxyKit >= 2.1.2",
-      "Syncfusion.XlsIO.Net.Core >= 17.2.0.35",
-      "System.Net.Http.WinHttpHandler >= 4.5.4"
+      "Syncfusion.XlsIO.Net.Core >= 17.2.0.35"
     ]
   },
   "packageFolders": {
@@ -12380,6 +12410,14 @@
     "frameworks": {
       "netcoreapp2.2": {
         "dependencies": {
+          "IdentityModel": {
+            "target": "Package",
+            "version": "[3.10.10, )"
+          },
+          "IdentityModel.OidcClient": {
+            "target": "Package",
+            "version": "[2.9.0, )"
+          },
           "Microsoft.AspNetCore.App": {
             "suppressParent": "All",
             "target": "Package",
@@ -12409,10 +12447,6 @@
           "Syncfusion.XlsIO.Net.Core": {
             "target": "Package",
             "version": "[17.2.0.35, )"
-          },
-          "System.Net.Http.WinHttpHandler": {
-            "target": "Package",
-            "version": "[4.5.4, )"
           }
         },
         "imports": [

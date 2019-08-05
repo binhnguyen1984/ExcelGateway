@@ -24,19 +24,51 @@
     ".NETCoreApp,Version=v2.2": {
       "APIGateway/1.0.0": {
         "dependencies": {
+          "IdentityModel": "3.10.10",
+          "IdentityModel.OidcClient": "2.9.0",
           "Microsoft.AspNetCore.App": "2.2.0",
           "Microsoft.AspNetCore.Razor.Design": "2.2.0",
           "Microsoft.NETCore.App": "2.2.0",
           "Microsoft.TypeScript.MSBuild": "3.5.3",
           "ProxyKit": "2.1.2",
-          "Syncfusion.XlsIO.Net.Core": "17.2.0.35",
-          "System.Net.Http.WinHttpHandler": "4.5.4"
+          "Syncfusion.XlsIO.Net.Core": "17.2.0.35"
         },
         "runtime": {
           "APIGateway.dll": {}
         },
         "compile": {
           "APIGateway.dll": {}
+        }
+      },
+      "IdentityModel/3.10.10": {
+        "dependencies": {
+          "Newtonsoft.Json": "11.0.2",
+          "System.Text.Encodings.Web": "4.5.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/IdentityModel.dll": {
+            "assemblyVersion": "3.10.10.0",
+            "fileVersion": "3.10.10.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/IdentityModel.dll": {}
+        }
+      },
+      "IdentityModel.OidcClient/2.9.0": {
+        "dependencies": {
+          "IdentityModel": "3.10.10",
+          "Microsoft.Extensions.Logging": "2.2.0",
+          "System.IdentityModel.Tokens.Jwt": "5.3.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/IdentityModel.OidcClient.dll": {
+            "assemblyVersion": "2.9.0.0",
+            "fileVersion": "2.9.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/IdentityModel.OidcClient.dll": {}
         }
       },
       "Microsoft.TypeScript.MSBuild/3.5.3": {},
@@ -96,25 +128,6 @@
         },
         "compile": {
           "lib/netstandard2.0/Syncfusion.XlsIO.Portable.dll": {}
-        }
-      },
-      "System.Net.Http.WinHttpHandler/4.5.4": {
-        "runtime": {
-          "lib/netstandard2.0/System.Net.Http.WinHttpHandler.dll": {
-            "assemblyVersion": "4.0.3.2",
-            "fileVersion": "4.6.27514.2"
-          }
-        },
-        "runtimeTargets": {
-          "runtimes/win/lib/netstandard2.0/System.Net.Http.WinHttpHandler.dll": {
-            "rid": "win",
-            "assetType": "runtime",
-            "assemblyVersion": "4.0.3.2",
-            "fileVersion": "4.6.27514.2"
-          }
-        },
-        "compile": {
-          "lib/netstandard2.0/System.Net.Http.WinHttpHandler.dll": {}
         }
       },
       "Microsoft.AspNet.WebApi.Client/5.2.6": {
@@ -3319,6 +3332,20 @@
       "serviceable": false,
       "sha512": ""
     },
+    "IdentityModel/3.10.10": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-1CZDkFEZC5hU615GrTXLoamLlLlZVNURnjbdjELw3keSRcPufSIwP5NI0f8quUBV/beuKy9yIqYemmMIDIY87w==",
+      "path": "identitymodel/3.10.10",
+      "hashPath": "identitymodel.3.10.10.nupkg.sha512"
+    },
+    "IdentityModel.OidcClient/2.9.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-vYRs9AAZlLeD+pFguOoMhcrWSL7utKyXTKjLBK0tq4FYib8aSqFlstxZbxuCQJo5f/+5EIJN4knE5CuZjIv0dA==",
+      "path": "identitymodel.oidcclient/2.9.0",
+      "hashPath": "identitymodel.oidcclient.2.9.0.nupkg.sha512"
+    },
     "Microsoft.TypeScript.MSBuild/3.5.3": {
       "type": "package",
       "serviceable": true,
@@ -3353,13 +3380,6 @@
       "sha512": "sha512-YFbTGaZrCiLiQh6/bjFLuI348l0iFmmS6oOpXVAhsG5wvpyrDVS6SJgZkKerQaX830aYQB1OfgIZXTRkrPbc4w==",
       "path": "syncfusion.xlsio.net.core/17.2.0.35",
       "hashPath": "syncfusion.xlsio.net.core.17.2.0.35.nupkg.sha512"
-    },
-    "System.Net.Http.WinHttpHandler/4.5.4": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-ugUKd9n5hb6MDmzhW8At0TTilHYsfYP0aLDv+mKAkbWtrivRj3X5KjkkDa+QO9gTOoNhdTEsZdycofPUNgVyKw==",
-      "path": "system.net.http.winhttphandler/4.5.4",
-      "hashPath": "system.net.http.winhttphandler.4.5.4.nupkg.sha512"
     },
     "Microsoft.AspNet.WebApi.Client/5.2.6": {
       "type": "package",

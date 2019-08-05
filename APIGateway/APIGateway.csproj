@@ -13,6 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="IdentityModel" Version="3.10.10" />
+    <PackageReference Include="IdentityModel.OidcClient" Version="2.9.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" />
     <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="3.5.3">
@@ -21,7 +23,6 @@
     </PackageReference>
     <PackageReference Include="ProxyKit" Version="2.1.2" />
     <PackageReference Include="Syncfusion.XlsIO.Net.Core" Version="17.2.0.35" />
-    <PackageReference Include="System.Net.Http.WinHttpHandler" Version="4.5.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,6 +33,12 @@
       <SubType>Code</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\ExcelAddIn\Home.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

@@ -39,3 +39,4 @@ C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\obj\Release\netcoreapp2.2
 C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\obj\Release\netcoreapp2.2\win7-x86\APIGateway.RazorTargetAssemblyInfo.cs
 C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\obj\Release\netcoreapp2.2\win7-x86\APIGateway.Views.pdb
 C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\obj\Release\netcoreapp2.2\win7-x86\APIGateway.csproj.CopyComplete
+C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\bin\Release\netcoreapp2.2\win7-x86\wwwroot\ExcelAddIn\Home.html

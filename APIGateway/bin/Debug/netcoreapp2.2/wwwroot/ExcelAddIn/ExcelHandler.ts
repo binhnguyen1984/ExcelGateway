@@ -23,6 +23,20 @@ async function excelConfigHandler(config: string) {
     Common.showNotification("Message:", "The configuration has been loaded");
 }
 
+export async function updateParameters(sheetName) {
+    Common.showNotification("Message:", "Updating the components... ");
+    let exportParams = await getExportParameters();
+    APIHandler.syncApiPutCall("api/updateparameters/" + sheetName, exportParams, handleExportParamsFeedback);
+}
+
+function handleExportParamsFeedback(isSuccessful) {
+    if (isSuccessful) {
+            Common.showNotification("Message:", "Updating failed!");
+    }
+    else Common.showNotification("Message:", "Updating succeeded!");
+}
+
+
 export async function getSheetName() {
     let sheetName = "";
     await Common.excelActionHandler(async (ctx) => {
@@ -83,21 +97,6 @@ async function getExportParameters() {
         }
     });
     return exportParams.toString();
-}
-
-export async function updateParameters(sheetName) {
-    Common.showNotification("Message:", "Updating the components... ");
-    let exportParams = await getExportParameters();
-    APIHandler.syncApiPutCall("api/updateparameters/" + sheetName, exportParams, handleExportParamsFeedback);
-}
-
-function handleExportParamsFeedback(responseCode) {
-    if (responseCode != 200) {
-        if (responseCode == 500)
-            Common.showNotification("Message:", "Updating failed due to data inconsistency. You must fetch data before updating.");
-        else Common.showNotification("Message:", "Updating failed!");
-    }
-    else Common.showNotification("Message:", "Updating succeeded!");
 }
 
 function storeSearchValueLocations(searchParamCells) {

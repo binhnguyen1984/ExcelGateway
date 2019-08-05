@@ -1,4 +1,5 @@
 ﻿using Syncfusion.XlsIO;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -10,6 +11,12 @@ namespace APIGateway.Models
         public enum DBCenters { HDB, CDP };
         public static string HDBUrl = "https://grzsms216.andritz.com/services/api/";
         public static string CDPUrl = "https://volta-dev.andritz.com/api/";
+        public static string CDPAuthUrl = "https://heimdall.andritz.com";
+        public static int CDPRedirecPort = 4200;
+        public static string CDPClientId = "spa";
+        public static string CDPScope = "openid volta";
+        //public static string CodeChallengeMethod = "S256";
+
         private const string ConfigFile = "excelconfig.xls";
         public static IDictionary<string, ExcelContent> ExcelConfigDict = new Dictionary<string, ExcelContent>();
         public static object[] LoadExcelConfiguration(string sheetName)
