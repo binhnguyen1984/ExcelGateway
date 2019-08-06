@@ -1,6 +1,5 @@
 ﻿using APIGateway.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 
 namespace APIGateway.Controllers
@@ -12,7 +11,8 @@ namespace APIGateway.Controllers
         [HttpPut("{sheetName}")]
         public async Task<int> Put(string sheetName, [FromBody] string value)
         {
-            return await Settings.UpdateParametersAsync(sheetName,value.Split(','));
+            int result= await Settings.UpdateParametersAsync(sheetName, value.Split(','));
+            return result;
         }
     }
 }

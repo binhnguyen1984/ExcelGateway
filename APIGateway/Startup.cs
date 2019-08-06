@@ -1,19 +1,10 @@
-using APIGateway.CommonHelpers;
 using APIGateway.Middlewares;
-using APIGateway.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Protocols;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 //using ProxyKit;
 //using System.Net.Http;
 
@@ -149,7 +140,7 @@ namespace APIGateway
             //app.Map("/api/hdb", app1 =>
             //{
             //    app1.RunProxy(ctx => ctx
-            //        .ForwardTo(Settings.HDBUrl)
+            //        .ForwardTo(Settings.HDBApiUrl)
             //        .AddXForwardedHeaders()
             //        .Send());
             //});
@@ -157,7 +148,7 @@ namespace APIGateway
             //app.Map("/api/cdp", app2 =>
             //{
             //    app2.RunProxy(ctx => ctx
-            //        .ForwardTo(Models.Settings.CDPUrl)
+            //        .ForwardTo(Models.Settings.CDPApiUrl)
             //        .AddXForwardedHeaders()
             //        .Send());
             //});

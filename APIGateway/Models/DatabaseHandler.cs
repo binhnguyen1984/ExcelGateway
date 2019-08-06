@@ -1,0 +1,37 @@
+﻿using Newtonsoft.Json.Linq;
+using System.Collections;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace APIGateway.Models
+{
+    public class DatabaseHandler
+    {
+        protected static ApiCaller ApiClient = new ApiCaller();
+        public async Task<JObject> UpdateComponentWithFetchedValues(IEnumerator searchValuesIter, string compName, List<ParamCell> paramCells, List<SearchParamCell> searchCells = null)
+        {
+            string searchUrl = GetSearchURL(compName, searchValuesIter, searchCells);
+            object respObject = await FetchDataFromDB(searchUrl);
+            JObject componentDetails = GetUpdateComponent(respObject, compName);
+
+            //update parameters with the values fetched from the databases
+            foreach (ParamCell paramCell in paramCells)
+                paramCell.SaveValue(componentDetails);
+            return componentDetails;
+        }
+
+        public virtual async Task<object> FetchDataFromDB(string Url)
+        {
+            return await ApiClient.FetchDataFromDB(Url);
+        }
+        public virtual async Task<bool> UpdateComponentToDB(string compName, JObject loadedCompDetails, string compIdValue = null)
+        {
+            string updateUrl = GetPutUrl(compName, compIdValue);
+            bool response = await ApiClient.UpdateDataToDB(updateUrl, loadedCompDetails.ToString());
+            return response;
+        }
+        public virtual string GetSearchURL(string compName, IEnumerator searchValues, List<SearchParamCell> searchCells) => "";
+        public virtual JObject GetUpdateComponent(object respObject, string compName = null) => null;
+        public virtual string GetPutUrl(string compName, string compID = null) => "";
+    }
+}

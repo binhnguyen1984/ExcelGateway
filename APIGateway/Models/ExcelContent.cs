@@ -1,11 +1,8 @@
-﻿using APIGateway.CommonHelpers;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using Syncfusion.XlsIO;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using static APIGateway.Models.Settings;
 
@@ -27,7 +24,8 @@ namespace APIGateway.Models
         private IDictionary<string, SearchCompInfo> SearchParamsDict { get; set; }
         public List<SearchParamCell> ExcelSearchParamList { get; set; }
         public List<string> ExcelExportLocationList { get; set; }
-
+        private static DatabaseHandler CdpHandler = new CDPHandler();
+        private static DatabaseHandler HdbHandler = new HDBHandler();
         public ExcelContent(IWorksheet ws)
         {
             InitializeExcelHelper(ws);
@@ -64,13 +62,6 @@ namespace APIGateway.Models
 
         private void InitializeExcelHelper(IWorksheet ws)
         {
-            //ExcelEngine excelEngine = new ExcelEngine();
-            //IApplication application = excelEngine.Excel;
-            //application.DefaultVersion = ExcelVersion.Excel2016;
-
-            //FileStream configFile = new FileStream(filePath, FileMode.Open);
-            //IWorkbook wb = application.Workbooks.Open(configFile);
-            //IWorksheet ws = wb.Worksheets[0];
             range = ws.Range;
             RowCount = ws.Rows.Length;
             ColumnCount = ws.Columns.Length;
@@ -151,7 +142,7 @@ namespace APIGateway.Models
         {
             FindFirstRowStartWithText(SearchSectionText, ref firstRow);
             firstRow++; //read the title line
-            while (firstRow<RowCount)
+            while (firstRow < RowCount)
             {
                 List<SearchParamCell> searchCells = null;
                 ReadComponentAndDBNames(ref firstRow, ref searchCells);
@@ -212,44 +203,6 @@ namespace APIGateway.Models
         }
 
         /// <summary>
-        /// return the searching URL for a given component 
-        /// this is specific to HDB
-        /// </summary>
-        /// <param name="compName"></param>
-        /// <returns></returns>
-        private string GetHDBSearchURL(string compName, IEnumerator searchValues)
-        {
-            string searchUrl = HDBApiUrl + compName + ".json?";
-            List<SearchParamCell> searchCells = SearchParamsDict[compName].SearchParamList;
-            int searchCondNum = searchCells.Count;
-
-            // create a filter
-            string filter = "";
-            for(int i = 0; i < searchCondNum && searchValues.MoveNext(); i++)
-            {
-                if ((searchValues.Current as string).Length>0)
-                    filter += searchCells[i].PropName + " eq " + searchValues.Current;
-            }
-            if (filter.Length > 0)
-                searchUrl += "$filter=" + filter;
-            return searchUrl;
-        }
-
-        /// <summary>
-        /// return the searching URL for a given component 
-        /// this is specific to CDP
-        /// </summary>
-        /// <param name="compName"></param>
-        /// <returns></returns>
-        private string GetCDPSearchURL(string compName, IEnumerator searchValues)
-        {
-            string searchUrl = CDPApiUrl + compName;
-            if(searchValues.MoveNext() && (searchValues.Current as string).Length>0)
-                searchUrl +="/" + searchValues.Current;
-            return searchUrl;
-        }
-
-        /// <summary>
         /// Store information about the components whose parameters are to be updated to the database
         /// </summary>
         /// <param name="compName"></param>
@@ -293,9 +246,9 @@ namespace APIGateway.Models
                 //make a query to the corresponding database server
                 JObject componentDetails = null;
                 if (updateCompInfor.FromDB == DBCenters.HDB)
-                    componentDetails = await UpdateHDBComponentWithFetchedValues(searchValuesIter, compName, paramCells);
-                else  componentDetails = await UpdateCDPComponentWithFetchedValues(searchValuesIter, compName, paramCells);
-                
+                    componentDetails = await HdbHandler.UpdateComponentWithFetchedValues(searchValuesIter, compName, paramCells, compInfo.Value.SearchParamList);
+                else componentDetails = await CdpHandler.UpdateComponentWithFetchedValues(searchValuesIter, compName, paramCells);
+
                 //store the loaded component for update later
                 StoreUpdateInfo(compName, compIDName, componentDetails);
 
@@ -303,43 +256,6 @@ namespace APIGateway.Models
                 result.AddRange(paramCells);
             }
             return result;
-        }
-
-        private async Task<JObject> UpdateCDPComponentWithFetchedValues(IEnumerator searchValuesIter, string compName, List<ParamCell> paramCells)
-        {
-            string searchUrl = GetCDPSearchURL(compName, searchValuesIter);
-            object respObject = await APICaller.FetchDataFromCDP(searchUrl);
-            JObject componentDetails = respObject is JArray ? (respObject as JArray).First as JObject : respObject as JObject;
-
-            //update parameters with the values fetched from CDP
-            foreach (ParamCell paramCell in paramCells)
-                paramCell.SaveValue(componentDetails);
-            return componentDetails;
-        }
-
-        private async Task<JObject> UpdateHDBComponentWithFetchedValues(IEnumerator searchValuesIter, string compName, List<ParamCell> paramCells)
-        {
-            string searchUrl = GetHDBSearchURL(compName, searchValuesIter);
-            object respObject = await APICaller.FetchDataFromHDB(searchUrl);
-            JObject response = respObject is JArray ? (respObject as JArray).First as JObject : respObject as JObject;
-
-            //update parameters with the values fetched from HDB
-            JObject responseBody = (JObject)response["message"];
-            JObject componentDetails = (JObject)responseBody[compName][0]; //if the response contains more than one component value, then only the first one is selected
-                                                                           //Update the values of all the component cells
-            foreach (ParamCell paramCell in paramCells)
-                paramCell.SaveValue(componentDetails);
-            return componentDetails;
-        }
-
-        private string GetHDBPutUrl(string compName, string compID)
-        {
-            return HDBApiUrl + compName + "(" + compID + ")";
-        }
-
-        private string GetCDPPutUrl(string compName)
-        {
-            return CDPApiUrl + compName;
         }
 
         /// <summary>
@@ -365,20 +281,12 @@ namespace APIGateway.Models
                 //make a query to the corresponding database server
                 bool response;
                 if (updateCompInfo.FromDB == DBCenters.HDB)
-                {
-                    string updateUrl = GetHDBPutUrl(compName, compIDValue);
-                    response = await APICaller.UpdateDataToHDB(updateUrl, loadedCompDetails.ToString());
-                }
-                else
-                {
-                    string updateUrl = GetCDPPutUrl(compName);
-                    response = await APICaller.UpdateDataToCDP(updateUrl, loadedCompDetails.ToString());
-                }
+                    response = await HdbHandler.UpdateComponentToDB(compName, loadedCompDetails, compIDValue);
+                else response = await CdpHandler.UpdateComponentToDB(compName, loadedCompDetails);
                 if (!response) return 0;// update failed
             }
             return 1; // update succeeded
         }
-
 
         /// <summary>
         /// Update parameters with the values fetched from the current excel sheet

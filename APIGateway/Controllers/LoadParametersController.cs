@@ -1,6 +1,7 @@
 ﻿using APIGateway.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace APIGateway.Controllers
@@ -12,7 +13,8 @@ namespace APIGateway.Controllers
         [HttpGet("{sheetName}")]
         public async Task<string> Get(string sheetName, string searchValues)
         {
-            return JsonConvert.SerializeObject(await Settings.LoadParametersAsync(sheetName,searchValues.Split(',')));
+            List<ParamCell> result = await Settings.LoadParametersAsync(sheetName, searchValues.Split(','));
+            return result==null?JsonConvert.SerializeObject(result):null;
         }
     }
 }
