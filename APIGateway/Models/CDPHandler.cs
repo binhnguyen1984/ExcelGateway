@@ -79,10 +79,14 @@ namespace APIGateway.Models
 
         public override string GetSearchURL(string compName, IEnumerator searchValues, List<SearchParamCell> searchCells = null)
         {
-            return Settings.CDPApiUrl + compName;
+            string searchUrl =  Settings.CDPApiUrl + compName;
+            if (searchValues.MoveNext())
+                searchUrl += "/" + searchValues.Current;
+            return searchUrl;
         }
         public override JObject GetUpdateComponent(object respObject, string compName = null)
         {
+            if (respObject == null) return null;
             JObject componentDetails = respObject is JArray ? (respObject as JArray).First as JObject : respObject as JObject;
             return componentDetails;
         }

@@ -13,8 +13,9 @@ namespace APIGateway.Controllers
         [HttpGet("{sheetName}")]
         public async Task<string> Get(string sheetName, string searchValues)
         {
+            if (searchValues == null) return "";
             List<ParamCell> result = await Settings.LoadParametersAsync(sheetName, searchValues.Split(','));
-            return result==null?JsonConvert.SerializeObject(result):null;
+            return result!=null?JsonConvert.SerializeObject(result): await Task.FromResult<string>("");
         }
     }
 }

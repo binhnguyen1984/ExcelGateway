@@ -11,8 +11,8 @@ namespace APIGateway.Controllers
         [HttpPut("{sheetName}")]
         public async Task<int> Put(string sheetName, [FromBody] string value)
         {
-            int result= await Settings.UpdateParametersAsync(sheetName, value.Split(','));
-            return result;
+            if (value == null) return await Task.FromResult<int>(0);
+            return await Settings.UpdateParametersAsync(sheetName, value.Split(','));
         }
     }
 }

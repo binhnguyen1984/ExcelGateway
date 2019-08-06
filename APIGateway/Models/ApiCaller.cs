@@ -35,7 +35,7 @@ namespace APIGateway.Models
                     if (result[0] == '[') return JArray.Parse(result);
                     return JObject.Parse(result);
                 }
-                else throw new Exception(response.ReasonPhrase);
+                else return null;
             }
         }
 

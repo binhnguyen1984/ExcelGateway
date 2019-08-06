@@ -66,20 +66,23 @@ async function getSearchValues() {
 
 async function setParameters(paramStr) {
     await Common.excelActionHandler(async (ctx) => {
-        let parameters = JSON.parse(paramStr);
-        let sheet = ctx.workbook.worksheets.getActiveWorksheet();
-        for (let i = 0; i < parameters.length; i++) {
-            let valueLocations = parameters[i]["ValueLocations"];
-            let value = parameters[i]["Value"];
-            let importRange = sheet.getRange(valueLocations[0]);
-            importRange.values = [[value]];
-            // do not update values to export parameters as these are only set by the user via calculation tool
-            //if (valueLocations.length > 1) {
-            //    let exportRange = sheet.getRange(valueLocations[1])
-            //    exportRange.values = [[value]];
-            //}
+        if (paramStr.length > 0) {
+            let parameters = JSON.parse(paramStr);
+            let sheet = ctx.workbook.worksheets.getActiveWorksheet();
+            for (let i = 0; i < parameters.length; i++) {
+                let valueLocations = parameters[i]["ValueLocations"];
+                let value = parameters[i]["Value"];
+                let importRange = sheet.getRange(valueLocations[0]);
+                importRange.values = [[value]];
+                // do not update values to export parameters as these are only set by the user via calculation tool
+                //if (valueLocations.length > 1) {
+                //    let exportRange = sheet.getRange(valueLocations[1])
+                //    exportRange.values = [[value]];
+                //}
+            }
+            Common.showNotification("Message", "Data has been loaded.");
         }
-        Common.showNotification("Message", "Data has been loaded.");
+        else Common.showNotification("Message", "No data is loaded.");
         await ctx.sync();
     });
 }

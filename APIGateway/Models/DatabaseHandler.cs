@@ -12,8 +12,9 @@ namespace APIGateway.Models
         {
             string searchUrl = GetSearchURL(compName, searchValuesIter, searchCells);
             object respObject = await FetchDataFromDB(searchUrl);
+            if (respObject == null) return null;
             JObject componentDetails = GetUpdateComponent(respObject, compName);
-
+            if (componentDetails == null) return null;
             //update parameters with the values fetched from the databases
             foreach (ParamCell paramCell in paramCells)
                 paramCell.SaveValue(componentDetails);

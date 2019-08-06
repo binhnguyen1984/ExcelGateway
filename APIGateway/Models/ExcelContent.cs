@@ -248,7 +248,7 @@ namespace APIGateway.Models
                 if (updateCompInfor.FromDB == DBCenters.HDB)
                     componentDetails = await HdbHandler.UpdateComponentWithFetchedValues(searchValuesIter, compName, paramCells, compInfo.Value.SearchParamList);
                 else componentDetails = await CdpHandler.UpdateComponentWithFetchedValues(searchValuesIter, compName, paramCells);
-
+                if (componentDetails == null) return null;
                 //store the loaded component for update later
                 StoreUpdateInfo(compName, compIDName, componentDetails);
 
