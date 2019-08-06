@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using Syncfusion.XlsIO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -211,65 +212,27 @@ namespace APIGateway.Models
         }
 
         /// <summary>
-        /// return filter string corresponding to the search conditions for a given component
-        /// this filter is specific to HDB 
-        /// </summary>
-        /// <returns></returns>
-        delegate string GetConstraint(List<SearchParamCell> searchCells, int start, string[] searchValues, ref int searchValueId);
-        private string GetComponentFilterStr(string compName, string[] searchValues, ref int searchValueId, GetConstraint getConstraint)
-        {
-            List<SearchParamCell> searchCells = SearchParamsDict[compName].SearchParamList;
-            int searchCondNum = searchCells.Count;
-            int searchValueLen = searchValues.Length;
-            if (searchCondNum > 0)
-            {
-                int i = 0;
-                while (searchValueId < searchValueLen && searchValues[searchValueId].Length == 0)
-                {
-                    searchValueId++;
-                    i++;
-                }
-                return getConstraint(searchCells, i, searchValues, ref searchValueId);
-            }
-            return "";
-        }
-
-        private string GetHDBConstraint(List<SearchParamCell> searchCells, int start, string[] searchValues, ref int searchValueId)
-        {
-            int searchCondNum = searchCells.Count;
-            if (start < searchCondNum)
-            {
-                string filter = "$filter=" + searchCells[start].PropName + " eq " + searchValues[searchValueId];
-                start++;
-                searchValueId++;
-                for (; start < searchCondNum; start++)
-                {
-                    if (searchValues[searchValueId].Length > 0)
-                        filter += " and " + searchCells[start].PropName + " eq " + searchValues[searchValueId];
-                    searchValueId++;
-                }
-                return filter;
-            }
-            return "";
-        }
-
-        private string GetCDPConstraint(List<SearchParamCell> searchCells, int start, string[] searchValues, ref int searchValueId)
-        {
-            //currently CDP seems to only support searching projects by a single search criterion
-            int searchCondNum = searchCells.Count;
-            if (start < searchCondNum)
-                return searchValues[searchValueId++];
-            return "";
-        }
-        /// <summary>
         /// return the searching URL for a given component 
         /// this is specific to HDB
         /// </summary>
         /// <param name="compName"></param>
         /// <returns></returns>
-        private string GetHDBSearchURL(string compName, string[] searchValues, ref int searchValueId)
+        private string GetHDBSearchURL(string compName, IEnumerator searchValues)
         {
-            return HDBUrl + compName + ".json?" + GetComponentFilterStr(compName, searchValues, ref searchValueId, GetHDBConstraint);
+            string searchUrl = HDBApiUrl + compName + ".json?";
+            List<SearchParamCell> searchCells = SearchParamsDict[compName].SearchParamList;
+            int searchCondNum = searchCells.Count;
+
+            // create a filter
+            string filter = "";
+            for(int i = 0; i < searchCondNum && searchValues.MoveNext(); i++)
+            {
+                if ((searchValues.Current as string).Length>0)
+                    filter += searchCells[i].PropName + " eq " + searchValues.Current;
+            }
+            if (filter.Length > 0)
+                searchUrl += "$filter=" + filter;
+            return searchUrl;
         }
 
         /// <summary>
@@ -278,9 +241,12 @@ namespace APIGateway.Models
         /// </summary>
         /// <param name="compName"></param>
         /// <returns></returns>
-        private string GetCDPSearchURL(string compName, string[] searchValues, ref int searchValueId)
+        private string GetCDPSearchURL(string compName, IEnumerator searchValues)
         {
-            return CDPUrl + compName + "/" + GetComponentFilterStr(compName, searchValues, ref searchValueId, GetCDPConstraint);
+            string searchUrl = CDPApiUrl + compName;
+            if(searchValues.MoveNext() && (searchValues.Current as string).Length>0)
+                searchUrl +="/" + searchValues.Current;
+            return searchUrl;
         }
 
         /// <summary>
@@ -313,7 +279,7 @@ namespace APIGateway.Models
         public async Task<List<ParamCell>> FetchParamsFromDBAsync(string[] searchValues)
         {
             List<ParamCell> result = new List<ParamCell>();
-            int searchValueId = 0;
+            IEnumerator searchValuesIter = searchValues.GetEnumerator();
             foreach (KeyValuePair<string, SearchCompInfo> compInfo in SearchParamsDict)
             {
                 string compName = compInfo.Key;
@@ -325,27 +291,11 @@ namespace APIGateway.Models
                 List<ParamCell> paramCells = ImportParamDict[compName];
 
                 //make a query to the corresponding database server
-                JObject componentDetails;
+                JObject componentDetails = null;
                 if (updateCompInfor.FromDB == DBCenters.HDB)
-                {
-                    string searchUrl = GetHDBSearchURL(compName, searchValues, ref searchValueId);
-                    object respObject = await APICaller.FetchDataFromHDB(searchUrl);
-                    JObject response = respObject is JArray ? (JObject)((JArray)respObject).First : (JObject)respObject;
-
-                    //update parameters with the values fetched from HDB
-                    componentDetails = UpdateHDBParamsWithFetchedValues(compName, paramCells, response);
-
-                }
-                else
-                {
-                    string searchUrl = GetCDPSearchURL(compName, searchValues, ref searchValueId);
-                    object respObject = await APICaller.FetchDataFromCDP(searchUrl);
-                    JObject response = respObject is JArray ? (JObject)((JArray)respObject).First : (JObject)respObject;
-
-                    //update parameters with the values fetched from CDP
-                    componentDetails = UpdateCDPParamsWithFetchedValues(paramCells, response);
-                }
-
+                    componentDetails = await UpdateHDBComponentWithFetchedValues(searchValuesIter, compName, paramCells);
+                else  componentDetails = await UpdateCDPComponentWithFetchedValues(searchValuesIter, compName, paramCells);
+                
                 //store the loaded component for update later
                 StoreUpdateInfo(compName, compIDName, componentDetails);
 
@@ -355,16 +305,25 @@ namespace APIGateway.Models
             return result;
         }
 
-        /// <summary>
-        /// Update parameters with the values fetched from the database
-        /// </summary>
-        /// <param name="compName"></param>
-        /// <param name="paramCells"></param>
-        /// <param name="response"></param>
-        /// <returns></returns>
-
-        private JObject UpdateHDBParamsWithFetchedValues(string compName, List<ParamCell> paramCells, JObject response)
+        private async Task<JObject> UpdateCDPComponentWithFetchedValues(IEnumerator searchValuesIter, string compName, List<ParamCell> paramCells)
         {
+            string searchUrl = GetCDPSearchURL(compName, searchValuesIter);
+            object respObject = await APICaller.FetchDataFromCDP(searchUrl);
+            JObject componentDetails = respObject is JArray ? (respObject as JArray).First as JObject : respObject as JObject;
+
+            //update parameters with the values fetched from CDP
+            foreach (ParamCell paramCell in paramCells)
+                paramCell.SaveValue(componentDetails);
+            return componentDetails;
+        }
+
+        private async Task<JObject> UpdateHDBComponentWithFetchedValues(IEnumerator searchValuesIter, string compName, List<ParamCell> paramCells)
+        {
+            string searchUrl = GetHDBSearchURL(compName, searchValuesIter);
+            object respObject = await APICaller.FetchDataFromHDB(searchUrl);
+            JObject response = respObject is JArray ? (respObject as JArray).First as JObject : respObject as JObject;
+
+            //update parameters with the values fetched from HDB
             JObject responseBody = (JObject)response["message"];
             JObject componentDetails = (JObject)responseBody[compName][0]; //if the response contains more than one component value, then only the first one is selected
                                                                            //Update the values of all the component cells
@@ -373,21 +332,14 @@ namespace APIGateway.Models
             return componentDetails;
         }
 
-        private JObject UpdateCDPParamsWithFetchedValues(List<ParamCell> paramCells, JObject response)
-        {
-            foreach (ParamCell paramCell in paramCells)
-                paramCell.SaveValue(response);
-            return response;
-        }
-
         private string GetHDBPutUrl(string compName, string compID)
         {
-            return HDBUrl + compName + "(" + compID + ")";
+            return HDBApiUrl + compName + "(" + compID + ")";
         }
 
         private string GetCDPPutUrl(string compName)
         {
-            return CDPUrl + compName;
+            return CDPApiUrl + compName;
         }
 
         /// <summary>
@@ -411,7 +363,7 @@ namespace APIGateway.Models
                 UpdateParamsWithNewValues(ref startParamId, paramValues, loadedComp, compName, tobeUpdatedParams, out updateCompInfo, out compIDValue, out loadedCompDetails);
 
                 //make a query to the corresponding database server
-                Boolean response;
+                bool response;
                 if (updateCompInfo.FromDB == DBCenters.HDB)
                 {
                     string updateUrl = GetHDBPutUrl(compName, compIDValue);
