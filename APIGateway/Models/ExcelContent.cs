@@ -24,8 +24,6 @@ namespace APIGateway.Models
         private IDictionary<string, SearchCompInfo> SearchParamsDict { get; set; }
         public List<SearchParamCell> ExcelSearchParamList { get; set; }
         public List<string> ExcelExportLocationList { get; set; }
-        private static DatabaseHandler CdpHandler = new CDPHandler();
-        private static DatabaseHandler HdbHandler = new HDBHandler();
         public ExcelContent(IWorksheet ws)
         {
             InitializeExcelHelper(ws);
@@ -244,10 +242,7 @@ namespace APIGateway.Models
                 List<ParamCell> paramCells = ImportParamDict[compName];
 
                 //make a query to the corresponding database server
-                JObject componentDetails = null;
-                if (updateCompInfor.FromDB == DBCenters.HDB)
-                    componentDetails = await HdbHandler.UpdateComponentWithFetchedValues(searchValuesIter, compName, paramCells, compInfo.Value.SearchParamList);
-                else componentDetails = await CdpHandler.UpdateComponentWithFetchedValues(searchValuesIter, compName, paramCells);
+                JObject componentDetails = await DBHelper.UpdateComponentWithFetchedValues(updateCompInfor.FromDB, searchValuesIter, compName, paramCells, compInfo.Value.SearchParamList);
                 if (componentDetails == null) return null;
                 //store the loaded component for update later
                 StoreUpdateInfo(compName, compIDName, componentDetails);
@@ -274,15 +269,12 @@ namespace APIGateway.Models
 
                 //update parameters
                 UpdateCompInfo updateCompInfo;
-                string compIDValue;
+                string compIdValue;
                 JObject loadedCompDetails;
-                UpdateParamsWithNewValues(ref startParamId, paramValues, loadedComp, compName, tobeUpdatedParams, out updateCompInfo, out compIDValue, out loadedCompDetails);
+                UpdateParamsWithNewValues(ref startParamId, paramValues, loadedComp, compName, tobeUpdatedParams, out updateCompInfo, out compIdValue, out loadedCompDetails);
 
                 //make a query to the corresponding database server
-                bool response;
-                if (updateCompInfo.FromDB == DBCenters.HDB)
-                    response = await HdbHandler.UpdateComponentToDB(compName, loadedCompDetails, compIDValue);
-                else response = await CdpHandler.UpdateComponentToDB(compName, loadedCompDetails);
+                bool response = await DBHelper.UpdateComponentToDB(updateCompInfo.FromDB, compName, loadedCompDetails, compIdValue);
                 if (!response) return 0;// update failed
             }
             return 1; // update succeeded

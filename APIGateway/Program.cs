@@ -8,6 +8,7 @@ namespace APIGateway
     {
         public static void Main(string[] args)
         {
+            DBHelper.InitializeDbHelper();
             Settings.LoadAllExcelConfigs();
             CreateWebHostBuilder(args).Build().Run();
         }

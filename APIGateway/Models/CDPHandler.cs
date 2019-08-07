@@ -105,6 +105,5 @@ namespace APIGateway.Models
             RequestAccessTokenForOpenIDConnect();
             return await ApiClient.FetchDataFromDB(Url);
         }
-
     }
 }
