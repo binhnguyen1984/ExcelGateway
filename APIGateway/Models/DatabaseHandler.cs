@@ -7,7 +7,7 @@ namespace APIGateway.Models
 {
     public class DatabaseHandler
     {
-        protected static ApiCaller ApiClient = new ApiCaller();
+        protected static ApiCaller ApiCaller = new ApiCaller(); // it will be shared between CDP and HDB handlers
         public async Task<JObject> UpdateComponentWithFetchedValues(IEnumerator searchValuesIter, string compName, List<ParamCell> paramCells, List<SearchParamCell> searchCells = null)
         {
             string searchUrl = GetSearchURL(compName, searchValuesIter, searchCells);
@@ -23,12 +23,12 @@ namespace APIGateway.Models
 
         public virtual async Task<object> FetchDataFromDB(string Url)
         {
-            return await ApiClient.FetchDataFromDB(Url);
+            return await ApiCaller.FetchDataFromDB(Url);
         }
         public virtual async Task<bool> UpdateComponentToDB(string compName, JObject loadedCompDetails, string compIdValue = null)
         {
             string updateUrl = GetPutUrl(compName, compIdValue);
-            bool response = await ApiClient.UpdateDataToDB(updateUrl, loadedCompDetails.ToString());
+            bool response = await ApiCaller.UpdateDataToDB(updateUrl, loadedCompDetails.ToString());
             return response;
         }
         public virtual string GetSearchURL(string compName, IEnumerator searchValues, List<SearchParamCell> searchCells) => "";

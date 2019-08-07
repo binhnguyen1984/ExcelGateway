@@ -41,6 +41,10 @@
       "frameworks": {
         "netcoreapp2.2": {
           "dependencies": {
+            "HtmlAgilityPack": {
+              "target": "Package",
+              "version": "[1.11.12, )"
+            },
             "IdentityModel": {
               "target": "Package",
               "version": "[3.10.10, )"

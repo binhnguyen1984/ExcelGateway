@@ -31,9 +31,9 @@ export async function updateParameters(sheetName) {
 
 function handleExportParamsFeedback(isSuccessful) {
     if (isSuccessful) {
-            Common.showNotification("Message:", "Updating failed!");
+        Common.showNotification("Message:", "Updating succeeded!");
     }
-    else Common.showNotification("Message:", "Updating succeeded!");
+    else Common.showNotification("Message:", "Updating failed!");
 }
 
 

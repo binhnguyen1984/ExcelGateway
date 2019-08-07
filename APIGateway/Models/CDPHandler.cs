@@ -1,9 +1,12 @@
-﻿using IdentityModel.OidcClient;
+﻿using HtmlAgilityPack;
+using IdentityModel.OidcClient;
 using IdentityModel.OidcClient.Results;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace APIGateway.Models
@@ -11,14 +14,59 @@ namespace APIGateway.Models
     public class CDPHandler : DatabaseHandler
     {
         private static OidcClientInfo CurrentOidcClientInfo = null;
+        private static HtmlDocument htmlDoc = null;
         public CDPHandler()
         {
             CurrentOidcClientInfo = new OidcClientInfo(new OidcClient(InitOpenIdConnectOps()));
+            htmlDoc = new HtmlDocument();
         }
+
+        private static string ExtractDataUrl(string content)
+        {
+            htmlDoc.LoadHtml(content);
+            HtmlNodeCollection htmlMetaNodes = htmlDoc.DocumentNode.SelectNodes("//meta");
+            HtmlNode lastMetaNode = htmlMetaNodes[htmlMetaNodes.Count - 1];
+            return lastMetaNode.Attributes["data-url"].Value;
+        }
+        public static async Task<string> GetAccessCode(string Url)
+        {
+            var request = new HttpRequestMessage()
+            {
+                RequestUri = new Uri(Url),
+                Method = HttpMethod.Get
+            };
+
+            HttpResponseMessage response = await ApiCaller.SendAsync(request);
+            string content = await response.Content.ReadAsStringAsync();
+            if (response.StatusCode == System.Net.HttpStatusCode.Found)
+            {
+                HttpResponseHeaders headers = response.Headers;
+                if (headers != null && headers.Location != null)
+                {
+                    var redirectedUrl = headers.Location;
+                    if (!redirectedUrl.IsAbsoluteUri)
+                    {
+                        redirectedUrl = new Uri(request.RequestUri.GetLeftPart(UriPartial.Authority) + redirectedUrl);
+                    }
+                    return await GetAccessCode(redirectedUrl.AbsoluteUri);
+                }
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                string dataUrl = ExtractDataUrl(content);
+                var lastUrl = request.RequestUri.GetLeftPart(UriPartial.Authority) + dataUrl;
+                lastUrl = System.Web.HttpUtility.HtmlDecode(lastUrl);
+                response = await ApiCaller.GetAsync(lastUrl);
+                return response.Headers.Location.Query;
+            }
+            return null;
+        }
+
 
         private OidcClientOptions InitOpenIdConnectOps()
         {
-            var browser = new SystemBrowser(Settings.CDPRedirecPort);
+            // we do not need browser interaction to send authentication request
+            //var browser = new SystemBrowser(Settings.CDPRedirecPort);
             return new OidcClientOptions
             {
                 Authority = Settings.CDPAuthUrl,
@@ -26,7 +74,7 @@ namespace APIGateway.Models
                 RedirectUri = string.Format($"http://localhost:{Settings.CDPRedirecPort}"),
                 Scope = Settings.CDPScope,
                 FilterClaims = false,
-                Browser = browser,
+                //Browser = browser,
                 Flow = OidcClientOptions.AuthenticationFlow.AuthorizationCode,
                 ResponseMode = OidcClientOptions.AuthorizeResponseMode.Redirect
             };
@@ -44,28 +92,30 @@ namespace APIGateway.Models
                 OidcClient = oidcClient;
             }
         }
-        private void Login()
+        private async Task Login()
         {
             // create a redirect URI using an available port on the loopback address.
-            // requires the OP to allow random ports on 127.0.0.1 - otherwise set a static port
-            var loginResult = AsyncHelper.RunSync<LoginResult>(async () => await CurrentOidcClientInfo.OidcClient.LoginAsync(new LoginRequest()));
+            var state = await CurrentOidcClientInfo.OidcClient.PrepareLoginAsync();
+            var formData = await GetAccessCode(state.StartUrl);
+            //var loginResult = AsyncHelper.RunSync<LoginResult>(async () => await CurrentOidcClientInfo.OidcClient.LoginAsync(new LoginRequest()));
+            var loginResult = await CurrentOidcClientInfo.OidcClient.ProcessResponseAsync(formData, state);
             CurrentOidcClientInfo.AccessToken = loginResult.AccessToken;
             CurrentOidcClientInfo.RefreshToken = loginResult.RefreshToken;
             CurrentOidcClientInfo.ValidDate = loginResult.AccessTokenExpiration;
         }
 
 
-        private void RequestAccessTokenForOpenIDConnect()
+        private async Task RequestAccessTokenForOpenIDConnect()
         {
             if (CurrentOidcClientInfo.AccessToken == null)
             {
-                Login();
-                ApiClient.SetBearerToken(CurrentOidcClientInfo.AccessToken);
+                await Login();
+                ApiCaller.SetBearerToken(CurrentOidcClientInfo.AccessToken);
             }
             else if (DateTime.Now >= CurrentOidcClientInfo.ValidDate)
             {
                 RefreshAccessToken();
-                ApiClient.SetBearerToken(CurrentOidcClientInfo.AccessToken);
+                ApiCaller.SetBearerToken(CurrentOidcClientInfo.AccessToken);
             }
         }
 
@@ -97,13 +147,13 @@ namespace APIGateway.Models
         public override async Task<bool> UpdateComponentToDB(string compName, JObject loadedCompDetails, string compIdValue = null)
         {
             string updateUrl = GetPutUrl(compName);
-            RequestAccessTokenForOpenIDConnect();
-            return await ApiClient.UpdateDataToDB(updateUrl, loadedCompDetails.ToString());
+            await RequestAccessTokenForOpenIDConnect();
+            return await ApiCaller.UpdateDataToDB(updateUrl, loadedCompDetails.ToString());
         }
         public override async Task<object> FetchDataFromDB(string Url)
         {
-            RequestAccessTokenForOpenIDConnect();
-            return await ApiClient.FetchDataFromDB(Url);
+            await RequestAccessTokenForOpenIDConnect();
+            return await ApiCaller.FetchDataFromDB(Url);
         }
     }
 }

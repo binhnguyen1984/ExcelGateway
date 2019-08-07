@@ -12,7 +12,10 @@ namespace APIGateway.Models
         private HttpClient ApiClient = null;
         public ApiCaller()
         {
-            HttpClientHandler clientHandler = new HttpClientHandler();
+            HttpClientHandler clientHandler = new HttpClientHandler
+            {
+                AllowAutoRedirect = false
+            };
             clientHandler.ServerCertificateCustomValidationCallback += (o, certificate, chain, errors) => true;
             clientHandler.UseDefaultCredentials = true;
 
@@ -20,6 +23,11 @@ namespace APIGateway.Models
             ApiClient = new HttpClient(clientHandler);
             ApiClient.DefaultRequestHeaders.Accept.Clear();
             ApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        }
+
+        internal async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request)
+        {
+            return await ApiClient.SendAsync(request);
         }
         public void SetBearerToken(string accessToken)
         {
@@ -47,6 +55,11 @@ namespace APIGateway.Models
                 if (response.IsSuccessStatusCode) return response.IsSuccessStatusCode;
                 else throw new Exception(response.ReasonPhrase);
             }
+        }
+
+        internal Task<HttpResponseMessage> GetAsync(string Url)
+        {
+            return ApiClient.GetAsync(Url);
         }
     }
 }
