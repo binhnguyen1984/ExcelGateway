@@ -16,20 +16,10 @@ let sheetName: string;
 
             // search data lists
             //component ids list
-            $('#component-datalist-text').text("Component IDs");
-            $("#componentIdsList").autocomplete("option", "minLength", 4);
-            $("#componentIdsList").autocomplete({
-                position: { my: "right top", at: "right bottom" }
-            });
-            $("#componentIdsList").autocomplete({ source: beginningMatched });
+            $('#component-datalist-text').text("Comp.Ids");
 
             //project ids list
-            $('#project-datalist-text').text("Project IDs");
-            $("#projectIdsList").autocomplete("option", "minLength", 4);
-            $("#projectIdsList").autocomplete({
-                position: { my: "right top", at: "right bottom" }
-            });
-            $("#projectIdsList").autocomplete({ source: beginningMatched });
+            $('#project-datalist-text').text("Proj.Ids");
 
             // load configuration button
             $('#config-button-text').text("Load config");
@@ -76,16 +66,28 @@ function updateParameters() {
     ExcelHandler.updateParameters(sheetName);
 }
 
-function loadInitialSearchValues() {
-    //get list of component ids
-    ExcelHandler.getComponentIdsList((data) => {
+function setConfigForAutoTextbox(tbName, getDataApi) {
+    getDataApi((data) => {
         let dataArr = JSON.parse(data);
-        $("#componentIdsList").autocomplete({ source: dataArr, response: function (event, ui) { }});
+        $(tbName).autocomplete(
+            {
+                source: function (request, response) {
+                    var matcher = new RegExp("^" + $.ui.autocomplete.escapeRegex(request.term), "i");
+                    response($.grep(dataArr, function (item: string) {
+                        return matcher.test(item);
+                    }));
+                },
+                position: { my: "right center", at: "right bottom" },
+                minLength: 2
+            });
     })
 
-    ExcelHandler.getProjectIdsList((data) => {
-        let dataArr = JSON.parse(data);
-        $("#projectIdsList").autocomplete({ source: dataArr, response: function (event, ui) { } });
-    })
+}
+function loadInitialSearchValues() {
+    //get list of component ids
+    setConfigForAutoTextbox("#componentIdsList", ExcelHandler.getComponentIdsList);
+
+    //get list of project ids
+    setConfigForAutoTextbox("#projectIdsList", ExcelHandler.getProjectIdsList);
 }
 

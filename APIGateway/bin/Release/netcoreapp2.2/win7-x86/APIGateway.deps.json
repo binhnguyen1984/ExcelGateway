@@ -24,18 +24,30 @@
     ".NETCoreApp,Version=v2.2": {
       "APIGateway/1.0.0": {
         "dependencies": {
+          "HtmlAgilityPack": "1.11.12",
           "IdentityModel": "3.10.10",
+          "IdentityModel.OidcClient": "2.9.0",
           "Microsoft.AspNetCore.App": "2.2.0",
           "Microsoft.AspNetCore.Razor.Design": "2.2.0",
           "Microsoft.NETCore.App": "2.2.0",
           "Microsoft.TypeScript.MSBuild": "3.5.3",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "2.2.3",
           "ProxyKit": "2.1.2",
-          "Syncfusion.XlsIO.Net.Core": "17.2.0.35",
-          "System.Net.Http.WinHttpHandler": "4.5.4"
+          "Syncfusion.XlsIO.Net.Core": "17.2.0.35"
         },
         "compile": {
           "APIGateway.dll": {}
+        }
+      },
+      "HtmlAgilityPack/1.11.12": {
+        "dependencies": {
+          "System.Net.Http": "4.3.2",
+          "System.Xml.XPath": "4.3.0",
+          "System.Xml.XPath.XmlDocument": "4.3.0",
+          "System.Xml.XmlDocument": "4.3.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/HtmlAgilityPack.dll": {}
         }
       },
       "IdentityModel/3.10.10": {
@@ -45,6 +57,16 @@
         },
         "compile": {
           "lib/netstandard2.0/IdentityModel.dll": {}
+        }
+      },
+      "IdentityModel.OidcClient/2.9.0": {
+        "dependencies": {
+          "IdentityModel": "3.10.10",
+          "Microsoft.Extensions.Logging": "2.2.0",
+          "System.IdentityModel.Tokens.Jwt": "5.3.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/IdentityModel.OidcClient.dll": {}
         }
       },
       "Microsoft.AspNet.WebApi.Client/5.2.6": {
@@ -1782,7 +1804,7 @@
           "Microsoft.IdentityModel.Tokens": "5.3.0",
           "System.Collections.Specialized": "4.3.0",
           "System.Diagnostics.Contracts": "4.3.0",
-          "System.Net.Http": "4.3.0"
+          "System.Net.Http": "4.3.2"
         },
         "compile": {
           "lib/netstandard2.0/Microsoft.IdentityModel.Protocols.dll": {}
@@ -2638,7 +2660,7 @@
         }
       },
       "System.Memory/4.5.1": {},
-      "System.Net.Http/4.3.0": {
+      "System.Net.Http/4.3.2": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.2.0",
           "System.Collections": "4.3.0",
@@ -2666,11 +2688,6 @@
           "runtime.native.System": "4.3.0",
           "runtime.native.System.Net.Http": "4.3.0",
           "runtime.native.System.Security.Cryptography.OpenSsl": "4.3.0"
-        }
-      },
-      "System.Net.Http.WinHttpHandler/4.5.4": {
-        "compile": {
-          "lib/netstandard2.0/System.Net.Http.WinHttpHandler.dll": {}
         }
       },
       "System.Net.Primitives/4.3.0": {
@@ -3196,23 +3213,55 @@
           "System.Xml.XDocument": "4.3.0",
           "System.Xml.XPath": "4.3.0"
         }
+      },
+      "System.Xml.XPath.XmlDocument/4.3.0": {
+        "dependencies": {
+          "System.Collections": "4.3.0",
+          "System.Globalization": "4.3.0",
+          "System.IO": "4.3.0",
+          "System.Resources.ResourceManager": "4.3.0",
+          "System.Runtime": "4.3.0",
+          "System.Runtime.Extensions": "4.3.0",
+          "System.Threading": "4.3.0",
+          "System.Xml.ReaderWriter": "4.3.0",
+          "System.Xml.XPath": "4.3.0",
+          "System.Xml.XmlDocument": "4.3.0"
+        },
+        "compile": {
+          "ref/netstandard1.3/System.Xml.XPath.XmlDocument.dll": {}
+        }
       }
     },
     ".NETCoreApp,Version=v2.2/win7-x86": {
       "APIGateway/1.0.0": {
         "dependencies": {
+          "HtmlAgilityPack": "1.11.12",
           "IdentityModel": "3.10.10",
+          "IdentityModel.OidcClient": "2.9.0",
           "Microsoft.AspNetCore.App": "2.2.0",
           "Microsoft.AspNetCore.Razor.Design": "2.2.0",
           "Microsoft.NETCore.App": "2.2.0",
           "Microsoft.TypeScript.MSBuild": "3.5.3",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "2.2.3",
           "ProxyKit": "2.1.2",
-          "Syncfusion.XlsIO.Net.Core": "17.2.0.35",
-          "System.Net.Http.WinHttpHandler": "4.5.4"
+          "Syncfusion.XlsIO.Net.Core": "17.2.0.35"
         },
         "runtime": {
           "APIGateway.dll": {}
+        }
+      },
+      "HtmlAgilityPack/1.11.12": {
+        "dependencies": {
+          "System.Net.Http": "4.3.2",
+          "System.Xml.XPath": "4.3.0",
+          "System.Xml.XPath.XmlDocument": "4.3.0",
+          "System.Xml.XmlDocument": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/HtmlAgilityPack.dll": {
+            "assemblyVersion": "1.11.12.0",
+            "fileVersion": "1.11.12.0"
+          }
         }
       },
       "IdentityModel/3.10.10": {
@@ -3224,6 +3273,19 @@
           "lib/netstandard2.0/IdentityModel.dll": {
             "assemblyVersion": "3.10.10.0",
             "fileVersion": "3.10.10.0"
+          }
+        }
+      },
+      "IdentityModel.OidcClient/2.9.0": {
+        "dependencies": {
+          "IdentityModel": "3.10.10",
+          "Microsoft.Extensions.Logging": "2.2.0",
+          "System.IdentityModel.Tokens.Jwt": "5.3.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/IdentityModel.OidcClient.dll": {
+            "assemblyVersion": "2.9.0.0",
+            "fileVersion": "2.9.0.0"
           }
         }
       },
@@ -3532,11 +3594,61 @@
           "System.Threading.Tasks": "4.3.0"
         }
       },
-      "System.Net.Http.WinHttpHandler/4.5.4": {
+      "System.Net.Http/4.3.2": {
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "2.2.0",
+          "System.Collections": "4.3.0",
+          "System.Diagnostics.Debug": "4.3.0",
+          "System.Diagnostics.DiagnosticSource": "4.5.0",
+          "System.Diagnostics.Tracing": "4.3.0",
+          "System.Globalization": "4.3.0",
+          "System.Globalization.Extensions": "4.3.0",
+          "System.IO": "4.3.0",
+          "System.IO.FileSystem": "4.3.0",
+          "System.Net.Primitives": "4.3.0",
+          "System.Resources.ResourceManager": "4.3.0",
+          "System.Runtime": "4.3.0",
+          "System.Runtime.Extensions": "4.3.0",
+          "System.Runtime.Handles": "4.3.0",
+          "System.Runtime.InteropServices": "4.3.0",
+          "System.Security.Cryptography.Algorithms": "4.3.0",
+          "System.Security.Cryptography.Encoding": "4.3.0",
+          "System.Security.Cryptography.OpenSsl": "4.3.0",
+          "System.Security.Cryptography.Primitives": "4.3.0",
+          "System.Security.Cryptography.X509Certificates": "4.3.0",
+          "System.Text.Encoding": "4.3.0",
+          "System.Threading": "4.3.0",
+          "System.Threading.Tasks": "4.3.0",
+          "runtime.native.System": "4.3.0",
+          "runtime.native.System.Net.Http": "4.3.0",
+          "runtime.native.System.Security.Cryptography.OpenSsl": "4.3.0"
+        }
+      },
+      "System.Net.Primitives/4.3.0": {
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "2.2.0",
+          "Microsoft.NETCore.Targets": "2.0.0",
+          "System.Runtime": "4.3.0",
+          "System.Runtime.Handles": "4.3.0"
+        }
+      },
+      "System.Xml.XPath.XmlDocument/4.3.0": {
+        "dependencies": {
+          "System.Collections": "4.3.0",
+          "System.Globalization": "4.3.0",
+          "System.IO": "4.3.0",
+          "System.Resources.ResourceManager": "4.3.0",
+          "System.Runtime": "4.3.0",
+          "System.Runtime.Extensions": "4.3.0",
+          "System.Threading": "4.3.0",
+          "System.Xml.ReaderWriter": "4.3.0",
+          "System.Xml.XPath": "4.3.0",
+          "System.Xml.XmlDocument": "4.3.0"
+        },
         "runtime": {
-          "runtimes/win/lib/netstandard2.0/System.Net.Http.WinHttpHandler.dll": {
-            "assemblyVersion": "4.0.3.2",
-            "fileVersion": "4.6.27514.2"
+          "lib/netstandard1.3/System.Xml.XPath.XmlDocument.dll": {
+            "assemblyVersion": "4.0.2.0",
+            "fileVersion": "4.6.24705.1"
           }
         }
       }
@@ -3548,12 +3660,26 @@
       "serviceable": false,
       "sha512": ""
     },
+    "HtmlAgilityPack/1.11.12": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ZEczeHJJrgtpSz/cJ+8FSa+JVoXSZ5+rSc8XYSUVns8yoLJPXLWdEbgDh5kI4sxZaCswGepByAVW0aExTw4QaQ==",
+      "path": "htmlagilitypack/1.11.12",
+      "hashPath": "htmlagilitypack.1.11.12.nupkg.sha512"
+    },
     "IdentityModel/3.10.10": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-1CZDkFEZC5hU615GrTXLoamLlLlZVNURnjbdjELw3keSRcPufSIwP5NI0f8quUBV/beuKy9yIqYemmMIDIY87w==",
       "path": "identitymodel/3.10.10",
       "hashPath": "identitymodel.3.10.10.nupkg.sha512"
+    },
+    "IdentityModel.OidcClient/2.9.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-vYRs9AAZlLeD+pFguOoMhcrWSL7utKyXTKjLBK0tq4FYib8aSqFlstxZbxuCQJo5f/+5EIJN4knE5CuZjIv0dA==",
+      "path": "identitymodel.oidcclient/2.9.0",
+      "hashPath": "identitymodel.oidcclient.2.9.0.nupkg.sha512"
     },
     "Microsoft.CodeAnalysis.CSharp.Workspaces/2.8.0": {
       "type": "package",
@@ -3716,12 +3842,26 @@
       "path": "system.linq.parallel/4.3.0",
       "hashPath": "system.linq.parallel.4.3.0.nupkg.sha512"
     },
-    "System.Net.Http.WinHttpHandler/4.5.4": {
+    "System.Net.Http/4.3.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-ugUKd9n5hb6MDmzhW8At0TTilHYsfYP0aLDv+mKAkbWtrivRj3X5KjkkDa+QO9gTOoNhdTEsZdycofPUNgVyKw==",
-      "path": "system.net.http.winhttphandler/4.5.4",
-      "hashPath": "system.net.http.winhttphandler.4.5.4.nupkg.sha512"
+      "sha512": "sha512-y7hv0o0weI0j0mvEcBOdt1F3CAADiWlcw3e54m8TfYiRmBPDIsHElx8QUPDlY4x6yWXKPGN0Z2TuXCTPgkm5WQ==",
+      "path": "system.net.http/4.3.2",
+      "hashPath": "system.net.http.4.3.2.nupkg.sha512"
+    },
+    "System.Net.Primitives/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-DQV47No7uqXRvWFkvdjFbTp/8jEQJTdb/+b5ulGlF8dDwSnC4ppsCnuakUi1Nl0bxmG0x0F0aJdBdSU7daM2PA==",
+      "path": "system.net.primitives/4.3.0",
+      "hashPath": "system.net.primitives.4.3.0.nupkg.sha512"
+    },
+    "System.Xml.XPath.XmlDocument/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-A/uxsWi/Ifzkmd4ArTLISMbfFs6XpRPsXZonrIqyTY70xi8t+mDtvSM5Os0RqyRDobjMBwIDHDL4NOIbkDwf7A==",
+      "path": "system.xml.xpath.xmldocument/4.3.0",
+      "hashPath": "system.xml.xpath.xmldocument.4.3.0.nupkg.sha512"
     },
     "Microsoft.AspNet.WebApi.Client/5.2.6": {
       "type": "package",
@@ -5339,20 +5479,6 @@
       "sha512": "sha512-sDJYJpGtTgx+23Ayu5euxG5mAXWdkDb4+b0rD0Cab0M1oQS9H0HXGPriKcqpXuiJDTV7fTp/d+fMDJmnr6sNvA==",
       "path": "system.memory/4.5.1",
       "hashPath": "system.memory.4.5.1.nupkg.sha512"
-    },
-    "System.Net.Http/4.3.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-zQtiVbudAhLnnI3sQhgT8uWhZtPETlzDaIWmIm42bYhB3iMp4RUisfhoR3JypAl85XtVh/LreLt/0ca8OWs/Xw==",
-      "path": "system.net.http/4.3.0",
-      "hashPath": "system.net.http.4.3.0.nupkg.sha512"
-    },
-    "System.Net.Primitives/4.3.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-DQV47No7uqXRvWFkvdjFbTp/8jEQJTdb/+b5ulGlF8dDwSnC4ppsCnuakUi1Nl0bxmG0x0F0aJdBdSU7daM2PA==",
-      "path": "system.net.primitives/4.3.0",
-      "hashPath": "system.net.primitives.4.3.0.nupkg.sha512"
     },
     "System.Net.WebSockets.WebSocketProtocol/4.5.1": {
       "type": "package",

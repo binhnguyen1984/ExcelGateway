@@ -1,7 +1,7 @@
 ﻿import * as APIHandler from "./APIHandler";
 import * as Common from "./Common";
 
-let searchValueLocs = [];
+//let searchValueLocs = [];
 //let exportPaths = [];
 let exportValueLocs = [];
 

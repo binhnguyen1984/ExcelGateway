@@ -20,7 +20,7 @@ namespace APIGateway.Models
         public static List<string> LoadExcelConfiguration(string sheetName)
         {
             ExcelContent excelContent = GetExcelContent(sheetName);
-            return excelContent.GetExcelConfig();
+            return excelContent!=null?excelContent.GetExcelConfig():null;
         }
 
         public static void LoadAllExcelConfigs()

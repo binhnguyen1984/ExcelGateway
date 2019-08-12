@@ -1,5 +1,6 @@
 ﻿{
   "compilerOptions": {
+      "experimentalDecorators": true,
     "noImplicitAny": false,
     //    "noEmitOnError": true,
     "removeComments": false,
@@ -14,7 +15,8 @@
     ],
     "types": [
       "office-js",
-      "jquery"
+      "jquery",
+      "jqueryui"
     ],
     "allowJs": true,
     "target": "es5",

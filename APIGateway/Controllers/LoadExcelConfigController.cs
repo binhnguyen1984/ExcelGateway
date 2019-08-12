@@ -11,7 +11,8 @@ namespace APIGateway.Controllers
         [HttpGet("{sheetName}")]
         public ActionResult<string> Get(string sheetName)
         {
-            return JsonConvert.SerializeObject(Settings.LoadExcelConfiguration(sheetName));
+            var configStr = Settings.LoadExcelConfiguration(sheetName);
+            return configStr!=null?JsonConvert.SerializeObject(configStr):null;
         }
     }
 }
