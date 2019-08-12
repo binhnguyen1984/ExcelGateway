@@ -15,7 +15,7 @@ namespace APIGateway.Controllers
         {
             if (searchValues == null) return "";
             List<ParamCell> result = await Settings.LoadParametersAsync(sheetName, searchValues.Split(','));
-            return result!=null?JsonConvert.SerializeObject(result): await Task.FromResult<string>("");
+            return result!=null?JsonConvert.SerializeObject(result): "";
         }
     }
 }
