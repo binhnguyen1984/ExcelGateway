@@ -1,13 +1,20 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+
 namespace APIGateway.Models
 {
     public class HDBHandler : DatabaseHandler
     {
-        public override string GetSearchURL(string compName, IEnumerator searchValues, List<SearchParamCell> searchCells)
+        protected override string GetAllComponentUrl(string compName)
         {
-            string searchUrl = Settings.HDBApiUrl + compName + ".json?";
+            return Settings.HDBApiUrl + compName + ".json?";
+        }
+
+        protected override string GetSearchURL(string compName, IEnumerator searchValues, List<SearchParamCell> searchCells)
+        {
+            string searchUrl = GetAllComponentUrl(compName);
             int searchCondNum = searchCells.Count;
 
             // create a filter
@@ -21,15 +28,14 @@ namespace APIGateway.Models
                 searchUrl += "$filter=" + filter;
             return searchUrl;
         }
-        public override JObject GetUpdateComponent(object respObject, string compName = null)
+
+        protected override object GetResponseBody(object respObject, string compName)
         {
             if (respObject == null) return null;
-            JObject response = respObject is JArray ? (respObject as JArray).First as JObject : respObject as JObject;
-            JObject responseBody = (JObject)response["message"];
-            var data = responseBody[compName];
-            return data.HasValues?(JObject)data[0]:null; //if the response contains more than one component value, then only the first one is selected
+            JObject responseBody = (respObject as JObject)["message"] as JObject;
+            return responseBody[compName];
         }
-        public override string GetPutUrl(string compName, string compID)
+        protected override string GetPutUrl(string compName, string compID)
         {
             return Settings.HDBApiUrl + compName + "(" + compID + ")";
         }

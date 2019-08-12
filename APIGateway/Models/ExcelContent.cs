@@ -22,7 +22,7 @@ namespace APIGateway.Models
         private IDictionary<string, JObject> ExportLoadedCompList { get; set; } // a dictionary of components loaded from the database which are to be updated
         private IDictionary<string, string> SearchCompIDValues { get; set; }
         private IDictionary<string, SearchCompInfo> SearchParamsDict { get; set; }
-        public List<SearchParamCell> ExcelSearchParamList { get; set; }
+        //public List<SearchParamCell> ExcelSearchParamList { get; set; }
         public List<string> ExcelExportLocationList { get; set; }
         public ExcelContent(IWorksheet ws)
         {
@@ -32,9 +32,10 @@ namespace APIGateway.Models
             InitializeExportLoadedCompList();
         }
 
-        public object[] GetExcelConfig()
+        public List<string> GetExcelConfig()
         {
-            return new object[] { this.ExcelSearchParamList, this.ExcelExportLocationList };
+            //return new object[] { this.ExcelSearchParamList, this.ExcelExportLocationList };
+            return this.ExcelExportLocationList;
         }
 
         private void InitializeExportLoadedCompList()
@@ -55,7 +56,7 @@ namespace APIGateway.Models
             this.SearchParamsDict = new Dictionary<string, SearchCompInfo>();
             this.SearchCompIDValues = new Dictionary<string, string>();
             this.ExcelExportLocationList = new List<string>();
-            this.ExcelSearchParamList = new List<SearchParamCell>();
+            //this.ExcelSearchParamList = new List<SearchParamCell>();
         }
 
         private void InitializeExcelHelper(IWorksheet ws)
@@ -153,21 +154,15 @@ namespace APIGateway.Models
         {
             while (firstRow <= RowCount)
             {
-                object propNameValue, valueLocValue, cellLocValue, displayTextValue;
-                if ((propNameValue = range[firstRow, 1].Value) == null ||
-                    (valueLocValue = range[firstRow, 2].Value) == null ||
-                    (cellLocValue = range[firstRow, 3].Value) == null ||
-                    (displayTextValue = range[firstRow, 4].Value) == null)
+                object propNameValue;
+                if ((propNameValue = range[firstRow, 1].Value) == null)
                     break;
 
                 string propName = propNameValue.ToString();
-                string valueLocation = valueLocValue.ToString();
-                string cellLocation = cellLocValue.ToString();
-                string displayText = displayTextValue.ToString();
-                if (propName.Length > 0 && cellLocation.Length > 0 && valueLocation.Length > 0 && displayText.Length > 0)
+                if (propName.Length > 0 )
                 {
-                    SearchParamCell cell = new SearchParamCell(cellLocation, valueLocation, displayText, propName);
-                    ExcelSearchParamList.Add(cell);
+                    SearchParamCell cell = new SearchParamCell(propName);
+                    //ExcelSearchParamList.Add(cell);
                     searchCells.Add(cell);
                     firstRow++;
                 }

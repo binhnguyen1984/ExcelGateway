@@ -21,6 +21,11 @@ namespace APIGateway.Models
             htmlDoc = new HtmlDocument();
         }
 
+        protected override string GetAllComponentUrl(string compName)
+        {
+            return Settings.CDPApiUrl + compName;
+        }
+
         private static string ExtractDataUrl(string content)
         {
             htmlDoc.LoadHtml(content);
@@ -28,33 +33,35 @@ namespace APIGateway.Models
             HtmlNode lastMetaNode = htmlMetaNodes[htmlMetaNodes.Count - 1];
             return lastMetaNode.Attributes["data-url"].Value;
         }
-        public static async Task<string> GetAccessCode(string Url)
-        {
-            var request = new HttpRequestMessage()
-            {
-                RequestUri = new Uri(Url),
-                Method = HttpMethod.Get
-            };
 
-            HttpResponseMessage response = await ApiCaller.SendAsync(request);
+        private static string GetAbsoluteRedirectUri(HttpResponseMessage response)
+        {
+            HttpResponseHeaders headers = response.Headers;
+            var requestUri = response.RequestMessage.RequestUri;
+            var loc = headers.Location;
+            if (loc != null)
+                return loc.IsAbsoluteUri?headers.Location.AbsoluteUri: requestUri.GetLeftPart(UriPartial.Authority)+loc.ToString();
+            return response.RequestMessage.RequestUri.AbsoluteUri;
+        }
+
+        public override async Task<List<string>> GetComponentAttr(string[] attrPath)
+        {
+            await RequestAccessTokenForOpenIDConnect();
+            return await base.GetComponentAttr(attrPath);
+        }
+        public static async Task<string> GetAuthTokens(string Url)
+        {
+            HttpResponseMessage response = await ApiCaller.GetAsync(Url);
             string content = await response.Content.ReadAsStringAsync();
             if (response.StatusCode == System.Net.HttpStatusCode.Found)
             {
-                HttpResponseHeaders headers = response.Headers;
-                if (headers != null && headers.Location != null)
-                {
-                    var redirectedUrl = headers.Location;
-                    if (!redirectedUrl.IsAbsoluteUri)
-                    {
-                        redirectedUrl = new Uri(request.RequestUri.GetLeftPart(UriPartial.Authority) + redirectedUrl);
-                    }
-                    return await GetAccessCode(redirectedUrl.AbsoluteUri);
-                }
+                string redirectUrl = GetAbsoluteRedirectUri(response);
+                return await GetAuthTokens(redirectUrl);
             }
             else if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 string dataUrl = ExtractDataUrl(content);
-                var lastUrl = request.RequestUri.GetLeftPart(UriPartial.Authority) + dataUrl;
+                var lastUrl = response.RequestMessage.RequestUri.GetLeftPart(UriPartial.Authority) + dataUrl;
                 lastUrl = System.Web.HttpUtility.HtmlDecode(lastUrl);
                 response = await ApiCaller.GetAsync(lastUrl);
                 return response.Headers.Location.Query;
@@ -96,7 +103,7 @@ namespace APIGateway.Models
         {
             // create a redirect URI using an available port on the loopback address.
             var state = await CurrentOidcClientInfo.OidcClient.PrepareLoginAsync();
-            var formData = await GetAccessCode(state.StartUrl);
+            var formData = await GetAuthTokens(state.StartUrl);
             //var loginResult = AsyncHelper.RunSync<LoginResult>(async () => await CurrentOidcClientInfo.OidcClient.LoginAsync(new LoginRequest()));
             var loginResult = await CurrentOidcClientInfo.OidcClient.ProcessResponseAsync(formData, state);
             CurrentOidcClientInfo.AccessToken = loginResult.AccessToken;
@@ -127,20 +134,20 @@ namespace APIGateway.Models
             CurrentOidcClientInfo.ValidDate = refreshTokenResult.AccessTokenExpiration;
         }
 
-        public override string GetSearchURL(string compName, IEnumerator searchValues, List<SearchParamCell> searchCells = null)
+        protected override string GetSearchURL(string compName, IEnumerator searchValues, List<SearchParamCell> searchCells = null)
         {
             string searchUrl =  Settings.CDPApiUrl + compName;
             if (searchValues.MoveNext())
                 searchUrl += "/" + searchValues.Current;
             return searchUrl;
         }
-        public override JObject GetUpdateComponent(object respObject, string compName = null)
+
+        protected override object GetResponseBody(object respObject, string compName = null)
         {
-            if (respObject == null) return null;
-            JObject componentDetails = respObject is JArray ? (respObject as JArray).First as JObject : respObject as JObject;
-            return componentDetails;
+            return respObject;
         }
-        public override string GetPutUrl(string compName, string compID = null)
+
+        protected override string GetPutUrl(string compName, string compID = null)
         {
             return Settings.CDPApiUrl + compName;
         }

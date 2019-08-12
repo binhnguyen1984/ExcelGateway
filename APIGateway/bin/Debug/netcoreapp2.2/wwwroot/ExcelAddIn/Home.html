@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <title>Excel Add-In with Commands Sample</title>
-    <script src="Scripts/jquery-1.9.1.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" type="text/javascript"></script>
     <script src="Scripts/FabricUI/MessageBanner.js" type="text/javascript"></script>
     <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js" type="text/javascript"></script>
     <script src="https://unpkg.com/core-js@2.6.1/client/core.min.js"></script>
@@ -26,7 +27,6 @@
     <!-- For the Office UI Fabric, go to https://aka.ms/office-ui-fabric to learn more. -->
     <link rel="stylesheet" href="https://appsforoffice.microsoft.com/fabric/2.1.0/fabric.min.css">
     <link rel="stylesheet" href="https://appsforoffice.microsoft.com/fabric/2.1.0/fabric.components.min.css">
-
     <!-- To enable the offline use of Office UI Fabric, use: -->
     <!-- link rel="stylesheet" href="Content/fabric.min.css" -->
     <!-- link rel="stylesheet" href="Content/fabric.components.min.css" -->
@@ -39,34 +39,64 @@
     <br /><br />
     <div class="ms-font-xl ms-fontColor-neutralTertiary">Getting Started</div>-->
             <p class="ms-font-m-plus ms-fontColor-neutralTertiary" id="template-description"></p>
-            <!--<div class="ms-font-m"><a target="_blank" class="ms-Link ms-Link--hero" href="https://go.microsoft.com/fwlink/?LinkId=276812">Find more samples online...</a></div>-->
-            <br /><br />
-            <div>
-                <button class="ms-Button ms-Button--primary" id="config-button">
-                    <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
-                    <span class="ms-Button-label" id="config-button-text"></span>
-                    <span class="ms-Button-description" id="config-button-desc"></span>
-                </button>
-            </div>
-            <br /><br />
-            <div>
-                <button class="ms-Button ms-Button--primary" id="fetch-button">
-                    <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
-                    <span class="ms-Button-label" id="fetch-button-text"></span>
-                    <span class="ms-Button-description" id="fetch-button-desc"></span>
-                </button>
-            </div>
-            <br /><br />
-            <div>
-                <button class="ms-Button ms-Button--primary" id="put-button">
-                    <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
-                    <span class="ms-Button-label" id="put-button-text"></span>
-                    <span class="ms-Button-description" id="put-button-desc"></span>
-                </button>
-            </div>
-
+            <table cellspacing="10">
+                <tr>
+                    <td colspan="2" style="text-align: left;">
+                        <h3>Search criteria</h3>
+                    </td>
+                </tr>
+                <!-- CDP Project IDs data list -->
+                <tr>
+                    <td>
+                        <span class="ms-Datalist-label" id="project-datalist-text"></span>
+                    </td>
+                    <td>
+                        <div class="ui-widget">
+                            <input type="text" id="projectIdsList"/>
+                        </div>
+                    </td>
+                </tr>
+                <!-- Component IDs data list -->
+                <tr>
+                    <td>
+                        <span class="ms-Datalist-label" id="component-datalist-text"></span>
+                    </td>
+                    <td>
+                        <div class="ui-widget">
+                            <input type="text" id="componentIdsList"/>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5" style="text-align: left;">
+                        <button class="ms-Button ms-Button--primary" id="config-button">
+                            <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
+                            <span class="ms-Button-label" id="config-button-text"></span>
+                            <span class="ms-Button-description" id="config-button-desc"></span>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5" style="text-align: left;">
+                        <button class="ms-Button ms-Button--primary" id="fetch-button">
+                            <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
+                            <span class="ms-Button-label" id="fetch-button-text"></span>
+                            <span class="ms-Button-description" id="fetch-button-desc"></span>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5" style="text-align: left;">
+                        <button class="ms-Button ms-Button--primary" id="put-button">
+                            <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
+                            <span class="ms-Button-label" id="put-button-text"></span>
+                            <span class="ms-Button-description" id="put-button-desc"></span>
+                        </button>
+                    </td>
+                </tr>
+            </table>
         </div>
-    </div>
+        </div>
     <!--<div class="footer">
         <div class="ms-Grid ms-bgColor-themeSecondary">
             <div class="ms-Grid-row">

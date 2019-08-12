@@ -17,7 +17,7 @@ namespace APIGateway.Models
 
         private const string ConfigFile = "excelconfig.xls";
         public static IDictionary<string, ExcelContent> ExcelConfigDict = new Dictionary<string, ExcelContent>();
-        public static object[] LoadExcelConfiguration(string sheetName)
+        public static List<string> LoadExcelConfiguration(string sheetName)
         {
             ExcelContent excelContent = GetExcelContent(sheetName);
             return excelContent.GetExcelConfig();

@@ -13,35 +13,12 @@ namespace APIGateway.Models
             this.ValueLocations = locStr.Split(',');
             this.Value = "";
         }
-
-        /// <summary>
-        /// Get the object that stores the value of the parameter
-        /// </summary>
-        /// <param name="response"></param>
-        /// <returns></returns>
-        private JValue GetDataObjectFromResponse(object response)
-        {
-            int prop_num = Props.Length;
-            int i = 1;
-            while (i < prop_num)
-            {
-                if (response is JObject)
-                    response = ((JObject)response)[Props[i]];
-                else if (response is JArray)
-                {
-                    response = ((JArray)response)[0];
-                    continue;
-                }
-                i++;
-            }
-            return (JValue)response;
-        }
         /// <summary>
         /// Fill up value for this cell using the data from the database
         /// </summary>
         public void SaveValue(object response)
         {
-            JValue valueObj = GetDataObjectFromResponse(response);
+            JValue valueObj = JsonHelper.GetAttributeValue(response, Props);
             object value = valueObj.Value;
             Value = value == null ? "" : value.ToString();
         }
@@ -52,7 +29,7 @@ namespace APIGateway.Models
         /// <param name="data"></param>
         public void UpdateValueTo(object response)
         {
-            JValue valueObj = GetDataObjectFromResponse(response);
+            JValue valueObj = JsonHelper.GetAttributeValue(response, Props);
             valueObj.Value = Value;
         }
     }

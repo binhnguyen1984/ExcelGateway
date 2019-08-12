@@ -1,11 +1,18 @@
 ﻿"use strict"
 {
     let path = require('path');
+    let webpack = require('webpack');
 
     const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
     const bundleFolder = "wwwroot/ExcelAddIn/bundle/";
     const clientConfig = {
+        externals: {
+            // require("jquery") is external and available
+            //  on the global var jQuery
+            "jquery": "jQuery",
+            "jquery-ui": "jquery-ui"
+        },
         entry: "./wwwroot/ExcelAddIn/Home",
         output: {
             filename: 'Home.js',
@@ -28,7 +35,12 @@
             extensions: [".tsx", ".ts", ".js"]
         },
         plugins: [
-            new CleanWebpackPlugin()
+            new CleanWebpackPlugin(),
+            new webpack.ProvidePlugin({
+                'jQuery': 'jquery',
+                '$': 'jquery',
+                'global.jQuery': 'jquery'
+            })
         ],
         devtool: "inline-source-map"
     }

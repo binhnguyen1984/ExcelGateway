@@ -1,25 +1,34 @@
 ﻿import * as APIHandler from "./APIHandler";
 import * as Common from "./Common";
 
-let searchValueLocs = [];
+//let searchValueLocs = [];
 //let exportPaths = [];
 let exportValueLocs = [];
+
+export function getComponentIdsList(callback) {
+    APIHandler.syncApiGetCall("api/loadcomponentids", callback);
+}
+
+export function getProjectIdsList(callback) {
+    APIHandler.syncApiGetCall("api/loadprojectids", callback);
+}
 
 
 export function loadExcelConfiguration(sheetName) {
     APIHandler.asyncApiGetCall("api/loadexcelconfig/" + sheetName, excelConfigHandler);
 }
 
-export async function loadParameters(sheetName) {
+export async function loadParameters(sheetName, searchValues) {
     Common.showNotification("Message", "Data is loading ...")
-    let data = await getSearchValues();
-    APIHandler.asyncApiGetCall("api/loadparameters/" + sheetName +"?searchValues=" + data, setParameters);
+    APIHandler.asyncApiGetCall("api/loadparameters/" + sheetName + "?searchValues=" + searchValues, setParameters);
 }
 
-async function excelConfigHandler(config: string) {
-    let configArr = JSON.parse(config);
-    await processExcelSearchCriteria(configArr[0]);
-    await processExportParameters(configArr[1]);
+async function excelConfigHandler(configStr: string) {
+    //let configArr = JSON.parse(configStr);
+    //await processExcelSearchCriteria(configArr[0]);
+    //await processExportParameters(configArr[1]);
+    let config = JSON.parse(configStr);
+    await processExportParameters(config);
     Common.showNotification("Message:", "The configuration has been loaded");
 }
 
@@ -48,21 +57,21 @@ export async function getSheetName() {
     return sheetName;
 }
 
-async function getSearchValues() {
-    let searchValues = [];
-    await Common.excelActionHandler(async (ctx) => {
-        let sheet = ctx.workbook.worksheets.getActiveWorksheet();
-        for (let compID = 0; compID < searchValueLocs.length; compID++) {
-            let compSearchValueLocs = searchValueLocs[compID]
-            for (let valueID = 0; valueID < compSearchValueLocs.length; valueID++) {
-                let range = sheet.getRange(compSearchValueLocs[valueID]).load("values");
-                await ctx.sync();
-                searchValues.push(range.values[0][0]);
-            }
-        }
-    });
-    return searchValues.toString();
-}
+//async function getSearchValues() {
+//    let searchValues = [];
+//    await Common.excelActionHandler(async (ctx) => {
+//        let sheet = ctx.workbook.worksheets.getActiveWorksheet();
+//        for (let compID = 0; compID < searchValueLocs.length; compID++) {
+//            let compSearchValueLocs = searchValueLocs[compID]
+//            for (let valueID = 0; valueID < compSearchValueLocs.length; valueID++) {
+//                let range = sheet.getRange(compSearchValueLocs[valueID]).load("values");
+//                await ctx.sync();
+//                searchValues.push(range.values[0][0]);
+//            }
+//        }
+//    });
+//    return searchValues.toString();
+//}
 
 async function setParameters(paramStr) {
     await Common.excelActionHandler(async (ctx) => {
@@ -102,42 +111,42 @@ async function getExportParameters() {
     return exportParams.toString();
 }
 
-function storeSearchValueLocations(searchParamCells) {
-    let valueLocs = [];
-    //add the texts to be displayed
-    for (var i = 0; i < searchParamCells.length; i++) {
-        valueLocs.push(searchParamCells[i]["ValueLocation"]);
-    }
-    searchValueLocs.push(valueLocs);
-}
+//function storeSearchValueLocations(searchParamCells) {
+//    let valueLocs = [];
+//    //add the texts to be displayed
+//    for (var i = 0; i < searchParamCells.length; i++) {
+//        valueLocs.push(searchParamCells[i]["ValueLocation"]);
+//    }
+//    searchValueLocs.push(valueLocs);
+//}
 
-function setSearchTextsToExcelSheet(sheet, searchParamCells) {
-    for (let i = 0; i < searchParamCells.length; i++) {
-        let textLoc = searchParamCells[i]["CellLocation"];
+//function setSearchTextsToExcelSheet(sheet, searchParamCells) {
+//    for (let i = 0; i < searchParamCells.length; i++) {
+//        let textLoc = searchParamCells[i]["CellLocation"];
 
-        //get a range that covers the search cells
-        let textRange = sheet.getRange(textLoc);
-        textRange.values = [[searchParamCells[i]["DisplayText"]]];
+//        //get a range that covers the search cells
+//        let textRange = sheet.getRange(textLoc);
+//        textRange.values = [[searchParamCells[i]["DisplayText"]]];
 
-        //format text cell
-        //textRange.format.autofitColumns(); // this does not seem to be supported in Excel 2016
-        textRange.format.font.bold = true;
-        textRange.format.fill.color = "yellow";
-    }
-}
+//        //format text cell
+//        //textRange.format.autofitColumns(); // this does not seem to be supported in Excel 2016
+//        textRange.format.font.bold = true;
+//        textRange.format.fill.color = "yellow";
+//    }
+//}
 
-async function processExcelSearchCriteria(searchParamCells) {
-    // Run a batch operation against the Excel object model
-    await Common.excelActionHandler(async ctx => {
-        // Create a proxy object for the active sheet
-        let sheet = ctx.workbook.worksheets.getActiveWorksheet();
+//async function processExcelSearchCriteria(searchParamCells) {
+//    // Run a batch operation against the Excel object model
+//    await Common.excelActionHandler(async ctx => {
+//        // Create a proxy object for the active sheet
+//        let sheet = ctx.workbook.worksheets.getActiveWorksheet();
 
-        //process the text to be displayed in search cells
-        storeSearchValueLocations(searchParamCells);
-        setSearchTextsToExcelSheet(sheet, searchParamCells);
-        return await ctx.sync();
-    });
-}
+//        //process the text to be displayed in search cells
+//        storeSearchValueLocations(searchParamCells);
+//        setSearchTextsToExcelSheet(sheet, searchParamCells);
+//        return await ctx.sync();
+//    });
+//}
 
 async function processExportParameters(exportParamLocs) {
     // Run a batch operation against the Excel object model
