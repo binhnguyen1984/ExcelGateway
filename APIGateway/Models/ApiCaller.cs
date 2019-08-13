@@ -24,11 +24,6 @@ namespace APIGateway.Models
             ApiClient.DefaultRequestHeaders.Accept.Clear();
             ApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
-
-        internal async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request)
-        {
-            return await ApiClient.SendAsync(request);
-        }
         public void SetBearerToken(string accessToken)
         {
             ApiClient.SetBearerToken(accessToken);
