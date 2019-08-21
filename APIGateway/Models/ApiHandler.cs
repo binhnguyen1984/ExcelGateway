@@ -7,10 +7,13 @@ using System.Threading.Tasks;
 
 namespace APIGateway.Models
 {
-    public class ApiCaller
+    /// <summary>
+    /// This class makes direct API calls to HDB and CDP
+    /// </summary>
+    public class ApiHandler
     {
         private HttpClient ApiClient = null;
-        public ApiCaller()
+        public ApiHandler()
         {
             HttpClientHandler clientHandler = new HttpClientHandler
             {

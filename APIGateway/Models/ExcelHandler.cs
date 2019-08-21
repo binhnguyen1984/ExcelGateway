@@ -19,7 +19,7 @@ namespace APIGateway.Models
         private IRange range;
         private int RowCount, ColumnCount;
         private IDictionary<string, string> SearchCompIDValues { get; set; }
-        private IDictionary<string, UpdateCompInfo> SearchCompDict { get; set; }
+        private IDictionary<string, ComponentInfo> SearchCompDict { get; set; }
         private IDictionary<string, JObject> ExportLoadedCompList { get; set; } // a dictionary of components loaded from the database which are to be updated
 
         public ExcelHandler(IWorksheet ws)
@@ -34,7 +34,7 @@ namespace APIGateway.Models
 
         private void InitializeData()
         {
-            this.SearchCompDict = new Dictionary<string, UpdateCompInfo>();
+            this.SearchCompDict = new Dictionary<string, ComponentInfo>();
             this.SearchCompIDValues = new Dictionary<string, string>();
             ExportLoadedCompList = new Dictionary<string, JObject>();
         }
@@ -99,7 +99,7 @@ namespace APIGateway.Models
             if (compName.Length > 0 && dbName.Length > 0 && compIDName.Length > 0)
             {
                 DBCenters FromDB = GetDBIdentity(dbName);
-                UpdateCompInfo updateCompInfo = new UpdateCompInfo(FromDB, compIDName);
+                ComponentInfo updateCompInfo = new ComponentInfo(FromDB, compIDName);
                 if (!SearchCompDict.ContainsKey(compName))
                     SearchCompDict.Add(compName, updateCompInfo);
             }
@@ -183,7 +183,7 @@ namespace APIGateway.Models
                 //find all the parameters that come from the same component
                 List<ParamCell> impParams = impParamDict[compName];
                 if (impParams == null) return new ResponseMessage(false, "Component "+ compName+" has no import parameters");
-                UpdateCompInfo updateCompInfo = SearchCompDict[compName];
+                ComponentInfo updateCompInfo = SearchCompDict[compName];
                 if (updateCompInfo == null) return new ResponseMessage(false, "Missing database information for component "+compName);
                 //make a query to the corresponding database server
                 ResponseMessage response = await DBHelper.UpdateComponentWithFetchedValues(updateCompInfo.FromDB, compName, searchParams.Value.Item1, searchParams.Value.Item2, impParams);
@@ -212,7 +212,7 @@ namespace APIGateway.Models
                 List<ParamCell> exportParams = exportParamDict[compName];
 
                 //update parameters
-                UpdateCompInfo updateCompInfo = SearchCompDict[compName]; ;
+                ComponentInfo updateCompInfo = SearchCompDict[compName]; ;
                 string compIdValue = SearchCompIDValues[updateCompInfo.CompIdName]; ;
                 ResponseMessage response = UpdateParamsWithNewValues(updateCompInfo.CompIdName, compIdValue, loadedComp.Value, exportParams);
                 if (!response.IsSuccessful)

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace APIGateway.Models
 {
-    public class HDBHandler : DatabaseHandler
+    public class HDBHandler : DBHandler
     {
         protected override string GetAllComponentUrl(string compName)
         {

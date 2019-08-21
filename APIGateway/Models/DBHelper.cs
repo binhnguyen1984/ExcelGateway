@@ -8,10 +8,13 @@ using static APIGateway.Models.Settings;
 
 namespace APIGateway.Models
 {
+    /// <summary>
+    /// This class is responsible for splitting different data manipulations between HDB and CDP databases
+    /// </summary>
     public class DBHelper
     {
-        private static DatabaseHandler CdpHandler = null;
-        private static DatabaseHandler HdbHandler = null;
+        private static DBHandler CdpHandler = null;
+        private static DBHandler HdbHandler = null;
         public static void InitializeDbHelper()
         {
             CdpHandler = new CDPHandler();
@@ -35,11 +38,6 @@ namespace APIGateway.Models
             if (dbCenter == DBCenters.HDB)
                 return await HdbHandler.GetComponentAttr(attrPath);
             return await CdpHandler.GetComponentAttr(attrPath);
-        }
-        public static async Task<string> TestApi(string url)
-        {
-            object response = await HdbHandler.FetchDataFromDB(url);
-            return response.ToString();
         }
     }
 }

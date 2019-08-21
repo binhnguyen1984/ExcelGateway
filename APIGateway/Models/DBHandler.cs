@@ -5,9 +5,12 @@ using System.Threading.Tasks;
 
 namespace APIGateway.Models
 {
-    public class DatabaseHandler
+    /// <summary>
+    /// This class implements common data manipulations for HDB and CDP
+    /// </summary>
+    public class DBHandler
     {
-        protected static ApiCaller ApiCaller = new ApiCaller(); // it will be shared between CDP and HDB handlers
+        protected static ApiHandler ApiHandler = new ApiHandler(); // it will be shared between CDP and HDB handlers
         public async Task<ResponseMessage> UpdateComponentWithFetchedValues(string compName, List<string> searchProps, List<string> searchValues, List<ParamCell> impParams)
         {
             string searchUrl = GetSearchURL(compName, searchProps, searchValues);
@@ -32,7 +35,7 @@ namespace APIGateway.Models
         public virtual async Task<ResponseMessage> GetComponentAttr(string[] attrPath)
         {
             string apiUrl = GetAllComponentUrl(attrPath[0]);
-            ResponseMessage response = await ApiCaller.FetchDataFromDB(apiUrl);
+            ResponseMessage response = await ApiHandler.FetchDataFromDB(apiUrl);
             if (!response.IsSuccessful) return response;
             object data = ExtractResponseBody(response.Data, attrPath[0]);
             response = JsonHelper.ExtractAttributeValues(attrPath, data);
@@ -54,12 +57,12 @@ namespace APIGateway.Models
         protected virtual object ExtractResponseBody(object respObject, string compName = null) => null;
         public virtual async Task<ResponseMessage> FetchDataFromDB(string Url)
         {
-            return await ApiCaller.FetchDataFromDB(Url);
+            return await ApiHandler.FetchDataFromDB(Url);
         }
         public virtual async Task<ResponseMessage> UpdateComponentToDB(string compName, JObject loadedCompDetails, string compIdValue = null)
         {
             string updateUrl = GetPutUrl(compName, compIdValue);
-            return await ApiCaller.UpdateDataToDB(updateUrl, loadedCompDetails.ToString());
+            return await ApiHandler.UpdateDataToDB(updateUrl, loadedCompDetails.ToString());
         }
         protected virtual string GetSearchURL(string compName, List<string> searchProps, List<string> searchValues) => "";
         protected virtual string GetPutUrl(string compName, string compID = null) => "";

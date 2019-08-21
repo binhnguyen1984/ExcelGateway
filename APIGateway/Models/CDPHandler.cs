@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace APIGateway.Models
 {
-    public class CDPHandler : DatabaseHandler
+    public class CDPHandler : DBHandler
     {
         private static OidcClientInfo CurrentOidcClientInfo = null;
         private static HtmlDocument htmlDoc = null;
@@ -51,7 +51,7 @@ namespace APIGateway.Models
         }
         public static async Task<string> GetAuthTokens(string Url)
         {
-            HttpResponseMessage response = await ApiCaller.GetAsync(Url);
+            HttpResponseMessage response = await ApiHandler.GetAsync(Url);
             string content = await response.Content.ReadAsStringAsync();
             if (response.StatusCode == System.Net.HttpStatusCode.Found)
             {
@@ -63,7 +63,7 @@ namespace APIGateway.Models
                 string dataUrl = ExtractDataUrl(content);
                 var lastUrl = response.RequestMessage.RequestUri.GetLeftPart(UriPartial.Authority) + dataUrl;
                 lastUrl = System.Web.HttpUtility.HtmlDecode(lastUrl);
-                response = await ApiCaller.GetAsync(lastUrl);
+                response = await ApiHandler.GetAsync(lastUrl);
                 return response.Headers.Location.Query;
             }
             return null;
@@ -119,12 +119,12 @@ namespace APIGateway.Models
             if (CurrentOidcClientInfo.AccessToken == null)
             {
                 await Login();
-                ApiCaller.SetBearerToken(CurrentOidcClientInfo.AccessToken);
+                ApiHandler.SetBearerToken(CurrentOidcClientInfo.AccessToken);
             }
             else if (DateTime.Now >= CurrentOidcClientInfo.ValidDate)
             {
                 RefreshAccessToken();
-                ApiCaller.SetBearerToken(CurrentOidcClientInfo.AccessToken);
+                ApiHandler.SetBearerToken(CurrentOidcClientInfo.AccessToken);
             }
         }
 
@@ -162,7 +162,7 @@ namespace APIGateway.Models
         {
             string updateUrl = GetPutUrl(compName);
             await RequestAccessTokenForOpenIDConnect();
-            return await ApiCaller.UpdateDataToDB(updateUrl, loadedCompDetails.ToString());
+            return await ApiHandler.UpdateDataToDB(updateUrl, loadedCompDetails.ToString());
         }
     }
 }

@@ -120,8 +120,8 @@ async function setImportParameters(response, importValueLocs) {
             await ctx.sync();
             let importRange = sheet.getRange(firstValueCell.address + ":" + lastValueCell.address);
             importRange.values = paramArr;
-            importRange.format.wrapText = true;
-            importRange.format.autofitColumns();
+            //importRange.format.wrapText = true;
+            //importRange.format.autofitColumns();
             //importRange.style = Excel.BuiltInStyle.neutral;
             //importRange.format.horizontalAlignment = "Right";
             Common.showNotification("Message", "Data has been loaded.");
