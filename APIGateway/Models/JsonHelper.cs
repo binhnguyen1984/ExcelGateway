@@ -15,7 +15,7 @@ namespace APIGateway.Models
         /// <param name="attPath"> a path in the tree representation leading to the given attribute </param>
         /// <param name="startId"> the index from which the path start </param>
         /// <returns></returns>
-        public static JValue GetAttributeValue(object data, string[] attrPath)
+        public static ResponseMessage GetAttributeValue(object data, string[] attrPath)
         {
             int prop_num = attrPath.Length;
             int i = 1;
@@ -28,28 +28,35 @@ namespace APIGateway.Models
                     data = ((JArray)data).First;
                     continue;
                 }
+                if (data == null) return new ResponseMessage(false, "No data found for property '" + attrPath[i]+"'");
                 i++;
             }
-            return (JValue)data;
+            return new ResponseMessage(true, (JValue)data);
         }
 
-        public static List<string> ExtractAttributeValues(string[] attrPath, object data)
+        public static ResponseMessage ExtractAttributeValues(string[] attrPath, object data)
         {
-            List<string> idList = new List<string>();
-            if (data is JArray)
+            if(data!=null)
             {
-                foreach (JToken comp in (JArray)data)
+                List<string> idList = new List<string>();
+                if (data is JArray)
                 {
-                    JValue attValue = GetAttributeValue(comp, attrPath);
-                    idList.Add(attValue.Value.ToString());
+                    foreach (JToken comp in (JArray)data)
+                    {
+                        ResponseMessage response = GetAttributeValue(comp, attrPath);
+                        if (!response.IsSuccessful) return response;
+                        idList.Add((response.Data as JValue).Value.ToString());
+                    }
                 }
+                else
+                {
+                    ResponseMessage response = GetAttributeValue(data, attrPath);
+                    if (!response.IsSuccessful) return response;
+                    idList.Add((response.Data as JValue).Value.ToString());
+                }
+                return new ResponseMessage(true, idList);
             }
-            else
-            {
-                JValue attValue = GetAttributeValue(data, attrPath);
-                idList.Add(attValue.Value.ToString());
-            }
-            return idList;
+            return new ResponseMessage(true, null);
         }
 
     }

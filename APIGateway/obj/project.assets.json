@@ -2942,21 +2942,6 @@
           "lib/netstandard1.6/NuGet.Frameworks.dll": {}
         }
       },
-      "ProxyKit/2.1.2": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.AspNetCore.Http": "2.1.0",
-          "Microsoft.AspNetCore.Http.Extensions": "2.1.0",
-          "Microsoft.AspNetCore.HttpOverrides": "2.1.0",
-          "Microsoft.Extensions.Http": "2.1.0"
-        },
-        "compile": {
-          "lib/netstandard2.0/ProxyKit.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/ProxyKit.dll": {}
-        }
-      },
       "Remotion.Linq/2.2.0": {
         "type": "package",
         "dependencies": {
@@ -8403,20 +8388,6 @@
         "nuget.frameworks.nuspec"
       ]
     },
-    "ProxyKit/2.1.2": {
-      "sha512": "xPsriDM5bOPZd5/I7FXwX8Qo9sjQJhUp8cEa3/dht9doE4D5nrozTjZv2WrRjGZTwR2xvc6O/hcJDl1RkD7ZeA==",
-      "type": "package",
-      "path": "proxykit/2.1.2",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/netstandard2.0/ProxyKit.dll",
-        "lib/netstandard2.0/ProxyKit.pdb",
-        "lib/netstandard2.0/ProxyKit.xml",
-        "proxykit.2.1.2.nupkg.sha512",
-        "proxykit.nuspec"
-      ]
-    },
     "Remotion.Linq/2.2.0": {
       "sha512": "fK/76UmpC0FXBlGDFVPLJHQlDLYnGC+XY3eoDgCgbtrhi0vzbXDQ3n/IYHhqSKqXQfGw/u04A1drWs7rFVkRjw==",
       "type": "package",
@@ -12928,6 +12899,7 @@
       "path": "system.valuetuple/4.3.0",
       "files": [
         ".nupkg.metadata",
+        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/netstandard1.0/.xml",
@@ -13117,7 +13089,7 @@
       ]
     },
     "System.Xml.XmlSerializer/4.3.0": {
-      "sha512": "VShQJhOxgD/5M2Z1IWm1vMaSqlbjo1zdFf8H7Ahte6bTvSUhUko/gDpAVVhGgGgTDeue4QyNg1fu1Zz2GKSEuQ==",
+      "sha512": "MYoTCP7EZ98RrANESW05J5ZwskKDoN0AuZ06ZflnowE50LTpbR5yRg3tHckTVm5j/m47stuGgCrCHWePyHS70Q==",
       "type": "package",
       "path": "system.xml.xmlserializer/4.3.0",
       "files": [
@@ -13311,7 +13283,6 @@
       "Microsoft.NETCore.App >= 2.2.0",
       "Microsoft.TypeScript.MSBuild >= 3.5.3",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 2.2.3",
-      "ProxyKit >= 2.1.2",
       "Syncfusion.XlsIO.Net.Core >= 17.2.0.35"
     ]
   },
@@ -13394,22 +13365,13 @@
             "target": "Package",
             "version": "[2.2.3, )"
           },
-          "ProxyKit": {
-            "target": "Package",
-            "version": "[2.1.2, )"
-          },
           "Syncfusion.XlsIO.Net.Core": {
             "target": "Package",
             "version": "[17.2.0.35, )"
           }
         },
         "imports": [
-          "net461",
-          "net462",
-          "net47",
-          "net471",
-          "net472",
-          "net48"
+          "net461"
         ],
         "assetTargetFallback": true,
         "warn": true

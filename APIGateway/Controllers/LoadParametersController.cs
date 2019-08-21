@@ -10,12 +10,12 @@ namespace APIGateway.Controllers
     [ApiController]
     public class LoadParametersController : ControllerBase
     {
-        [HttpGet("{sheetName}")]
-        public async Task<string> Get(string sheetName, string searchValues)
+        [HttpGet]
+        public async Task<ResponseMessage> Get(string propNames, string searchValues)
         {
-            if (searchValues == null) return "";
-            List<ParamCell> result = await Settings.LoadParametersAsync(sheetName, searchValues.Split(','));
-            return result!=null?JsonConvert.SerializeObject(result): "";
+            if (searchValues == null) return new ResponseMessage(false, "No search values are specified");
+            if(propNames==null) return new ResponseMessage(false, "No import parameters are specified");
+            return await Settings.LoadParametersAsync(propNames.Split(","), searchValues.Split(','));
         }
     }
 }

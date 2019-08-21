@@ -2,7 +2,6 @@
 import * as Common from "./Common";
 import * as $ from 'jquery';
 
-let sheetName: string;
 (function () {
     "use strict";
     // The initialize function must be run each time a new page is loaded.
@@ -16,15 +15,10 @@ let sheetName: string;
 
             // search data lists
             //component ids list
-            $('#component-datalist-text').text("Comp.Ids");
+            $('#component-datalist-text').text("Comp.ids");
 
             //project ids list
-            $('#project-datalist-text').text("Proj.Ids");
-
-            // load configuration button
-            $('#config-button-text').text("Load config");
-            $('#config-button-desc').text("Load excel configuration for this sheet");
-            $('#config-button').click(loadExcelConfiguration);
+            $('#project-datalist-text').text("Proj.ids");
 
             //load data button
             $('#fetch-button-text').text("Load data");
@@ -35,59 +29,51 @@ let sheetName: string;
             $('#put-button-text').text("Update data");
             $('#put-button-desc').text("Update components.");
             $('#put-button').click(updateParameters);
+
+            loadInitialSearchValues();
         });
     };
 
 })();
 
-function beginningMatched(request, response) {
-    var matcher = new RegExp("^" + $.ui.autocomplete.escapeRegex(request.term), "i");
-    response($.grep([], function (item) {
-        return matcher.test(item);
-    }));
-};
 
-async function loadExcelConfiguration() {
-    Common.showNotification("Message:", "Loading configuration");
-    sheetName = await ExcelHandler.getSheetName();
-    ExcelHandler.loadExcelConfiguration(sheetName);
-    loadInitialSearchValues();
-    Common.showNotification("Message:", "Finish loading configuration");
-}
 
 async function loadParameters() {
     let componentId = $("#componentIdsList").val();
     let projectId = $("#projectIdsList").val();
-    let searchValues = [componentId, projectId];
-    await ExcelHandler.loadParameters(sheetName, searchValues);
+    let searchValues = ["components/componentID:" + componentId, "projects/id:"+projectId];
+    await ExcelHandler.loadParameters(searchValues);
 }
 
 function updateParameters() {
-    ExcelHandler.updateParameters(sheetName);
+    ExcelHandler.updateParameters();
 }
 
 function setConfigForAutoTextbox(tbName, getDataApi) {
-    getDataApi((data) => {
-        let dataArr = JSON.parse(data);
+    getDataApi((response) => {
+        let respJson = JSON.parse(response);
+        if (respJson.isSuccessful)
         $(tbName).autocomplete(
             {
                 source: function (request, response) {
                     var matcher = new RegExp("^" + $.ui.autocomplete.escapeRegex(request.term), "i");
-                    response($.grep(dataArr, function (item: string) {
+                    response($.grep(respJson.data, function (item: string) {
                         return matcher.test(item);
                     }));
                 },
                 position: { my: "right center", at: "right bottom" },
-                minLength: 2
+                minLength: 1
             });
     })
 
 }
 function loadInitialSearchValues() {
+    //Common.showNotification("Message:", "Loading search values");
     //get list of component ids
     setConfigForAutoTextbox("#componentIdsList", ExcelHandler.getComponentIdsList);
 
     //get list of project ids
     setConfigForAutoTextbox("#projectIdsList", ExcelHandler.getProjectIdsList);
+    //Common.showNotification("Message:", "Search values have been loaded");
 }
 

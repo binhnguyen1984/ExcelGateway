@@ -12,24 +12,23 @@ namespace APIGateway.Models
             return Settings.HDBApiUrl + compName + ".json?";
         }
 
-        protected override string GetSearchURL(string compName, IEnumerator searchValues, List<SearchParamCell> searchCells)
+        protected override string GetSearchURL(string compName, List<string> searchProps, List<string> searchValues)
         {
             string searchUrl = GetAllComponentUrl(compName);
-            int searchCondNum = searchCells.Count;
 
             // create a filter
             string filter = "";
-            for (int i = 0; i < searchCondNum && searchValues.MoveNext(); i++)
+            for (int i = 0; i < searchProps.Count; i++)
             {
-                if ((searchValues.Current as string).Length > 0)
-                    filter += searchCells[i].PropName + " eq " + searchValues.Current;
+               if (searchProps[i]!=null && searchProps[i].Length>0 && searchValues[i]!=null && searchValues[i].Length>0)
+                    filter += searchProps[i] + " eq " + searchValues[i];
             }
             if (filter.Length > 0)
                 searchUrl += "$filter=" + filter;
             return searchUrl;
         }
 
-        protected override object GetResponseBody(object respObject, string compName)
+        protected override object ExtractResponseBody(object respObject, string compName)
         {
             if (respObject == null) return null;
             JObject responseBody = (respObject as JObject)["message"] as JObject;

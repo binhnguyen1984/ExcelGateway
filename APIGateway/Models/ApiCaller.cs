@@ -28,27 +28,27 @@ namespace APIGateway.Models
         {
             ApiClient.SetBearerToken(accessToken);
         }
-        public async Task<object> FetchDataFromDB(string Url)
+        public async Task<ResponseMessage> FetchDataFromDB(string Url)
         {
             using (HttpResponseMessage response = await ApiClient.GetAsync(Url))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     string result = await response.Content.ReadAsStringAsync();
-                    if (result[0] == '[') return JArray.Parse(result);
-                    return JObject.Parse(result);
+                    if (result[0] == '[') return new ResponseMessage(true, JArray.Parse(result));
+                    return new ResponseMessage(true, JObject.Parse(result));
                 }
-                else return null;
+                else return new ResponseMessage(false, response.ReasonPhrase);
             }
         }
 
-        public async Task<bool> UpdateDataToDB(string Url, string data)
+        public async Task<ResponseMessage> UpdateDataToDB(string Url, string data)
         {
             StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
             using (var response = await ApiClient.PutAsync(Url, content))
             {
-                if (response.IsSuccessStatusCode) return response.IsSuccessStatusCode;
-                else throw new Exception(response.ReasonPhrase);
+                if (response.IsSuccessStatusCode) return new ResponseMessage(true, null);
+                else return new ResponseMessage(false, response.ReasonPhrase);
             }
         }
 

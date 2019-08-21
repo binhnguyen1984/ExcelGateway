@@ -14,7 +14,7 @@ namespace APIGateway.Controllers
     {
         // GET: ExcelAddin/api/LoadProjectIds
         [HttpGet]
-        public async Task<List<string>> GetAsync()
+        public async Task<ResponseMessage> GetAsync()
         {
             return await DBHelper.GetAttributeValues(Settings.DBCenters.CDP, new string[] { "projects", "id"});
         }

@@ -1,0 +1,8 @@
+
+Unhandled Exception: System.Exception: Specification of database for  is missing
+   at APIGateway.Models.ExcelContent.ReadComponentAndDBNames(Int32& firstRow, List`1& searchProps) in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Models\ExcelContent.cs:line 137
+   at APIGateway.Models.ExcelContent.ReadSearchCriteria(Int32& firstRow) in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Models\ExcelContent.cs:line 90
+   at APIGateway.Models.ExcelContent.ReadConfiguration() in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Models\ExcelContent.cs:line 49
+   at APIGateway.Models.ExcelContent..ctor(IWorksheet ws) in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Models\ExcelContent.cs:line 28
+   at APIGateway.Models.Settings.LoadExcelAddinConfig() in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Models\Settings.cs:line 24
+   at APIGateway.Program.Main(String[] args) in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Program.cs:line 14

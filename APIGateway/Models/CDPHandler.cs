@@ -44,10 +44,10 @@ namespace APIGateway.Models
             return response.RequestMessage.RequestUri.AbsoluteUri;
         }
 
-        public override async Task<List<string>> GetComponentAttr(string[] attrPath)
+        public override async Task<ResponseMessage> GetComponentAttr(string[] attrPath)
         {
             await RequestAccessTokenForOpenIDConnect();
-            return await base.GetComponentAttr(attrPath);
+            return await base.GetComponentAttr(attrPath);              
         }
         public static async Task<string> GetAuthTokens(string Url)
         {
@@ -104,11 +104,13 @@ namespace APIGateway.Models
             // create a redirect URI using an available port on the loopback address.
             var state = await CurrentOidcClientInfo.OidcClient.PrepareLoginAsync();
             var formData = await GetAuthTokens(state.StartUrl);
-            //var loginResult = AsyncHelper.RunSync<LoginResult>(async () => await CurrentOidcClientInfo.OidcClient.LoginAsync(new LoginRequest()));
-            var loginResult = await CurrentOidcClientInfo.OidcClient.ProcessResponseAsync(formData, state);
-            CurrentOidcClientInfo.AccessToken = loginResult.AccessToken;
-            CurrentOidcClientInfo.RefreshToken = loginResult.RefreshToken;
-            CurrentOidcClientInfo.ValidDate = loginResult.AccessTokenExpiration;
+            if(formData!=null)
+            {
+                var loginResult = await CurrentOidcClientInfo.OidcClient.ProcessResponseAsync(formData, state);
+                CurrentOidcClientInfo.AccessToken = loginResult.AccessToken;
+                CurrentOidcClientInfo.RefreshToken = loginResult.RefreshToken;
+                CurrentOidcClientInfo.ValidDate = loginResult.AccessTokenExpiration;
+            }
         }
 
 
@@ -134,15 +136,20 @@ namespace APIGateway.Models
             CurrentOidcClientInfo.ValidDate = refreshTokenResult.AccessTokenExpiration;
         }
 
-        protected override string GetSearchURL(string compName, IEnumerator searchValues, List<SearchParamCell> searchCells = null)
+        /// <summary>
+        /// Currently, CDP only supports searching conditioned on a single property
+        /// </summary>
+        /// <param name="compName"></param>
+        /// <param name="searchValues"></param>
+        /// <returns></returns>
+        protected override string GetSearchURL(string compName, List<string> searchProps, List<string> searchValues)
         {
             string searchUrl =  Settings.CDPApiUrl + compName;
-            if (searchValues.MoveNext())
-                searchUrl += "/" + searchValues.Current;
+            if(searchValues.Count>0) searchUrl += "/" + searchValues[0];
             return searchUrl;
         }
 
-        protected override object GetResponseBody(object respObject, string compName = null)
+        protected override object ExtractResponseBody(object respObject, string compName = null)
         {
             return respObject;
         }
@@ -151,16 +158,11 @@ namespace APIGateway.Models
         {
             return Settings.CDPApiUrl + compName;
         }
-        public override async Task<bool> UpdateComponentToDB(string compName, JObject loadedCompDetails, string compIdValue = null)
+        public override async Task<ResponseMessage> UpdateComponentToDB(string compName, JObject loadedCompDetails, string compIdValue = null)
         {
             string updateUrl = GetPutUrl(compName);
             await RequestAccessTokenForOpenIDConnect();
             return await ApiCaller.UpdateDataToDB(updateUrl, loadedCompDetails.ToString());
-        }
-        public override async Task<object> FetchDataFromDB(string Url)
-        {
-            await RequestAccessTokenForOpenIDConnect();
-            return await ApiCaller.FetchDataFromDB(Url);
         }
     }
 }

@@ -17,24 +17,29 @@ namespace APIGateway.Models
             CdpHandler = new CDPHandler();
             HdbHandler = new HDBHandler();
         }
-        public static async Task<JObject> UpdateComponentWithFetchedValues(DBCenters dbCenter, IEnumerator searchValuesIter, string compName, List<ParamCell> paramCells, List<SearchParamCell> searchCells)
+        public static async Task<ResponseMessage> UpdateComponentWithFetchedValues(DBCenters dbCenter, string compName, List<string> searchProps, List<string> searchValues, List<ParamCell> impParams)
         {
             if (dbCenter == DBCenters.HDB)
-                return await HdbHandler.UpdateComponentWithFetchedValues(searchValuesIter, compName, paramCells, searchCells);
-            else return await CdpHandler.UpdateComponentWithFetchedValues(searchValuesIter, compName, paramCells);
+                return await HdbHandler.UpdateComponentWithFetchedValues(compName, searchProps, searchValues, impParams);
+            else return await CdpHandler.UpdateComponentWithFetchedValues(compName, searchProps,searchValues, impParams);
         }
-        public static async Task<bool> UpdateComponentToDB(DBCenters dbCenter, string compName, JObject loadedCompDetails, string compIdValue)
+        public static async Task<ResponseMessage> UpdateComponentToDB(DBCenters dbCenter, string compName, JObject loadedCompDetails, string compIdValue)
         {
             if (dbCenter == DBCenters.HDB)
                 return await HdbHandler.UpdateComponentToDB(compName, loadedCompDetails, compIdValue);
             else return await CdpHandler.UpdateComponentToDB(compName, loadedCompDetails);
         }
 
-        public static async Task<List<string>> GetAttributeValues(DBCenters dbCenter, string[] attrPath)
+        public static async Task<ResponseMessage> GetAttributeValues(DBCenters dbCenter, string[] attrPath)
         {
             if (dbCenter == DBCenters.HDB)
                 return await HdbHandler.GetComponentAttr(attrPath);
             return await CdpHandler.GetComponentAttr(attrPath);
+        }
+        public static async Task<string> TestApi(string url)
+        {
+            object response = await HdbHandler.FetchDataFromDB(url);
+            return response.ToString();
         }
     }
 }

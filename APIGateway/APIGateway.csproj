@@ -6,13 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\ExcelAddIn\APIHandler.ts" />
-    <Content Remove="wwwroot\ExcelAddIn\Common.ts" />
-    <Content Remove="wwwroot\ExcelAddIn\ExcelHandler.ts" />
-    <Content Remove="wwwroot\ExcelAddIn\Home.ts" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.11.12" />
     <PackageReference Include="IdentityModel" Version="3.10.10" />
     <PackageReference Include="IdentityModel.OidcClient" Version="2.9.0" />
@@ -23,7 +16,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
-    <PackageReference Include="ProxyKit" Version="2.1.2" />
     <PackageReference Include="Syncfusion.XlsIO.Net.Core" Version="17.2.0.35" />
   </ItemGroup>
 

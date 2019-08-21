@@ -14,7 +14,7 @@ namespace APIGateway.Controllers
     {
         // GET: ExcelAddin/api/LoadComponentIds
         [HttpGet]
-        public async Task<List<string>> Get()
+        public async Task<ResponseMessage> Get()
         {
             return await DBHelper.GetAttributeValues(Settings.DBCenters.HDB, new string[] { "components","componentID" });
         }

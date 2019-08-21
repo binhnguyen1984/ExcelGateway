@@ -8,11 +8,12 @@ namespace APIGateway.Controllers
     [ApiController]
     public class UpdateParametersController : ControllerBase
     {
-        [HttpPut("{sheetName}")]
-        public async Task<int> Put(string sheetName, [FromBody] string value)
+        [HttpPut]
+        public async Task<ResponseMessage> Put(string propNames, [FromBody] string value)
         {
-            if (value == null) return await Task.FromResult<int>(0);
-            return await Settings.UpdateParametersAsync(sheetName, value.Split(','));
+            if (value == null) return new ResponseMessage(false, "Updated values are not present");
+            if (propNames == null) return new ResponseMessage(false, "Updated parameters are not present");
+            return await Settings.UpdateParametersAsync(propNames.Split(","), value.Split(','));
         }
     }
 }
