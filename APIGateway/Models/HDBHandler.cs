@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace APIGateway.Models
 {
@@ -20,7 +18,7 @@ namespace APIGateway.Models
             string filter = "";
             for (int i = 0; i < searchProps.Count; i++)
             {
-               if (searchProps[i]!=null && searchProps[i].Length>0 && searchValues[i]!=null && searchValues[i].Length>0)
+                if (searchProps[i] != null && searchProps[i].Length > 0 && searchValues[i] != null && searchValues[i].Length > 0)
                     filter += searchProps[i] + " eq " + searchValues[i];
             }
             if (filter.Length > 0)

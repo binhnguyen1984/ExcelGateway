@@ -1,8 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using static APIGateway.Models.Settings;
 
@@ -24,7 +21,7 @@ namespace APIGateway.Models
         {
             if (dbCenter == DBCenters.HDB)
                 return await HdbHandler.UpdateComponentWithFetchedValues(compName, searchProps, searchValues, impParams);
-            else return await CdpHandler.UpdateComponentWithFetchedValues(compName, searchProps,searchValues, impParams);
+            else return await CdpHandler.UpdateComponentWithFetchedValues(compName, searchProps, searchValues, impParams);
         }
         public static async Task<ResponseMessage> UpdateComponentToDB(DBCenters dbCenter, string compName, JObject loadedCompDetails, string compIdValue)
         {

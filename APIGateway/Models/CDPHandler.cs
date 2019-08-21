@@ -3,7 +3,6 @@ using IdentityModel.OidcClient;
 using IdentityModel.OidcClient.Results;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -40,14 +39,14 @@ namespace APIGateway.Models
             var requestUri = response.RequestMessage.RequestUri;
             var loc = headers.Location;
             if (loc != null)
-                return loc.IsAbsoluteUri?headers.Location.AbsoluteUri: requestUri.GetLeftPart(UriPartial.Authority)+loc.ToString();
+                return loc.IsAbsoluteUri ? headers.Location.AbsoluteUri : requestUri.GetLeftPart(UriPartial.Authority) + loc.ToString();
             return response.RequestMessage.RequestUri.AbsoluteUri;
         }
 
         public override async Task<ResponseMessage> GetComponentAttr(string[] attrPath)
         {
             await RequestAccessTokenForOpenIDConnect();
-            return await base.GetComponentAttr(attrPath);              
+            return await base.GetComponentAttr(attrPath);
         }
         public static async Task<string> GetAuthTokens(string Url)
         {
@@ -104,7 +103,7 @@ namespace APIGateway.Models
             // create a redirect URI using an available port on the loopback address.
             var state = await CurrentOidcClientInfo.OidcClient.PrepareLoginAsync();
             var formData = await GetAuthTokens(state.StartUrl);
-            if(formData!=null)
+            if (formData != null)
             {
                 var loginResult = await CurrentOidcClientInfo.OidcClient.ProcessResponseAsync(formData, state);
                 CurrentOidcClientInfo.AccessToken = loginResult.AccessToken;
@@ -144,8 +143,8 @@ namespace APIGateway.Models
         /// <returns></returns>
         protected override string GetSearchURL(string compName, List<string> searchProps, List<string> searchValues)
         {
-            string searchUrl =  Settings.CDPApiUrl + compName;
-            if(searchValues.Count>0) searchUrl += "/" + searchValues[0];
+            string searchUrl = Settings.CDPApiUrl + compName;
+            if (searchValues.Count > 0) searchUrl += "/" + searchValues[0];
             return searchUrl;
         }
 

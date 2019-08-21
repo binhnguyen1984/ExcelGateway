@@ -2,6 +2,9 @@
 
 namespace APIGateway.Models
 {
+    /// <summary>
+    /// Basic information about a component
+    /// </summary>
     public class ComponentInfo
     {
         public DBCenters FromDB { get; private set; }

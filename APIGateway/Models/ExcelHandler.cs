@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using Syncfusion.XlsIO;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,10 +10,7 @@ namespace APIGateway.Models
 {
     public class ExcelHandler
     {
-        private const string ComponentSectionText = "Path"; //the text appears first in the component section
         private const string SearchSectionText = "Search criteria"; //the text appears first in the search section
-        private const string ReadOpText = "READ";
-        private const string ReadWriteOpText = "READ/WRITE";
         private const string HdbName = "HDB";
         private IRange range;
         private int RowCount, ColumnCount;
@@ -124,15 +120,15 @@ namespace APIGateway.Models
             else SearchCompIDValues[compIDName] = compIDValue;
         }
 
-        private IDictionary<string,List<ParamCell>> BuildParamDict(string[] propNames)
+        private IDictionary<string, List<ParamCell>> BuildParamDict(string[] propNames)
         {
             IDictionary<string, List<ParamCell>> paramDict = new Dictionary<string, List<ParamCell>>();
-            foreach(string propName in propNames)
+            foreach (string propName in propNames)
             {
                 string[] path = propName.Split(Settings.PathSplitter);
                 if (paramDict.ContainsKey(path[0]))
                     paramDict[path[0]].Add(new ParamCell(path));
-                else paramDict.Add(path[0], new List<ParamCell> { new ParamCell(path)});
+                else paramDict.Add(path[0], new List<ParamCell> { new ParamCell(path) });
             }
             return paramDict;
         }
@@ -140,7 +136,7 @@ namespace APIGateway.Models
         private IDictionary<string, List<ParamCell>> BuildParamValueDict(string[] paramNames, string[] paramValues)
         {
             IDictionary<string, List<ParamCell>> paramValueDict = new Dictionary<string, List<ParamCell>>();
-            for (int i = 0; i<paramNames.Length; i++)
+            for (int i = 0; i < paramNames.Length; i++)
             {
                 string[] path = paramNames[i].Split(Settings.PathSplitter);
                 if (paramValueDict.ContainsKey(path[0]))
@@ -153,7 +149,7 @@ namespace APIGateway.Models
         private IDictionary<string, (List<string>, List<string>)> BuildSearchParamDict(string[] searchValues)
         {
             IDictionary<string, (List<string>, List<string>)> searchParamDict = new Dictionary<string, (List<string>, List<string>)>();
-            foreach(string val in searchValues)
+            foreach (string val in searchValues)
             {
                 string[] propAndVal = val.Split(Settings.PropValueSplitter);
                 string[] path = propAndVal[0].Split(Settings.PathSplitter);
@@ -182,9 +178,9 @@ namespace APIGateway.Models
                 string compName = searchParams.Key;
                 //find all the parameters that come from the same component
                 List<ParamCell> impParams = impParamDict[compName];
-                if (impParams == null) return new ResponseMessage(false, "Component "+ compName+" has no import parameters");
+                if (impParams == null) return new ResponseMessage(false, "Component " + compName + " has no import parameters");
                 ComponentInfo updateCompInfo = SearchCompDict[compName];
-                if (updateCompInfo == null) return new ResponseMessage(false, "Missing database information for component "+compName);
+                if (updateCompInfo == null) return new ResponseMessage(false, "Missing database information for component " + compName);
                 //make a query to the corresponding database server
                 ResponseMessage response = await DBHelper.UpdateComponentWithFetchedValues(updateCompInfo.FromDB, compName, searchParams.Value.Item1, searchParams.Value.Item2, impParams);
                 if (!response.IsSuccessful) return response;
@@ -205,20 +201,25 @@ namespace APIGateway.Models
         public async Task<ResponseMessage> UpdateParametersAsync(string[] paramNames, string[] paramValues)
         {
             IDictionary<string, List<ParamCell>> exportParamDict = BuildParamValueDict(paramNames, paramValues);
-            foreach (KeyValuePair<string, JObject> loadedComp in ExportLoadedCompList)
+            foreach (KeyValuePair<string, List<ParamCell>> exportParamEntry in exportParamDict)
             {
-                string compName = loadedComp.Key;
-                //find all export parameters that belong to this component
-                List<ParamCell> exportParams = exportParamDict[compName];
+                string compName = exportParamEntry.Key;
+                List<ParamCell> exportParams = exportParamEntry.Value;
+                if (!ExportLoadedCompList.ContainsKey(compName))
+                    return new ResponseMessage(false, "Component '" + compName + "' was not loaded and thus cannot be updated");
+                if (!SearchCompDict.ContainsKey(compName))
+                    return new ResponseMessage(false, "No information about component '" + compName + "' was found");
 
-                //update parameters
+                JObject loadedComp = ExportLoadedCompList[compName];
                 ComponentInfo updateCompInfo = SearchCompDict[compName]; ;
                 string compIdValue = SearchCompIDValues[updateCompInfo.CompIdName]; ;
-                ResponseMessage response = UpdateParamsWithNewValues(updateCompInfo.CompIdName, compIdValue, loadedComp.Value, exportParams);
+
+                //update parameters
+                ResponseMessage response = UpdateParamsWithNewValues(updateCompInfo.CompIdName, compIdValue, loadedComp, exportParams);
                 if (!response.IsSuccessful)
                     return response;
                 //make a query to the corresponding database server
-                response = await DBHelper.UpdateComponentToDB(updateCompInfo.FromDB, compName, loadedComp.Value, compIdValue);
+                response = await DBHelper.UpdateComponentToDB(updateCompInfo.FromDB, compName, loadedComp, compIdValue);
                 if (!response.IsSuccessful)
                     return response;// update failed
             }

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using APIGateway.Models;
-using Microsoft.AspNetCore.Http;
+﻿using APIGateway.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace APIGateway.Controllers
 {
@@ -16,7 +12,7 @@ namespace APIGateway.Controllers
         [HttpGet]
         public async Task<ResponseMessage> Get()
         {
-            return await DBHelper.GetAttributeValues(Settings.DBCenters.HDB, new string[] { "components","componentID" });
+            return await DBHelper.GetAttributeValues(Settings.DBCenters.HDB, new string[] { "components", "componentID" });
         }
     }
 }

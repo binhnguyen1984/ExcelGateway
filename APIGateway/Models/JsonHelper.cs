@@ -1,8 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace APIGateway.Models
 {
@@ -28,7 +25,7 @@ namespace APIGateway.Models
                     data = ((JArray)data).First;
                     continue;
                 }
-                if (data == null) return new ResponseMessage(false, "No data found for property '" + attrPath[i]+"'");
+                if (data == null) return new ResponseMessage(false, "No data found for property '" + attrPath[i] + "'");
                 i++;
             }
             return new ResponseMessage(true, (JValue)data);
@@ -36,7 +33,7 @@ namespace APIGateway.Models
 
         public static ResponseMessage ExtractAttributeValues(string[] attrPath, object data)
         {
-            if(data!=null)
+            if (data != null)
             {
                 List<string> idList = new List<string>();
                 if (data is JArray)
