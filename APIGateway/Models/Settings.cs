@@ -26,12 +26,8 @@ namespace APIGateway.Models
 
         private static IWorkbook GetExcelWorkBook()
         {
-            ExcelEngine excelEngine = new ExcelEngine();
-            IApplication application = excelEngine.Excel;
-            application.DefaultVersion = ExcelVersion.Excel2016;
-
             FileStream configFile = new FileStream(ConfigFile, FileMode.Open);
-            return application.Workbooks.Open(configFile);
+            return new ExcelEngine().Excel.Workbooks.Open(configFile);
         }
         public static async Task<ResponseMessage> LoadParametersAsync(string[] propNames, string[] searchValues)
         {

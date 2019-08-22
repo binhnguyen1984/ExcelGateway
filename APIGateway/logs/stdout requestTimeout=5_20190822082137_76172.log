@@ -1,0 +1,81 @@
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[0]
+      User profile is available. Using 'C:\Users\lnztha01\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+Hosting environment: Development
+Content root path: C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway
+Now listening on: http://127.0.0.1:18552
+Application started. Press Ctrl+C to shut down.
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      Request starting HTTP/1.1 DEBUG http://localhost:2664/  0
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/api/loadprojectids  
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/api/loadprojectids  
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      Request finished in 51.1627ms 200 
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'APIGateway.Controllers.LoadProjectIdsController.GetAsync (APIGateway)'
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'APIGateway.Controllers.LoadProjectIdsController.GetAsync (APIGateway)'
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
+      Route matched with {action = "GetAsync", controller = "LoadProjectIds", page = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[APIGateway.Models.ResponseMessage] GetAsync() on controller APIGateway.Controllers.LoadProjectIdsController (APIGateway).
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
+      Route matched with {action = "GetAsync", controller = "LoadProjectIds", page = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[APIGateway.Models.ResponseMessage] GetAsync() on controller APIGateway.Controllers.LoadProjectIdsController (APIGateway).
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[1]
+      Executing action method APIGateway.Controllers.LoadProjectIdsController.GetAsync (APIGateway) - Validation state: Valid
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[1]
+      Executing action method APIGateway.Controllers.LoadProjectIdsController.GetAsync (APIGateway) - Validation state: Valid
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
+      Executed action APIGateway.Controllers.LoadProjectIdsController.GetAsync (APIGateway) in 3196.5061ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'APIGateway.Controllers.LoadProjectIdsController.GetAsync (APIGateway)'
+fail: Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware[1]
+      An unhandled exception has occurred while executing the request.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at System.Collections.Generic.Dictionary`2.TryInsert(TKey key, TValue value, InsertionBehavior behavior)
+   at HtmlAgilityPack.HtmlDocument.SetIdForNode(HtmlNode node, String id) in C:\Users\Jonathan\source\repos\HtmlAgilityPack\HtmlAgilityPack.Shared\HtmlDocument.cs:line 947
+   at HtmlAgilityPack.HtmlNode.AppendChild(HtmlNode newChild) in C:\Users\Jonathan\source\repos\HtmlAgilityPack\HtmlAgilityPack.Shared\HtmlNode.cs:line 930
+   at HtmlAgilityPack.HtmlDocument.PushNodeEnd(Int32 index, Boolean close) in C:\Users\Jonathan\source\repos\HtmlAgilityPack\HtmlAgilityPack.Shared\HtmlDocument.cs:line 2005
+   at HtmlAgilityPack.HtmlDocument.NewCheck() in C:\Users\Jonathan\source\repos\HtmlAgilityPack\HtmlAgilityPack.Shared\HtmlDocument.cs:line 1253
+   at HtmlAgilityPack.HtmlDocument.Parse() in C:\Users\Jonathan\source\repos\HtmlAgilityPack\HtmlAgilityPack.Shared\HtmlDocument.cs:line 1331
+   at HtmlAgilityPack.HtmlDocument.Load(TextReader reader) in C:\Users\Jonathan\source\repos\HtmlAgilityPack\HtmlAgilityPack.Shared\HtmlDocument.cs:line 771
+   at HtmlAgilityPack.HtmlDocument.LoadHtml(String html) in C:\Users\Jonathan\source\repos\HtmlAgilityPack\HtmlAgilityPack.Shared\HtmlDocument.cs:line 819
+   at APIGateway.Models.CDPHandler.ExtractDataUrl(String content) in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Models\CDPHandler.cs:line 30
+   at APIGateway.Models.CDPHandler.GetAuthTokens(String Url) in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Models\CDPHandler.cs:line 62
+   at APIGateway.Models.CDPHandler.GetAuthTokens(String Url) in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Models\CDPHandler.cs:line 58
+   at APIGateway.Models.CDPHandler.GetAuthTokens(String Url) in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Models\CDPHandler.cs:line 58
+   at APIGateway.Models.CDPHandler.GetAuthTokens(String Url) in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Models\CDPHandler.cs:line 58
+   at APIGateway.Models.CDPHandler.Login() in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Models\CDPHandler.cs:line 105
+   at APIGateway.Models.CDPHandler.RequestAccessTokenForOpenIDConnect() in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Models\CDPHandler.cs:line 120
+   at APIGateway.Models.CDPHandler.GetCompAttributeValues(String[] attrPath) in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Models\CDPHandler.cs:line 48
+   at APIGateway.Models.DBHelper.GetCompAttributeValues(DBCenters dbCenter, String[] attrPath) in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Models\DBHelper.cs:line 37
+   at APIGateway.Controllers.LoadProjectIdsController.GetAsync() in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Controllers\LoadProjectIdsController.cs:line 15
+   at lambda_method(Closure , Object )
+   at Microsoft.Extensions.Internal.ObjectMethodExecutorAwaitable.Awaiter.GetResult()
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at System.Threading.Tasks.ValueTask`1.get_Result()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeNextActionFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextResourceFilter()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Rethrow(ResourceExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeFilterPipelineAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeAsync()
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.AspNetCore.Routing.EndpointRoutingMiddleware.Invoke(HttpContext httpContext)
+   at APIGateway.Middlewares.ImpersonationMiddleWare.<>c__DisplayClass2_0.<<Invoke>b__0>d.MoveNext() in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Middlewares\ImpersonationMiddleWare.cs:line 31
+--- End of stack trace from previous location where exception was thrown ---
+   at APIGateway.Middlewares.ImpersonationMiddleWare.Invoke(HttpContext context) in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Middlewares\ImpersonationMiddleWare.cs:line 24
+   at Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      Request finished in 5315.7063ms 500 text/html; charset=utf-8
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      Request starting HTTP/1.1 GET http://localhost:44317/favicon.ico  
+info: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware[2]
+      Sending file. Request path: '/favicon.ico'. Physical path: 'C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\wwwroot\favicon.ico'
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      Request finished in 14843.6138ms 200 image/x-icon

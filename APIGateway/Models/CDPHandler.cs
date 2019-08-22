@@ -43,10 +43,10 @@ namespace APIGateway.Models
             return response.RequestMessage.RequestUri.AbsoluteUri;
         }
 
-        public override async Task<ResponseMessage> GetComponentAttr(string[] attrPath)
+        public override async Task<ResponseMessage> GetAttributeValuesOfAllComponents(string[] attrPath)
         {
             await RequestAccessTokenForOpenIDConnect();
-            return await base.GetComponentAttr(attrPath);
+            return await base.GetAttributeValuesOfAllComponents(attrPath);
         }
         public static async Task<string> GetAuthTokens(string Url)
         {

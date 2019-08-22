@@ -164,3 +164,159 @@ info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
       Executed endpoint 'APIGateway.Controllers.LoadParametersController.Get (APIGateway)'
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
       Request finished in 63.6934ms 200 application/json; charset=utf-8
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      Request starting HTTP/1.1 GET http://localhost:44331/ExcelAddin/Images/Button32x32.png  
+info: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware[2]
+      Sending file. Request path: '/ExcelAddin/Images/Button32x32.png'. Physical path: 'C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\wwwroot\ExcelAddin\Images\Button32x32.png'
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      Request finished in 49.2041ms 200 image/png
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      Request starting HTTP/1.1 OPTIONS http://localhost:44331/ExcelAddin/  
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      Request finished in 0.4199ms 404 
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      Request starting HTTP/1.1 GET http://localhost:44331/ExcelAddin/Home.html?_host_Info=Excel$Win32$16.01$en-US  
+info: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware[2]
+      Sending file. Request path: '/ExcelAddin/Home.html'. Physical path: 'C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\wwwroot\ExcelAddin\Home.html'
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      Request finished in 1.5336ms 200 text/html
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      Request starting HTTP/1.1 GET http://localhost:44331/ExcelAddin/Scripts/FabricUI/MessageBanner.js  
+info: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware[2]
+      Sending file. Request path: '/ExcelAddin/Scripts/FabricUI/MessageBanner.js'. Physical path: 'C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\wwwroot\ExcelAddin\Scripts\FabricUI\MessageBanner.js'
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      Request finished in 1.7228ms 200 application/javascript
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      Request starting HTTP/1.1 GET http://localhost:44331/ExcelAddin/Home.css  
+info: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware[2]
+      Sending file. Request path: '/ExcelAddin/Home.css'. Physical path: 'C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\wwwroot\ExcelAddin\Home.css'
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      Request finished in 2.3249ms 200 text/css
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      Request starting HTTP/1.1 GET http://localhost:44331/ExcelAddin/bundle/Home.js  
+info: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware[2]
+      Sending file. Request path: '/ExcelAddin/bundle/Home.js'. Physical path: 'C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\wwwroot\ExcelAddin\bundle\Home.js'
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      Request finished in 6.6247ms 200 application/javascript
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      Request starting HTTP/1.1 GET http://localhost:44331/ExcelAddin/api/loadcomponentids  
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'APIGateway.Controllers.LoadComponentIdsController.Get (APIGateway)'
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
+      Route matched with {action = "Get", controller = "LoadComponentIds", page = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[APIGateway.Models.ResponseMessage] Get() on controller APIGateway.Controllers.LoadComponentIdsController (APIGateway).
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[1]
+      Executing action method APIGateway.Controllers.LoadComponentIdsController.Get (APIGateway) - Validation state: Valid
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
+      Executed action method APIGateway.Controllers.LoadComponentIdsController.Get (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 3868.8437ms.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing ObjectResult, writing value of type 'APIGateway.Models.ResponseMessage'.
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
+      Executed action APIGateway.Controllers.LoadComponentIdsController.Get (APIGateway) in 3870.8475ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'APIGateway.Controllers.LoadComponentIdsController.Get (APIGateway)'
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      Request finished in 3871.6313ms 200 application/json; charset=utf-8
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      Request starting HTTP/1.1 GET http://localhost:44331/ExcelAddin/api/loadprojectids  
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'APIGateway.Controllers.LoadProjectIdsController.GetAsync (APIGateway)'
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
+      Route matched with {action = "GetAsync", controller = "LoadProjectIds", page = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[APIGateway.Models.ResponseMessage] GetAsync() on controller APIGateway.Controllers.LoadProjectIdsController (APIGateway).
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[1]
+      Executing action method APIGateway.Controllers.LoadProjectIdsController.GetAsync (APIGateway) - Validation state: Valid
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
+      Executed action method APIGateway.Controllers.LoadProjectIdsController.GetAsync (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 1996.6917ms.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing ObjectResult, writing value of type 'APIGateway.Models.ResponseMessage'.
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
+      Executed action APIGateway.Controllers.LoadProjectIdsController.GetAsync (APIGateway) in 1996.9833ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'APIGateway.Controllers.LoadProjectIdsController.GetAsync (APIGateway)'
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      Request finished in 1997.3937ms 200 application/json; charset=utf-8
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      Request starting HTTP/1.1 GET http://localhost:44331/  
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Page: /Index'
+info: Microsoft.AspNetCore.Mvc.RazorPages.Internal.PageActionInvoker[3]
+      Route matched with {page = "/Index", action = "", controller = ""}. Executing page /Index
+info: Microsoft.AspNetCore.Mvc.RazorPages.Internal.PageActionInvoker[101]
+      Executing handler method APIGateway.HomePage.IndexModel.OnGet - ModelState is Valid
+info: Microsoft.AspNetCore.Mvc.RazorPages.Internal.PageActionInvoker[102]
+      Executed handler method OnGet, returned result .
+info: Microsoft.AspNetCore.Mvc.RazorPages.Internal.PageActionInvoker[103]
+      Executing an implicit handler method - ModelState is Valid
+info: Microsoft.AspNetCore.Mvc.RazorPages.Internal.PageActionInvoker[104]
+      Executed an implicit handler method, returned result Microsoft.AspNetCore.Mvc.RazorPages.PageResult.
+info: Microsoft.AspNetCore.Mvc.RazorPages.Internal.PageActionInvoker[4]
+      Executed page /Index in 69.7501ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Page: /Index'
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      Request finished in 109.6024ms 200 text/html; charset=utf-8
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      Request starting HTTP/1.1 GET http://localhost:44331/  
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Page: /Index'
+info: Microsoft.AspNetCore.Mvc.RazorPages.Internal.PageActionInvoker[3]
+      Route matched with {page = "/Index", action = "", controller = ""}. Executing page /Index
+info: Microsoft.AspNetCore.Mvc.RazorPages.Internal.PageActionInvoker[101]
+      Executing handler method APIGateway.HomePage.IndexModel.OnGet - ModelState is Valid
+info: Microsoft.AspNetCore.Mvc.RazorPages.Internal.PageActionInvoker[102]
+      Executed handler method OnGet, returned result .
+info: Microsoft.AspNetCore.Mvc.RazorPages.Internal.PageActionInvoker[103]
+      Executing an implicit handler method - ModelState is Valid
+info: Microsoft.AspNetCore.Mvc.RazorPages.Internal.PageActionInvoker[104]
+      Executed an implicit handler method, returned result Microsoft.AspNetCore.Mvc.RazorPages.PageResult.
+info: Microsoft.AspNetCore.Mvc.RazorPages.Internal.PageActionInvoker[4]
+      Executed page /Index in 4.6072ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Page: /Index'
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      Request finished in 5.7315ms 200 text/html; charset=utf-8
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      Request starting HTTP/1.1 GET http://localhost:44331/ExcelAddin/api/loadparameters/?propNames=components/designForProjectName,components/designByPersonName,components/comment,components/group,components/resources/group,components/locked,components/properties,projects/name&searchValues=components/componentID:3300,projects/id:36005  
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'APIGateway.Controllers.LoadParametersController.Get (APIGateway)'
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
+      Route matched with {action = "Get", controller = "LoadParameters", page = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[APIGateway.Models.ResponseMessage] Get(System.String, System.String) on controller APIGateway.Controllers.LoadParametersController (APIGateway).
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[1]
+      Executing action method APIGateway.Controllers.LoadParametersController.Get (APIGateway) - Validation state: Valid
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
+      Executed action APIGateway.Controllers.LoadParametersController.Get (APIGateway) in 238.5222ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'APIGateway.Controllers.LoadParametersController.Get (APIGateway)'
+fail: Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware[1]
+      An unhandled exception has occurred while executing the request.
+System.InvalidCastException: Unable to cast object of type 'Newtonsoft.Json.Linq.JArray' to type 'Newtonsoft.Json.Linq.JValue'.
+   at APIGateway.Models.JsonHelper.GetAttributeValue(Object data, String[] attrPath) in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Models\JsonHelper.cs:line 31
+   at APIGateway.Models.ParamCell.SaveValue(Object response) in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Models\ParamCell.cs:line 20
+   at APIGateway.Models.DBHandler.UpdateComponentWithFetchedValues(String compName, List`1 searchProps, List`1 searchValues, List`1 impParams) in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Models\DBHandler.cs:line 23
+   at APIGateway.Models.DBHelper.UpdateComponentWithFetchedValues(DBCenters dbCenter, String compName, List`1 searchProps, List`1 searchValues, List`1 impParams) in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Models\DBHelper.cs:line 23
+   at APIGateway.Models.ExcelHandler.FetchParamsFromDBAsync(String[] propNames, String[] searchValues) in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Models\ExcelHandler.cs:line 188
+   at APIGateway.Models.Settings.LoadParametersAsync(String[] propNames, String[] searchValues) in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Models\Settings.cs:line 38
+   at APIGateway.Controllers.LoadParametersController.Get(String propNames, String searchValues) in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Controllers\LoadParametersController.cs:line 16
+   at lambda_method(Closure , Object )
+   at Microsoft.Extensions.Internal.ObjectMethodExecutorAwaitable.Awaiter.GetResult()
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at System.Threading.Tasks.ValueTask`1.get_Result()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeNextActionFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextResourceFilter()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Rethrow(ResourceExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeFilterPipelineAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeAsync()
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.AspNetCore.Routing.EndpointRoutingMiddleware.Invoke(HttpContext httpContext)
+   at APIGateway.Middlewares.ImpersonationMiddleWare.<>c__DisplayClass2_0.<<Invoke>b__0>d.MoveNext() in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Middlewares\ImpersonationMiddleWare.cs:line 31
+--- End of stack trace from previous location where exception was thrown ---
+   at APIGateway.Middlewares.ImpersonationMiddleWare.Invoke(HttpContext context) in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Middlewares\ImpersonationMiddleWare.cs:line 24
+   at Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      Request finished in 353.4039ms 500 text/html; charset=utf-8

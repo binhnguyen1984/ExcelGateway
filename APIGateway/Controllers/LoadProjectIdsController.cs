@@ -12,7 +12,7 @@ namespace APIGateway.Controllers
         [HttpGet]
         public async Task<ResponseMessage> GetAsync()
         {
-            return await DBHelper.GetAttributeValues(Settings.DBCenters.CDP, new string[] { "projects", "id" });
+            return await DBHelper.GetAttributeValuesOfAllComponents(Settings.DBCenters.CDP, new string[] { "projects", "id" });
         }
     }
 }

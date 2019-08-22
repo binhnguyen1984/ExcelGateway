@@ -11,7 +11,7 @@ namespace APIGateway.Models
     /// </summary>
     public class ApiHandler
     {
-        private HttpClient ApiClient = null;
+        private readonly HttpClient ApiClient = null;
         public ApiHandler()
         {
             HttpClientHandler clientHandler = new HttpClientHandler
@@ -40,7 +40,7 @@ namespace APIGateway.Models
                     if (result[0] == '[') return new ResponseMessage(true, JArray.Parse(result));
                     return new ResponseMessage(true, JObject.Parse(result));
                 }
-                else return new ResponseMessage(false, response.ReasonPhrase);
+                else return new ResponseMessage(false, "Error code:" + response.StatusCode);
             }
         }
 
@@ -50,7 +50,7 @@ namespace APIGateway.Models
             using (var response = await ApiClient.PutAsync(Url, content))
             {
                 if (response.IsSuccessStatusCode) return new ResponseMessage(true, null);
-                else return new ResponseMessage(false, response.ReasonPhrase);
+                else return new ResponseMessage(false, "Error code:"+response.StatusCode);
             }
         }
 

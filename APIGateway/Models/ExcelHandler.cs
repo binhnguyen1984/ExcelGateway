@@ -170,20 +170,23 @@ namespace APIGateway.Models
         /// </summary>
         public async Task<ResponseMessage> FetchParamsFromDBAsync(string[] propNames, string[] searchValues)
         {
-            List<string> result = new List<string>();
+            List<object> result = new List<object>();
             IDictionary<string, List<ParamCell>> impParamDict = BuildParamDict(propNames);
             IDictionary<string, (List<string>, List<string>)> searchParamDict = BuildSearchParamDict(searchValues);
-            foreach (KeyValuePair<string, (List<string>, List<string>)> searchParams in searchParamDict)
+            foreach (KeyValuePair<string, List<ParamCell>> impParamsEntry in impParamDict)
             {
-                string compName = searchParams.Key;
+                string compName = impParamsEntry.Key;
                 //find all the parameters that come from the same component
-                List<ParamCell> impParams = impParamDict[compName];
-                if (impParams == null) return new ResponseMessage(false, "Component " + compName + " has no import parameters");
+                List<ParamCell> impParams = impParamsEntry.Value;
+                if (!searchParamDict.ContainsKey(compName))
+                    return new ResponseMessage(false, "Component " + compName + " is out of scope");
+                (List<string>, List<string>) propsAndValues = searchParamDict[compName];
                 ComponentInfo updateCompInfo = SearchCompDict[compName];
                 if (updateCompInfo == null) return new ResponseMessage(false, "Missing database information for component " + compName);
                 //make a query to the corresponding database server
-                ResponseMessage response = await DBHelper.UpdateComponentWithFetchedValues(updateCompInfo.FromDB, compName, searchParams.Value.Item1, searchParams.Value.Item2, impParams);
-                if (!response.IsSuccessful) return response;
+                ResponseMessage response = await DBHelper.UpdateComponentWithFetchedValues(updateCompInfo.FromDB, compName, propsAndValues.Item1, propsAndValues.Item2, impParams);
+                if (!response.IsSuccessful)
+                    return response;
                 //store the loaded component for update later
                 StoreUpdateInfo(compName, updateCompInfo.CompIdName, response.Data as JObject);
 

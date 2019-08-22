@@ -30,11 +30,11 @@ namespace APIGateway.Models
             else return await CdpHandler.UpdateComponentToDB(compName, loadedCompDetails);
         }
 
-        public static async Task<ResponseMessage> GetAttributeValues(DBCenters dbCenter, string[] attrPath)
+        public static async Task<ResponseMessage> GetAttributeValuesOfAllComponents(DBCenters dbCenter, string[] attrPath)
         {
             if (dbCenter == DBCenters.HDB)
-                return await HdbHandler.GetComponentAttr(attrPath);
-            return await CdpHandler.GetComponentAttr(attrPath);
+                return await HdbHandler.GetAttributeValuesOfAllComponents(attrPath);
+            return await CdpHandler.GetAttributeValuesOfAllComponents(attrPath);
         }
     }
 }

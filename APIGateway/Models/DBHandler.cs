@@ -16,7 +16,7 @@ namespace APIGateway.Models
             ResponseMessage respObject = await FetchDataFromDB(searchUrl);
             if (!respObject.IsSuccessful) return respObject;
             JObject componentDetails = GetUpdateComponent(respObject.Data, compName);
-            if (componentDetails == null) return null;
+            if (componentDetails == null) return new ResponseMessage(false, "No results for component '"+compName+"' were found");
             //update parameters with the values fetched from the databases
             foreach (ParamCell impParam in impParams)
             {
@@ -31,15 +31,13 @@ namespace APIGateway.Models
         /// </summary>
         /// <param name="compName"></param>
         /// <returns></returns>
-        public virtual async Task<ResponseMessage> GetComponentAttr(string[] attrPath)
+        public virtual async Task<ResponseMessage> GetAttributeValuesOfAllComponents(string[] attrPath)
         {
             string apiUrl = GetAllComponentUrl(attrPath[0]);
             ResponseMessage response = await ApiHandler.FetchDataFromDB(apiUrl);
             if (!response.IsSuccessful) return response;
             object data = ExtractResponseBody(response.Data, attrPath[0]);
-            response = JsonHelper.ExtractAttributeValues(attrPath, data);
-            if (!response.IsSuccessful) return response;
-            return new ResponseMessage(true, response.Data);
+            return JsonHelper.GetStringAttributeFromMultipleComponents(data, attrPath);
         }
         private JObject GetUpdateComponent(object respObject, string compName = null)
         {

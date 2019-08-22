@@ -1,44 +1,54 @@
 ﻿using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 
 namespace APIGateway.Models
 {
     public sealed class ParamCell
     {
         public string[] PropPath { get; private set; }
-        public string Value { get; set; }
+        public object Value { get; set; }
         public ParamCell(string[] path, string value)
         {
             this.PropPath = path;
             this.Value = value;
         }
         public ParamCell(string[] path) : this(path, "") { }
+
         /// <summary>
         /// Fill up value for this cell using the data from the database
         /// </summary>
-        public ResponseMessage SaveValue(object response)
+        /// <param name="response"></param>
+        /// <returns></returns>
+        public ResponseMessage SaveValue(JObject response)
         {
-            ResponseMessage saveValueStatus = JsonHelper.GetAttributeValue(response, PropPath);
+            ResponseMessage saveValueStatus = JsonHelper.GetJsonAttributeFromOneComponent(response, PropPath);
             if (!saveValueStatus.IsSuccessful) return saveValueStatus;
-            JValue valueObj = saveValueStatus.Data as JValue;
-            if (valueObj == null) return new ResponseMessage(false, "No data is found for property '" + PropPath[PropPath.Length - 1] + "'");
-            object value = valueObj.Value;
-            Value = value == null ? "" : value.ToString();
-            return new ResponseMessage(true, null);
+            if (saveValueStatus.Data is JValue)
+            {
+                JValue valueObj = saveValueStatus.Data as JValue;
+                object value = valueObj.Value;
+                Value = value == null ? "" : value.ToString();
+                return new ResponseMessage(true, null);
+            }
+            else if (saveValueStatus.Data is JArray)
+                return new ResponseMessage(false, "Property '"+PropPath[PropPath.Length-1]+"' is a list and thus requires an index");
+            return new ResponseMessage(false, "Datatype of property '" + PropPath[PropPath.Length - 1] + "' is unknown");
         }
 
         /// <summary>
         /// Update value to the loaded data which can then be put back to the database
         /// </summary>
-        /// <param name="data"></param>
-        public ResponseMessage UpdateValueTo(object response, string compIdName, string compIdValue)
+        /// <param name="componendData"></param>
+        /// <param name="compIdName"></param>
+        /// <param name="compIdValue"></param>
+        /// <returns></returns>
+        public ResponseMessage UpdateValueTo(object componendData, string compIdName, string compIdValue)
         {
-            ResponseMessage updateValueStatus = JsonHelper.GetAttributeValue(response, PropPath);
-            if (!updateValueStatus.IsSuccessful) return updateValueStatus;
-            JValue valueObj = updateValueStatus.Data as JValue;
-            if (valueObj == null) return new ResponseMessage(false, "No data is found for property '" + PropPath[PropPath.Length - 1] + "'");
-            if (PropPath[PropPath.Length - 1].CompareTo(compIdName) == 0 && Value.CompareTo(compIdValue) != 0)
+            ResponseMessage response = JsonHelper.GetJsonAttributeFromOneComponent(componendData, PropPath);
+            if (!response.IsSuccessful) return response;
+            if (PropPath[PropPath.Length - 1].CompareTo(compIdName) == 0 && (Value as string).CompareTo(compIdValue) != 0)
                 return new ResponseMessage(false, "Property '" + compIdName + "' is the primary key and thus cannot be changed");
-            valueObj.Value = Value;
+            (response.Data as JValue).Value = Value;
             return new ResponseMessage(true, null);
         }
     }
