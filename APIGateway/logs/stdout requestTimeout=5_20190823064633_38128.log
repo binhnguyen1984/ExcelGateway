@@ -1,0 +1,4 @@
+
+Unhandled Exception: System.NullReferenceException: Object reference not set to an instance of an object.
+   at APIGateway.Models.Settings.LoadExcelAddinConfig() in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Models\Settings.cs:line 24
+   at APIGateway.Program.Main(String[] args) in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Program.cs:line 14

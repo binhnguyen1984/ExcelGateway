@@ -11,7 +11,6 @@ namespace APIGateway
         {
             AppContext.SetSwitch("System.Net.Http.UseSocketsHttpHandler", false); //this is for impersonation to work
             DBHelper.InitializeDbHelper();
-            Settings.LoadExcelAddinConfig();
             CreateWebHostBuilder(args).Build().Run();
         }
 

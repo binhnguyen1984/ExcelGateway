@@ -13,7 +13,7 @@ namespace APIGateway.Controllers
         {
             if (searchValues == null) return new ResponseMessage(false, "No search values are specified");
             if (propNames == null) return new ResponseMessage(false, "No import parameters are specified");
-            return await Settings.LoadParametersAsync(propNames.Split(","), searchValues.Split(','));
+            return await DBHelper.ExcelHandlerInst.FetchParamsFromDBAsync(propNames.Split(","), searchValues.Split(','));
         }
     }
 }

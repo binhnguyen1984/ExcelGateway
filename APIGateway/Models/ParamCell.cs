@@ -31,8 +31,8 @@ namespace APIGateway.Models
                 return new ResponseMessage(true, null);
             }
             else if (saveValueStatus.Data is JArray)
-                return new ResponseMessage(false, "Property '"+PropPath[PropPath.Length-1]+"' is a list and thus requires an index");
-            return new ResponseMessage(false, "Datatype of property '" + PropPath[PropPath.Length - 1] + "' is unknown");
+                return new ResponseMessage(false, "Parameter '" + PropPath[PropPath.Length-1]+"' is a list and thus requires an index");
+            return new ResponseMessage(false, "Datatype of parameter '" + PropPath[PropPath.Length - 1] + "' is unknown");
         }
 
         /// <summary>
@@ -47,9 +47,15 @@ namespace APIGateway.Models
             ResponseMessage response = JsonHelper.GetJsonAttributeFromOneComponent(componendData, PropPath);
             if (!response.IsSuccessful) return response;
             if (PropPath[PropPath.Length - 1].CompareTo(compIdName) == 0 && (Value as string).CompareTo(compIdValue) != 0)
-                return new ResponseMessage(false, "Property '" + compIdName + "' is the primary key and thus cannot be changed");
-            (response.Data as JValue).Value = Value;
-            return new ResponseMessage(true, null);
+                return new ResponseMessage(false, "Parameter '" + compIdName + "' is the primary key and thus cannot be changed");
+            if (response.Data is JValue)
+            {
+                (response.Data as JValue).Value = Value;
+                return new ResponseMessage(true, null);
+            }
+            else if (response.Data is JArray)
+                return new ResponseMessage(false, "Parameter '" + PropPath[PropPath.Length - 1] + "' is a list and thus requires an index");
+            return new ResponseMessage(false, "Datatype of parameter '" + PropPath[PropPath.Length - 1] + "' is unknown");
         }
     }
 }

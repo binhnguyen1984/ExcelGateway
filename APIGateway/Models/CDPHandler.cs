@@ -50,20 +50,22 @@ namespace APIGateway.Models
         }
         public static async Task<string> GetAuthTokens(string Url)
         {
-            HttpResponseMessage response = await ApiHandler.GetAsync(Url);
-            string content = await response.Content.ReadAsStringAsync();
-            if (response.StatusCode == System.Net.HttpStatusCode.Found)
+            using (HttpResponseMessage response = await ApiHandler.GetAsync(Url))
             {
-                string redirectUrl = GetAbsoluteRedirectUri(response);
-                return await GetAuthTokens(redirectUrl);
-            }
-            else if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                string dataUrl = ExtractDataUrl(content);
-                var lastUrl = response.RequestMessage.RequestUri.GetLeftPart(UriPartial.Authority) + dataUrl;
-                lastUrl = System.Web.HttpUtility.HtmlDecode(lastUrl);
-                response = await ApiHandler.GetAsync(lastUrl);
-                return response.Headers.Location.Query;
+                string content = await response.Content.ReadAsStringAsync();
+                if (response.StatusCode == System.Net.HttpStatusCode.Found)
+                {
+                    string redirectUrl = GetAbsoluteRedirectUri(response);
+                    return await GetAuthTokens(redirectUrl);
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    string dataUrl = ExtractDataUrl(content);
+                    var lastUrl = response.RequestMessage.RequestUri.GetLeftPart(UriPartial.Authority) + dataUrl;
+                    lastUrl = System.Web.HttpUtility.HtmlDecode(lastUrl);
+                    using (HttpResponseMessage lastResponse = await ApiHandler.GetAsync(lastUrl))
+                        return lastResponse.Headers.Location.Query;
+                }
             }
             return null;
         }
@@ -141,7 +143,7 @@ namespace APIGateway.Models
         /// <param name="compName"></param>
         /// <param name="searchValues"></param>
         /// <returns></returns>
-        protected override string GetSearchURL(string compName, List<string> searchProps, List<string> searchValues)
+        protected override string GetSearchURL(string compName, List<string> searchProps, List<string> searchValues, IEnumerable<string[]> impPaths = null)
         {
             string searchUrl = Settings.CDPApiUrl + compName;
             if (searchValues.Count > 0) searchUrl += "/" + searchValues[0];

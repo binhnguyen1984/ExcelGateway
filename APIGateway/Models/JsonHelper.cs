@@ -18,12 +18,12 @@ namespace APIGateway.Models
             int i = 1;
             while (i < prop_num)
             {
-                if (componentData == null) return new ResponseMessage(false, "No data found for property '" + attrPath[i] + "'");
+                if (componentData == null) return new ResponseMessage(false, "No data found for parameter '" + attrPath[i] + "'");
                 if (componentData is JObject)
                 {
                     JObject dataObj = (componentData as JObject);
                     if (!dataObj.ContainsKey(attrPath[i]))
-                        return new ResponseMessage(false, "Property '" + attrPath[i] + "' does not exist");
+                        return new ResponseMessage(false, "Parameter '" + attrPath[i] + "' does not exist");
                     componentData = dataObj[attrPath[i]];
                 }
                 else if (componentData is JArray)
@@ -32,12 +32,12 @@ namespace APIGateway.Models
                     if (Int32.TryParse(attrPath[i], out int index))
                     {
                         if (index >= dataArr.Count)
-                            return new ResponseMessage(false, "Index of property '" + attrPath[i-1] + "' is out of range");
+                            return new ResponseMessage(false, "Index of parameter '" + attrPath[i-1] + "' is out of range");
                         componentData = dataArr[index];
                     }
                     else return new ResponseMessage(false, "'"+ attrPath[i]+"' is not a valid index");
                 }
-                else return new ResponseMessage(false, "Datatype of property '" + attrPath[i] + "' is unknown");
+                else return new ResponseMessage(false, "Datatype of parameter '" + attrPath[i] + "' is unknown");
                 i++;
             }
             return new ResponseMessage(true, componentData);

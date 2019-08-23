@@ -12,10 +12,12 @@ namespace APIGateway.Models
     {
         private static DBHandler CdpHandler = null;
         private static DBHandler HdbHandler = null;
+        public static ExcelHandler ExcelHandlerInst = null;
         public static void InitializeDbHelper()
         {
             CdpHandler = new CDPHandler();
             HdbHandler = new HDBHandler();
+            ExcelHandlerInst = new ExcelHandler("excelconfig.xls");
         }
         public static async Task<ResponseMessage> UpdateComponentWithFetchedValues(DBCenters dbCenter, string compName, List<string> searchProps, List<string> searchValues, List<ParamCell> impParams)
         {

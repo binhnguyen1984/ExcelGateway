@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace APIGateway.Models
@@ -12,7 +13,8 @@ namespace APIGateway.Models
         protected static ApiHandler ApiHandler = new ApiHandler(); // it will be shared between CDP and HDB handlers
         public async Task<ResponseMessage> UpdateComponentWithFetchedValues(string compName, List<string> searchProps, List<string> searchValues, List<ParamCell> impParams)
         {
-            string searchUrl = GetSearchURL(compName, searchProps, searchValues);
+            IEnumerable<string[]> impPaths = impParams.Select(param => param.PropPath);
+            string searchUrl = GetSearchURL(compName, searchProps, searchValues, impPaths);
             ResponseMessage respObject = await FetchDataFromDB(searchUrl);
             if (!respObject.IsSuccessful) return respObject;
             JObject componentDetails = GetUpdateComponent(respObject.Data, compName);
@@ -61,7 +63,7 @@ namespace APIGateway.Models
             string updateUrl = GetPutUrl(compName, compIdValue);
             return await ApiHandler.UpdateDataToDB(updateUrl, loadedCompDetails.ToString());
         }
-        protected virtual string GetSearchURL(string compName, List<string> searchProps, List<string> searchValues) => "";
+        protected virtual string GetSearchURL(string compName, List<string> searchProps, List<string> searchValues, IEnumerable<string[]> impPaths = null) => "";
         protected virtual string GetPutUrl(string compName, string compID = null) => "";
     }
 }

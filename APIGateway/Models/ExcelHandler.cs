@@ -2,6 +2,7 @@
 using Syncfusion.XlsIO;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using static APIGateway.Models.Settings;
@@ -10,42 +11,44 @@ namespace APIGateway.Models
 {
     public class ExcelHandler
     {
-        private const string SearchSectionText = "Search criteria"; //the text appears first in the search section
+        private const string StartSearchSectionHeader = "Search components"; //the text appears first in the search section
+        private const string StartListPropsHeader = "List properties";
         private const string HdbName = "HDB";
         private IRange range;
         private int RowCount, ColumnCount;
         private IDictionary<string, string> SearchCompIDValues { get; set; }
         private IDictionary<string, ComponentInfo> SearchCompDict { get; set; }
         private IDictionary<string, JObject> ExportLoadedCompList { get; set; } // a dictionary of components loaded from the database which are to be updated
-
-        public ExcelHandler(IWorksheet ws)
+        private List<string[]> ListTypeProperties { get; set; }
+        public ExcelHandler(string ConfigFile)
         {
-            SetExcelGlobals(ws);
             InitializeData();
-            ReadConfiguration();
+            ReadConfiguration(ConfigFile);
             InitializeExportLoadedCompList();
         }
-
-
-
         private void InitializeData()
         {
             this.SearchCompDict = new Dictionary<string, ComponentInfo>();
             this.SearchCompIDValues = new Dictionary<string, string>();
+            this.ListTypeProperties = new List<string[]>();
             ExportLoadedCompList = new Dictionary<string, JObject>();
         }
 
-        private void SetExcelGlobals(IWorksheet ws)
+        private void ReadConfiguration(string ConfigFile)
         {
-            range = ws.Range;
-            RowCount = ws.Rows.Length;
-            ColumnCount = ws.Columns.Length;
-        }
+            FileStream configFile = new FileStream(ConfigFile, FileMode.Open);
+            using (ExcelEngine excelEngine = new ExcelEngine())
+            {
+                IWorkbook wb = excelEngine.Excel.Workbooks.Open(configFile);
+                var ws = wb.Worksheets[0];
+                range = ws.Range;
+                RowCount = ws.Rows.Length;
+                ColumnCount = ws.Columns.Length;
 
-        private void ReadConfiguration()
-        {
-            int firstRow = 1;
-            ReadSearchCriteria(ref firstRow);
+                ReadConfiguration(StartSearchSectionHeader, ReadComponentAndDBNames,1,1);
+                ReadConfiguration(StartListPropsHeader, ReadListProperties,1,5);
+                wb.Close();
+            }
         }
         private void InitializeExportLoadedCompList()
         {
@@ -59,47 +62,65 @@ namespace APIGateway.Models
             return DBCenters.CDP;
         }
 
-        private bool FindFirstRowStartWithText(string text, ref int firstRow)
+        private void FindFirstRowStartWithText(string text, ref int firstRow, ref int firstCol)
         {
-            for (int col = 1; col < ColumnCount; col++)
+            for (; firstCol < ColumnCount; firstCol++)
                 for (; firstRow <= RowCount; firstRow++)
                 {
-                    var cell = range[firstRow, col];
+                    var cell = range[firstRow, firstCol];
                     if (cell != null && cell.Value != null && string.Compare(cell.Value.ToString(), text) == 0)
-                        return true;
+                        return;
                 }
-            return false;
         }
 
-        private void ReadSearchCriteria(ref int firstRow)
+        delegate void ReadConfigurationHandler(ref int firstRow, ref int firstCol);
+
+        private void ReadConfiguration(string StartWithText, ReadConfigurationHandler readConfigHandler, int firstRow, int firstCol)
         {
-            FindFirstRowStartWithText(SearchSectionText, ref firstRow);
+            FindFirstRowStartWithText(StartWithText, ref firstRow, ref firstCol);
             firstRow++; //read the title line
             while (firstRow < RowCount)
             {
-                ReadComponentAndDBNames(ref firstRow);
+                readConfigHandler(ref firstRow, ref firstCol);
                 firstRow++; // read an empty line
             }
         }
 
-        private void ReadComponentAndDBNames(ref int firstRow)
+        private void ReadComponentAndDBNames(ref int firstRow, ref int firstCol)
         {
             object compNameValue, dbNameValue, compIDNameValue;
-            if ((compNameValue = range[firstRow, 1].Value) == null ||
-                (dbNameValue = range[firstRow, 2].Value) == null ||
-                (compIDNameValue = range[firstRow, 3].Value) == null)
-                throw new Exception("Missing values in the search section");
-            string compName = compNameValue.ToString();
-            string dbName = dbNameValue.ToString();
-            string compIDName = compIDNameValue.ToString();
-            if (compName.Length > 0 && dbName.Length > 0 && compIDName.Length > 0)
+            if ((compNameValue = range[firstRow, firstCol].Value) != null &&
+                (dbNameValue = range[firstRow, firstCol+1].Value) != null &&
+                (compIDNameValue = range[firstRow, firstCol+2].Value) != null)
             {
-                DBCenters FromDB = GetDBIdentity(dbName);
-                ComponentInfo updateCompInfo = new ComponentInfo(FromDB, compIDName);
-                if (!SearchCompDict.ContainsKey(compName))
-                    SearchCompDict.Add(compName, updateCompInfo);
+                string compName = compNameValue.ToString();
+                string dbName = dbNameValue.ToString();
+                string compIDName = compIDNameValue.ToString();
+                if (compName.Length > 0 && dbName.Length > 0 && compIDName.Length > 0)
+                {
+                    DBCenters FromDB = GetDBIdentity(dbName);
+                    ComponentInfo updateCompInfo = new ComponentInfo(FromDB, compIDName);
+                    if (!SearchCompDict.ContainsKey(compName))
+                        SearchCompDict.Add(compName, updateCompInfo);
+                }
+                else firstRow++;
             }
-            else firstRow++;
+        }
+
+        private void ReadListProperties(ref int firstRow, ref int firstCol)
+        {
+            object propNameValue;
+            if ((propNameValue = range[firstRow, firstCol].Value) != null)
+            {
+                string propName = propNameValue.ToString();
+                if (propName.Length > 0)
+                {
+                    string[] path = propName.Split(Settings.PathSplitter);
+                    if(path.Length==2)
+                        ListTypeProperties.Add(path);
+                }
+                else firstRow++;
+            }
         }
 
         /// <summary>
@@ -181,8 +202,10 @@ namespace APIGateway.Models
                 if (!searchParamDict.ContainsKey(compName))
                     return new ResponseMessage(false, "Component " + compName + " is out of scope");
                 (List<string>, List<string>) propsAndValues = searchParamDict[compName];
+                if (!SearchCompDict.ContainsKey(compName))
+                    return new ResponseMessage(false, "Missing database information for component '" + compName+"'");
                 ComponentInfo updateCompInfo = SearchCompDict[compName];
-                if (updateCompInfo == null) return new ResponseMessage(false, "Missing database information for component " + compName);
+
                 //make a query to the corresponding database server
                 ResponseMessage response = await DBHelper.UpdateComponentWithFetchedValues(updateCompInfo.FromDB, compName, propsAndValues.Item1, propsAndValues.Item2, impParams);
                 if (!response.IsSuccessful)
@@ -246,6 +269,23 @@ namespace APIGateway.Models
                 if (!updateStatus.IsSuccessful) return updateStatus;
             }
             return new ResponseMessage(true, null);
+        }
+
+        public List<string> GetListTypeProps(IEnumerable<string[]> props)
+        {
+            List<string> listTypeProps = new List<string>();
+            foreach(var prop in props)
+            {
+                if(prop.Length>2 && prop[2].Length>0 && prop[2].All(char.IsDigit))
+                {
+                    foreach(var typeProp in this.ListTypeProperties)
+                    {
+                        if (typeProp[0].CompareTo(prop[0]) == 0 && typeProp[1].CompareTo(prop[1]) == 0)
+                            listTypeProps.Add(prop[1]);
+                    }
+                }
+            }
+            return listTypeProps;
         }
     }
 }
