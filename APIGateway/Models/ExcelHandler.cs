@@ -271,9 +271,9 @@ namespace APIGateway.Models
             return new ResponseMessage(true, null);
         }
 
-        public List<string> GetListTypeProps(IEnumerable<string[]> props)
+        public HashSet<string> GetListTypeProps(IEnumerable<string[]> props)
         {
-            List<string> listTypeProps = new List<string>();
+            HashSet<string> listTypeProps = new HashSet<string>();
             foreach(var prop in props)
             {
                 if(prop.Length>2 && prop[2].Length>0 && prop[2].All(char.IsDigit))

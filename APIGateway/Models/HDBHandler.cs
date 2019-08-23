@@ -28,7 +28,7 @@ namespace APIGateway.Models
 
         private string CreateExpansion(IEnumerable<string[]> paths)
         {
-            List<string> typeProps = DBHelper.ExcelHandlerInst.GetListTypeProps(paths);
+            HashSet<string> typeProps = DBHelper.ExcelHandlerInst.GetListTypeProps(paths);
             string expansion = "";
             foreach (var prop in typeProps)
                 expansion += prop + ",";
@@ -44,7 +44,6 @@ namespace APIGateway.Models
                 if (searchProps[i] != null && searchProps[i].Length > 0 && searchValues[i] != null && searchValues[i].Length > 0)
                     filter += searchProps[i] + " eq " + searchValues[i];
             }
-
             return filter;
         }
 
