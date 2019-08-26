@@ -1,0 +1,28 @@
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[0]
+      User profile is available. Using 'C:\Users\lnztha01\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+Hosting environment: Development
+Content root path: C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway
+Now listening on: http://127.0.0.1:4183
+Application started. Press Ctrl+C to shut down.
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/api/loadprojectids  
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      Request finished in 65.4709ms 404 
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/api/loadcdpprojectids  
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'APIGateway.Controllers.LoadCdpProjectIdsController.GetAsync (APIGateway)'
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
+      Route matched with {action = "GetAsync", controller = "LoadCdpProjectIds", page = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[APIGateway.Models.ResponseMessage] GetAsync() on controller APIGateway.Controllers.LoadCdpProjectIdsController (APIGateway).
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[1]
+      Executing action method APIGateway.Controllers.LoadCdpProjectIdsController.GetAsync (APIGateway) - Validation state: Valid
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
+      Executed action method APIGateway.Controllers.LoadCdpProjectIdsController.GetAsync (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 5130.3409ms.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing ObjectResult, writing value of type 'APIGateway.Models.ResponseMessage'.
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
+      Executed action APIGateway.Controllers.LoadCdpProjectIdsController.GetAsync (APIGateway) in 5161.4489ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'APIGateway.Controllers.LoadCdpProjectIdsController.GetAsync (APIGateway)'
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      Request finished in 5187.346ms 200 application/json; charset=utf-8

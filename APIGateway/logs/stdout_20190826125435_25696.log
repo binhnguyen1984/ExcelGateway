@@ -1,0 +1,70 @@
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[0]
+      User profile is available. Using 'C:\Users\lnztha01\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+Hosting environment: Development
+Content root path: C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway
+Now listening on: http://127.0.0.1:47095
+Application started. Press Ctrl+C to shut down.
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/api/loadhdbcomponentids  
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'APIGateway.Controllers.LoadHdbComponentIdsController.Get (APIGateway)'
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
+      Route matched with {action = "Get", controller = "LoadHdbComponentIds", page = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[APIGateway.Models.ResponseMessage] Get() on controller APIGateway.Controllers.LoadHdbComponentIdsController (APIGateway).
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[1]
+      Executing action method APIGateway.Controllers.LoadHdbComponentIdsController.Get (APIGateway) - Validation state: Valid
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
+      Executed action method APIGateway.Controllers.LoadHdbComponentIdsController.Get (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 3927.7265ms.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing ObjectResult, writing value of type 'APIGateway.Models.ResponseMessage'.
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
+      Executed action APIGateway.Controllers.LoadHdbComponentIdsController.Get (APIGateway) in 4016.0205ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'APIGateway.Controllers.LoadHdbComponentIdsController.Get (APIGateway)'
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      Request finished in 4111.0563ms 200 application/json; charset=utf-8
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      Request starting HTTP/1.1 GET http://localhost:44317/favicon.ico  
+info: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware[2]
+      Sending file. Request path: '/favicon.ico'. Physical path: 'C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\wwwroot\favicon.ico'
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      Request finished in 10.9669ms 200 image/x-icon
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/api/loadcdpporojectids  
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      Request finished in 6.268ms 404 
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/api/loadcdpprojectids  
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'APIGateway.Controllers.LoadCdpProjectIdsController.GetAsync (APIGateway)'
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
+      Route matched with {action = "GetAsync", controller = "LoadCdpProjectIds", page = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[APIGateway.Models.ResponseMessage] GetAsync() on controller APIGateway.Controllers.LoadCdpProjectIdsController (APIGateway).
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[1]
+      Executing action method APIGateway.Controllers.LoadCdpProjectIdsController.GetAsync (APIGateway) - Validation state: Valid
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
+      Executed action method APIGateway.Controllers.LoadCdpProjectIdsController.GetAsync (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 634.3721ms.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing ObjectResult, writing value of type 'APIGateway.Models.ResponseMessage'.
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
+      Executed action APIGateway.Controllers.LoadCdpProjectIdsController.GetAsync (APIGateway) in 635.2191ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'APIGateway.Controllers.LoadCdpProjectIdsController.GetAsync (APIGateway)'
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      Request finished in 641.6341ms 200 application/json; charset=utf-8
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/api/loadhdbprojectnames  
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'APIGateway.Controllers.LoadHdbProjectNamesController.GetAsync (APIGateway)'
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
+      Route matched with {action = "GetAsync", controller = "LoadHdbProjectNames", page = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[APIGateway.Models.ResponseMessage] GetAsync() on controller APIGateway.Controllers.LoadHdbProjectNamesController (APIGateway).
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[1]
+      Executing action method APIGateway.Controllers.LoadHdbProjectNamesController.GetAsync (APIGateway) - Validation state: Valid
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
+      Executed action method APIGateway.Controllers.LoadHdbProjectNamesController.GetAsync (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 12399.4953ms.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing ObjectResult, writing value of type 'APIGateway.Models.ResponseMessage'.
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
+      Executed action APIGateway.Controllers.LoadHdbProjectNamesController.GetAsync (APIGateway) in 12400.914ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'APIGateway.Controllers.LoadHdbProjectNamesController.GetAsync (APIGateway)'
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      Request finished in 12407.6324ms 200 application/json; charset=utf-8

@@ -1,0 +1,64 @@
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[0]
+      User profile is available. Using 'C:\Users\lnztha01\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+Hosting environment: Development
+Content root path: C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway
+Now listening on: http://127.0.0.1:17861
+Application started. Press Ctrl+C to shut down.
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      Request starting HTTP/1.1 DEBUG http://localhost:2664/  0
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      Request finished in 75.7255ms 200 
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      Request starting HTTP/1.1 OPTIONS http://localhost:44317/ExcelAddin/  
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      Request finished in 86.8335ms 404 
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/Home.html?_host_Info=Excel$Win32$16.01$en-US  
+info: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware[2]
+      Sending file. Request path: '/ExcelAddin/Home.html'. Physical path: 'C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\wwwroot\ExcelAddin\Home.html'
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      Request finished in 27.7057ms 200 text/html
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/Scripts/FabricUI/MessageBanner.js  
+info: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware[6]
+      The file /ExcelAddin/Scripts/FabricUI/MessageBanner.js was not modified
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      Request finished in 9.3282ms 304 application/javascript
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/Home.css  
+info: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware[6]
+      The file /ExcelAddin/Home.css was not modified
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      Request finished in 4.8154ms 304 text/css
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/bundle/Home.js  
+info: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware[2]
+      Sending file. Request path: '/ExcelAddin/bundle/Home.js'. Physical path: 'C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\wwwroot\ExcelAddin\bundle\Home.js'
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      Request finished in 11.7282ms 200 application/javascript
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/api/loadcomponentids  
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      Request finished in 3.7534ms 404 
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/api/loadprojectids  
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      Request finished in 5.3412ms 404 
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/api/loadhdbprojectnames  
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'APIGateway.Controllers.LoadHdbProjectNamesController.GetAsync (APIGateway)'
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
+      Route matched with {action = "GetAsync", controller = "LoadHdbProjectNames", page = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[APIGateway.Models.ResponseMessage] GetAsync() on controller APIGateway.Controllers.LoadHdbProjectNamesController (APIGateway).
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[1]
+      Executing action method APIGateway.Controllers.LoadHdbProjectNamesController.GetAsync (APIGateway) - Validation state: Valid
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
+      Executed action method APIGateway.Controllers.LoadHdbProjectNamesController.GetAsync (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 12916.1247ms.
+info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing ObjectResult, writing value of type 'APIGateway.Models.ResponseMessage'.
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
+      Executed action APIGateway.Controllers.LoadHdbProjectNamesController.GetAsync (APIGateway) in 13149.8368ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'APIGateway.Controllers.LoadHdbProjectNamesController.GetAsync (APIGateway)'
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      Request finished in 13192.2416ms 200 application/json; charset=utf-8

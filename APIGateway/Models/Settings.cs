@@ -15,6 +15,7 @@ namespace APIGateway.Models
         public static string CDPScope = "openid volta";
 
         public static string PathSplitter = "/"; //splitter between parents and children nodes
-        public static string PropValueSplitter = ":"; // splitter between a property name and its value
+        public static string PropValueSplitter = "="; // spliter between a property name and its value
+        public static string DBNameCompSplitter = ":"; //spliter between a database name and a component name
     }
 }

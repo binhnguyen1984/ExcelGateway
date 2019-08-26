@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using static APIGateway.Models.Settings;
@@ -19,24 +20,55 @@ namespace APIGateway.Models
             HdbHandler = new HDBHandler();
             ExcelHandlerInst = new ExcelHandler("excelconfig.xls");
         }
-        public static async Task<ResponseMessage> UpdateComponentWithFetchedValues(DBCenters dbCenter, string compName, List<string> searchProps, List<string> searchValues, List<ParamCell> impParams)
+
+        public delegate Task<ResponseMessage> dbAction(string compName, params object[] args);
+        public static async Task<ResponseMessage> PerformDBAction(string DBAndCompNames, dbAction hdbAction, dbAction cdpAction, params object[] args)
         {
-            if (dbCenter == DBCenters.HDB)
-                return await HdbHandler.UpdateComponentWithFetchedValues(compName, searchProps, searchValues, impParams);
-            else return await CdpHandler.UpdateComponentWithFetchedValues(compName, searchProps, searchValues, impParams);
+            string[] split = DBAndCompNames.Split(Settings.DBNameCompSplitter);
+            if (split.Length < 2)
+                return new ResponseMessage(false, "No database is specified for '" + DBAndCompNames + "'");
+            if (split[0].ToLower().CompareTo("hdb") == 0)
+                return await hdbAction(split[1], args);
+            else if (split[0].ToLower().CompareTo("cdp") == 0)
+                return await cdpAction(split[1], args);
+            return new ResponseMessage(false, "Database '" + split[0] + "' specified for '" + split[1] + "' is unknown");
         }
-        public static async Task<ResponseMessage> UpdateComponentToDB(DBCenters dbCenter, string compName, JObject loadedCompDetails, string compIdValue)
+        public static async Task<ResponseMessage> UpdateComponentWithFetchedValues(string DBAndCompNames, List<string> searchProps, List<string> searchValues, List<ParamCell> impParams)
         {
-            if (dbCenter == DBCenters.HDB)
-                return await HdbHandler.UpdateComponentToDB(compName, loadedCompDetails, compIdValue);
-            else return await CdpHandler.UpdateComponentToDB(compName, loadedCompDetails);
+            return await PerformDBAction(DBAndCompNames, HdbHandler.UpdateComponentWithFetchedValues, CdpHandler.UpdateComponentWithFetchedValues, searchProps, searchValues, impParams);
+            //string[] split = DBAndCompNames.Split(Settings.DBNameCompSplitter);
+            //if (split.Length < 2)
+            //    return new ResponseMessage(false, "No database is specified for '"+ DBAndCompNames+ "'");
+            //if (split[0].ToLower().CompareTo("hdb")==0)
+            //    return await HdbHandler.UpdateComponentWithFetchedValues(split[1], searchProps, searchValues, impParams);
+            //else if (split[0].ToLower().CompareTo("cdp") == 0)
+            //    return await CdpHandler.UpdateComponentWithFetchedValues(split[1], searchProps, searchValues, impParams);
+            //return new ResponseMessage(false, "Database '" + split[0] + "' specified for '" + split[1] + "' is unknown");
         }
 
-        public static async Task<ResponseMessage> GetAttributeValuesOfAllComponents(DBCenters dbCenter, string[] attrPath)
+        public static async Task<ResponseMessage> UpdateComponentToDB(string DBAndCompNames, JObject loadedCompDetails, string compIdValue)
         {
-            if (dbCenter == DBCenters.HDB)
+            return await PerformDBAction(DBAndCompNames, HdbHandler.UpdateComponentToDB, CdpHandler.UpdateComponentToDB, loadedCompDetails, compIdValue);
+            //string[] split = DBAndCompNames.Split(Settings.DBNameCompSplitter);
+            //if (split.Length < 2)
+            //    return new ResponseMessage(false, "No database is specified for '" + split[0] + "'");
+            //if (split[0].ToLower().CompareTo("hdb") == 0)
+            //    return await HdbHandler.UpdateComponentToDB(split[1], loadedCompDetails, compIdValue);
+            //else if (split[0].ToLower().CompareTo("cdp") == 0)
+            //    return await CdpHandler.UpdateComponentToDB(split[1], loadedCompDetails);
+            //return new ResponseMessage(false, "Database '" + split[0] + "' specified for '" + split[1] + "' is unknown");
+        }
+
+        public static async Task<ResponseMessage> GetAttributeValuesOfAllComponents(string[] attrPath)
+        {
+            string[] split = attrPath[0].Split(Settings.DBNameCompSplitter);
+            if (split.Length < 2)
+                return new ResponseMessage(false, "No database is specified for '" + split[0] + "'");
+            if (split[0].ToLower().CompareTo("hdb") == 0)
                 return await HdbHandler.GetAttributeValuesOfAllComponents(attrPath);
-            return await CdpHandler.GetAttributeValuesOfAllComponents(attrPath);
+            else if (split[0].ToLower().CompareTo("cdp") == 0)
+                return await CdpHandler.GetAttributeValuesOfAllComponents(attrPath);
+            return new ResponseMessage(false, "Database '" + split[0] + "' specified for '" + split[1] + "' is unknown");
         }
     }
 }

@@ -1,15 +1,15 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace APIGateway.Models
 {
     public class HDBHandler : DBHandler
     {
         protected override string GetAllComponentUrl(string compName)
-        {
-            return Settings.HDBApiUrl + compName + ".json?";
+        {          
+            return Settings.HDBApiUrl + compName+ ".json?";
         }
-
         protected override string GetSearchURL(string compName, List<string> searchProps, List<string> searchValues, IEnumerable<string[]> impPaths)
         {
             string searchUrl = GetAllComponentUrl(compName);
@@ -26,6 +26,13 @@ namespace APIGateway.Models
             return searchUrl;
         }
 
+        public override async Task<ResponseMessage> UpdateComponentToDB(string compName, params object[] args)
+        { 
+            JObject loadedCompDetails = args[0] as JObject;
+            string compIdValue = args[1] as string;
+            string updateUrl = GetPutUrl(compName, compIdValue);
+            return await ApiHandler.UpdateDataToDB(updateUrl, loadedCompDetails.ToString());
+        }
         private string CreateExpansion(IEnumerable<string[]> paths)
         {
             HashSet<string> typeProps = DBHelper.ExcelHandlerInst.GetListTypeProps(paths);
@@ -42,7 +49,7 @@ namespace APIGateway.Models
             for (int i = 0; i < searchProps.Count; i++)
             {
                 if (searchProps[i] != null && searchProps[i].Length > 0 && searchValues[i] != null && searchValues[i].Length > 0)
-                    filter += searchProps[i] + " eq " + searchValues[i];
+                    filter += searchProps[i] + " eq '" + searchValues[i]+"'";
             }
             return filter;
         }

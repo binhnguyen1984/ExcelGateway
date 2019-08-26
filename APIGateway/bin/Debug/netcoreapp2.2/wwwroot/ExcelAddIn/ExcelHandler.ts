@@ -3,12 +3,16 @@ import * as Common from "./Common";
 
 const importStartCol = 0;
 const exportStartCol = 3;
-export function getComponentIdsList(callback) {
-    APIHandler.syncApiGetCall("api/loadcomponentids", callback);
+export function getHdbComponentIdsList(callback) {
+    APIHandler.syncApiGetCall("api/loadhdbcomponentids", callback);
 }
 
-export function getProjectIdsList(callback) {
-    APIHandler.syncApiGetCall("api/loadprojectids", callback);
+export function getCdpProjectIdsList(callback) {
+    APIHandler.syncApiGetCall("api/loadcdpprojectids", callback);
+}
+
+export function getHdbProjectNamesList(callback) {
+    APIHandler.syncApiGetCall("api/loadhdbprojectnames", callback);
 }
 
 

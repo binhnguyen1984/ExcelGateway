@@ -11,8 +11,11 @@ namespace APIGateway.Models
     public class DBHandler
     {
         protected static ApiHandler ApiHandler = new ApiHandler(); // it will be shared between CDP and HDB handlers
-        public async Task<ResponseMessage> UpdateComponentWithFetchedValues(string compName, List<string> searchProps, List<string> searchValues, List<ParamCell> impParams)
+        public async Task<ResponseMessage> UpdateComponentWithFetchedValues(string compName, params object[] args)
         {
+            List<string> searchProps = args[0] as List<string>;
+            List<string> searchValues = args[1] as List<string>;
+            List<ParamCell> impParams = args[2] as List<ParamCell>;
             IEnumerable<string[]> impPaths = impParams.Select(param => param.PropPath);
             string searchUrl = GetSearchURL(compName, searchProps, searchValues, impPaths);
             ResponseMessage respObject = await FetchDataFromDB(searchUrl);
@@ -35,12 +38,16 @@ namespace APIGateway.Models
         /// <returns></returns>
         public virtual async Task<ResponseMessage> GetAttributeValuesOfAllComponents(string[] attrPath)
         {
-            string apiUrl = GetAllComponentUrl(attrPath[0]);
+            string[] split = attrPath[0].Split(Settings.DBNameCompSplitter);
+            if (split.Length < 2)
+                return new ResponseMessage(false, "No database is specified for '" + split[0] + "'");
+            string apiUrl = GetAllComponentUrl(split[1]);
             ResponseMessage response = await ApiHandler.FetchDataFromDB(apiUrl);
             if (!response.IsSuccessful) return response;
-            object data = ExtractResponseBody(response.Data, attrPath[0]);
+            object data = ExtractResponseBody(response.Data, split[1]);
             return JsonHelper.GetStringAttributeFromMultipleComponents(data, attrPath);
         }
+
         private JObject GetUpdateComponent(object respObject, string compName = null)
         {
             object data = ExtractResponseBody(respObject, compName);
@@ -58,11 +65,11 @@ namespace APIGateway.Models
         {
             return await ApiHandler.FetchDataFromDB(Url);
         }
-        public virtual async Task<ResponseMessage> UpdateComponentToDB(string compName, JObject loadedCompDetails, string compIdValue = null)
+        public virtual async Task<ResponseMessage> UpdateComponentToDB(string compName, params object[] args)
         {
-            string updateUrl = GetPutUrl(compName, compIdValue);
-            return await ApiHandler.UpdateDataToDB(updateUrl, loadedCompDetails.ToString());
+            return await Task.FromResult<ResponseMessage>(null);
         }
+
         protected virtual string GetSearchURL(string compName, List<string> searchProps, List<string> searchValues, IEnumerable<string[]> impPaths = null) => "";
         protected virtual string GetPutUrl(string compName, string compID = null) => "";
     }

@@ -131,7 +131,7 @@ namespace APIGateway.Models
 
         private void RefreshAccessToken()
         {
-            RefreshTokenResult refreshTokenResult = AsyncHelper.RunSync<RefreshTokenResult>(async () => await CurrentOidcClientInfo.OidcClient.RefreshTokenAsync(CurrentOidcClientInfo.RefreshToken));
+            RefreshTokenResult refreshTokenResult = AsyncFuncHelper.RunSync<RefreshTokenResult>(async () => await CurrentOidcClientInfo.OidcClient.RefreshTokenAsync(CurrentOidcClientInfo.RefreshToken));
             CurrentOidcClientInfo.AccessToken = refreshTokenResult.AccessToken;
             CurrentOidcClientInfo.RefreshToken = refreshTokenResult.RefreshToken;
             CurrentOidcClientInfo.ValidDate = refreshTokenResult.AccessTokenExpiration;
@@ -159,8 +159,9 @@ namespace APIGateway.Models
         {
             return Settings.CDPApiUrl + compName;
         }
-        public override async Task<ResponseMessage> UpdateComponentToDB(string compName, JObject loadedCompDetails, string compIdValue = null)
+        public override async Task<ResponseMessage> UpdateComponentToDB(string compName, params object[] args)
         {
+            JObject loadedCompDetails = args[0] as JObject;
             string updateUrl = GetPutUrl(compName);
             await RequestAccessTokenForOpenIDConnect();
             return await ApiHandler.UpdateDataToDB(updateUrl, loadedCompDetails.ToString());
