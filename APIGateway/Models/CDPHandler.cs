@@ -43,10 +43,10 @@ namespace APIGateway.Models
             return response.RequestMessage.RequestUri.AbsoluteUri;
         }
 
-        public override async Task<ResponseMessage> GetAttributeValuesOfAllComponents(string[] attrPath)
+        public override async Task<ResponseMessage> GetAttributeValuesOfAllComponents(params object[] args)
         {
             await RequestAccessTokenForOpenIDConnect();
-            return await base.GetAttributeValuesOfAllComponents(attrPath);
+            return await base.GetAttributeValuesOfAllComponents(args);
         }
         public static async Task<string> GetAuthTokens(string Url)
         {
@@ -143,25 +143,28 @@ namespace APIGateway.Models
         /// <param name="compName"></param>
         /// <param name="searchValues"></param>
         /// <returns></returns>
-        protected override string GetSearchURL(string compName, List<string> searchProps, List<string> searchValues, IEnumerable<string[]> impPaths = null)
+        protected override string GetSearchURL(params object[] args)
         {
+            string compName = args[0] as string;
+            List<string> searchValues = args[2] as List<string>;
             string searchUrl = Settings.CDPApiUrl + compName;
             if (searchValues.Count > 0) searchUrl += "/" + searchValues[0];
             return searchUrl;
         }
 
-        protected override object ExtractResponseBody(object respObject, string compName = null)
+        protected override object ExtractResponseBody(params object[] args)
         {
-            return respObject;
+            return args[0];
         }
 
-        protected override string GetPutUrl(string compName, string compID = null)
+        protected override string GetPutUrl(params object[] args)
         {
-            return Settings.CDPApiUrl + compName;
+            return Settings.CDPApiUrl + (args[0] as string);
         }
-        public override async Task<ResponseMessage> UpdateComponentToDB(string compName, params object[] args)
+        public override async Task<ResponseMessage> UpdateComponentToDB(params object[] args)
         {
-            JObject loadedCompDetails = args[0] as JObject;
+            string compName = args[0] as string;
+            JObject loadedCompDetails = args[1] as JObject;
             string updateUrl = GetPutUrl(compName);
             await RequestAccessTokenForOpenIDConnect();
             return await ApiHandler.UpdateDataToDB(updateUrl, loadedCompDetails.ToString());

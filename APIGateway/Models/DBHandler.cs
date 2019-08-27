@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace APIGateway.Models
@@ -11,18 +10,17 @@ namespace APIGateway.Models
     public class DBHandler
     {
         protected static ApiHandler ApiHandler = new ApiHandler(); // it will be shared between CDP and HDB handlers
-        public async Task<ResponseMessage> UpdateComponentWithFetchedValues(string compName, params object[] args)
+        public async Task<ResponseMessage> UpdateComponentWithFetchedValues(params object[] args)
         {
-            List<string> searchProps = args[0] as List<string>;
-            List<string> searchValues = args[1] as List<string>;
-            List<ParamCell> impParams = args[2] as List<ParamCell>;
-            IEnumerable<string[]> impPaths = impParams.Select(param => param.PropPath);
-            string searchUrl = GetSearchURL(compName, searchProps, searchValues, impPaths);
+            string searchUrl = GetSearchURL(args);
             ResponseMessage respObject = await FetchDataFromDB(searchUrl);
             if (!respObject.IsSuccessful) return respObject;
+
+            string compName = args[0] as string;
             JObject componentDetails = GetUpdateComponent(respObject.Data, compName);
-            if (componentDetails == null) return new ResponseMessage(false, "No results for component '"+compName+"' were found");
+            if (componentDetails == null) return new ResponseMessage(false, "No results for component '" + compName + "' were found");
             //update parameters with the values fetched from the databases
+            List<ParamCell> impParams = args[3] as List<ParamCell>;
             foreach (ParamCell impParam in impParams)
             {
                 ResponseMessage savingStatus = impParam.SaveValue(componentDetails);
@@ -34,23 +32,21 @@ namespace APIGateway.Models
         /// <summary>
         /// Get all component's values of a given attribute
         /// </summary>
-        /// <param name="compName"></param>
+        /// <param name="args"></param>
         /// <returns></returns>
-        public virtual async Task<ResponseMessage> GetAttributeValuesOfAllComponents(string[] attrPath)
+        public virtual async Task<ResponseMessage> GetAttributeValuesOfAllComponents(params object[] args)
         {
-            string[] split = attrPath[0].Split(Settings.DBNameCompSplitter);
-            if (split.Length < 2)
-                return new ResponseMessage(false, "No database is specified for '" + split[0] + "'");
-            string apiUrl = GetAllComponentUrl(split[1]);
+            string[] attrPath = args as string[];
+            string apiUrl = GetAllComponentUrl(attrPath[0]);
             ResponseMessage response = await ApiHandler.FetchDataFromDB(apiUrl);
             if (!response.IsSuccessful) return response;
-            object data = ExtractResponseBody(response.Data, split[1]);
+            object data = ExtractResponseBody(response.Data, attrPath[0]);
             return JsonHelper.GetStringAttributeFromMultipleComponents(data, attrPath);
         }
 
-        private JObject GetUpdateComponent(object respObject, string compName = null)
+        private JObject GetUpdateComponent(params object[] args)
         {
-            object data = ExtractResponseBody(respObject, compName);
+            object data = ExtractResponseBody(args);
             if (data is JArray)
             {
                 JArray dataArr = data as JArray;
@@ -60,17 +56,17 @@ namespace APIGateway.Models
         }
 
         protected virtual string GetAllComponentUrl(string compName) => "";
-        protected virtual object ExtractResponseBody(object respObject, string compName = null) => null;
+        protected virtual object ExtractResponseBody(params object[] args) => null;
         public virtual async Task<ResponseMessage> FetchDataFromDB(string Url)
         {
             return await ApiHandler.FetchDataFromDB(Url);
         }
-        public virtual async Task<ResponseMessage> UpdateComponentToDB(string compName, params object[] args)
+        public virtual async Task<ResponseMessage> UpdateComponentToDB(params object[] args)
         {
             return await Task.FromResult<ResponseMessage>(null);
         }
 
-        protected virtual string GetSearchURL(string compName, List<string> searchProps, List<string> searchValues, IEnumerable<string[]> impPaths = null) => "";
-        protected virtual string GetPutUrl(string compName, string compID = null) => "";
+        protected virtual string GetSearchURL(params object[] args) => "";
+        protected virtual string GetPutUrl(params object[] args) => "";
     }
 }

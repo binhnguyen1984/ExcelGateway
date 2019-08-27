@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using APIGateway.Models;
-using Microsoft.AspNetCore.Http;
+﻿using APIGateway.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace APIGateway.Controllers
 {

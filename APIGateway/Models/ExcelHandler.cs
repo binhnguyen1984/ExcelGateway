@@ -1,11 +1,9 @@
 ﻿using Newtonsoft.Json.Linq;
 using Syncfusion.XlsIO;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using static APIGateway.Models.Settings;
 
 namespace APIGateway.Models
 {
@@ -44,8 +42,8 @@ namespace APIGateway.Models
                 RowCount = ws.Rows.Length;
                 ColumnCount = ws.Columns.Length;
 
-                ReadConfiguration(StartSearchSectionHeader, ReadComponentAndDBNames,1,1);
-                ReadConfiguration(StartListPropsHeader, ReadListProperties,1,4);
+                ReadConfiguration(StartSearchSectionHeader, ReadComponentAndDBNames, 1, 1);
+                ReadConfiguration(StartListPropsHeader, ReadListProperties, 1, 4);
                 wb.Close();
             }
         }
@@ -83,7 +81,7 @@ namespace APIGateway.Models
         {
             object compNameValue, compIDNameValue;
             if ((compNameValue = range[firstRow, firstCol].Value) != null &&
-                (compIDNameValue = range[firstRow, firstCol+1].Value) != null)
+                (compIDNameValue = range[firstRow, firstCol + 1].Value) != null)
             {
                 string compName = compNameValue.ToString();
                 string compIDName = compIDNameValue.ToString();
@@ -105,7 +103,7 @@ namespace APIGateway.Models
                 if (propName.Length > 0)
                 {
                     string[] path = propName.Split(Settings.PathSplitter);
-                    if(path.Length==2)
+                    if (path.Length == 2)
                         ListTypeProperties.Add(path);
                 }
                 else firstRow++;
@@ -194,7 +192,7 @@ namespace APIGateway.Models
                 if (!SearchCompDict.ContainsKey(DBAndCompNames))
                     return new ResponseMessage(false, "Missing unique ID information for component '" + DBAndCompNames + "'");
                 string compIdName = SearchCompDict[DBAndCompNames];
-                 //make a query to the corresponding database server
+                //make a query to the corresponding database server
                 ResponseMessage response = await DBHelper.UpdateComponentWithFetchedValues(DBAndCompNames, propsAndValues.Item1, propsAndValues.Item2, impParams);
                 if (!response.IsSuccessful)
                     return response;
@@ -262,11 +260,11 @@ namespace APIGateway.Models
         public HashSet<string> GetListTypeProps(IEnumerable<string[]> props)
         {
             HashSet<string> listTypeProps = new HashSet<string>();
-            foreach(var prop in props)
+            foreach (var prop in props)
             {
-                if(prop.Length>2 && prop[2].Length>0 && prop[2].All(char.IsDigit))
+                if (prop.Length > 2 && prop[2].Length > 0 && prop[2].All(char.IsDigit))
                 {
-                    foreach(var typeProp in this.ListTypeProperties)
+                    foreach (var typeProp in this.ListTypeProperties)
                     {
                         if (typeProp[0].CompareTo(prop[0]) == 0 && typeProp[1].CompareTo(prop[1]) == 0)
                             listTypeProps.Add(prop[1]);

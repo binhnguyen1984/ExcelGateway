@@ -32,10 +32,10 @@ namespace APIGateway.Models
                     if (Int32.TryParse(attrPath[i], out int index))
                     {
                         if (index >= dataArr.Count)
-                            return new ResponseMessage(false, "Index of parameter '" + attrPath[i-1] + "' is out of range");
+                            return new ResponseMessage(false, "Index of parameter '" + attrPath[i - 1] + "' is out of range");
                         componentData = dataArr[index];
                     }
-                    else return new ResponseMessage(false, "'"+ attrPath[i]+"' is not a valid index");
+                    else return new ResponseMessage(false, "'" + attrPath[i] + "' is not a valid index");
                 }
                 else return new ResponseMessage(false, "Datatype of parameter '" + attrPath[i] + "' is unknown");
                 i++;

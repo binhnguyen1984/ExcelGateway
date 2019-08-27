@@ -1,8 +1,4 @@
-﻿using Syncfusion.XlsIO;
-using System.IO;
-using System.Threading.Tasks;
-
-namespace APIGateway.Models
+﻿namespace APIGateway.Models
 {
     public sealed class Settings
     {

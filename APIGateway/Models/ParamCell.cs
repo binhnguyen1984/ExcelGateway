@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
 
 namespace APIGateway.Models
 {
@@ -31,7 +30,7 @@ namespace APIGateway.Models
                 return new ResponseMessage(true, null);
             }
             else if (saveValueStatus.Data is JArray)
-                return new ResponseMessage(false, "Parameter '" + PropPath[PropPath.Length-1]+"' is a list and thus requires an index");
+                return new ResponseMessage(false, "Parameter '" + PropPath[PropPath.Length - 1] + "' is a list and thus requires an index");
             return new ResponseMessage(false, "Datatype of parameter '" + PropPath[PropPath.Length - 1] + "' is unknown");
         }
 

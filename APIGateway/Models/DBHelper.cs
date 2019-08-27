@@ -1,8 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using static APIGateway.Models.Settings;
+﻿using System.Threading.Tasks;
 
 namespace APIGateway.Models
 {
@@ -21,21 +17,23 @@ namespace APIGateway.Models
             ExcelHandlerInst = new ExcelHandler("excelconfig.xls");
         }
 
-        public delegate Task<ResponseMessage> dbAction(string compName, params object[] args);
-        public static async Task<ResponseMessage> PerformDBAction(string DBAndCompNames, dbAction hdbAction, dbAction cdpAction, params object[] args)
+        public delegate Task<ResponseMessage> dbAction(params object[] args);
+        public static async Task<ResponseMessage> PerformDBAction(dbAction hdbAction, dbAction cdpAction, params object[] args)
         {
+            string DBAndCompNames = args[0] as string;
             string[] split = DBAndCompNames.Split(Settings.DBNameCompSplitter);
             if (split.Length < 2)
                 return new ResponseMessage(false, "No database is specified for '" + DBAndCompNames + "'");
+            args[0] = split[1];
             if (split[0].ToLower().CompareTo("hdb") == 0)
-                return await hdbAction(split[1], args);
+                return await hdbAction(args);
             else if (split[0].ToLower().CompareTo("cdp") == 0)
-                return await cdpAction(split[1], args);
+                return await cdpAction(args);
             return new ResponseMessage(false, "Database '" + split[0] + "' specified for '" + split[1] + "' is unknown");
         }
-        public static async Task<ResponseMessage> UpdateComponentWithFetchedValues(string DBAndCompNames, List<string> searchProps, List<string> searchValues, List<ParamCell> impParams)
+        public static async Task<ResponseMessage> UpdateComponentWithFetchedValues(params object[] args)
         {
-            return await PerformDBAction(DBAndCompNames, HdbHandler.UpdateComponentWithFetchedValues, CdpHandler.UpdateComponentWithFetchedValues, searchProps, searchValues, impParams);
+            return await PerformDBAction(HdbHandler.UpdateComponentWithFetchedValues, CdpHandler.UpdateComponentWithFetchedValues, args);
             //string[] split = DBAndCompNames.Split(Settings.DBNameCompSplitter);
             //if (split.Length < 2)
             //    return new ResponseMessage(false, "No database is specified for '"+ DBAndCompNames+ "'");
@@ -46,9 +44,9 @@ namespace APIGateway.Models
             //return new ResponseMessage(false, "Database '" + split[0] + "' specified for '" + split[1] + "' is unknown");
         }
 
-        public static async Task<ResponseMessage> UpdateComponentToDB(string DBAndCompNames, JObject loadedCompDetails, string compIdValue)
+        public static async Task<ResponseMessage> UpdateComponentToDB(params object[] args)
         {
-            return await PerformDBAction(DBAndCompNames, HdbHandler.UpdateComponentToDB, CdpHandler.UpdateComponentToDB, loadedCompDetails, compIdValue);
+            return await PerformDBAction(HdbHandler.UpdateComponentToDB, CdpHandler.UpdateComponentToDB, args);
             //string[] split = DBAndCompNames.Split(Settings.DBNameCompSplitter);
             //if (split.Length < 2)
             //    return new ResponseMessage(false, "No database is specified for '" + split[0] + "'");
@@ -59,16 +57,17 @@ namespace APIGateway.Models
             //return new ResponseMessage(false, "Database '" + split[0] + "' specified for '" + split[1] + "' is unknown");
         }
 
-        public static async Task<ResponseMessage> GetAttributeValuesOfAllComponents(string[] attrPath)
+        public static async Task<ResponseMessage> GetAttributeValuesOfAllComponents(params object[] args)
         {
-            string[] split = attrPath[0].Split(Settings.DBNameCompSplitter);
-            if (split.Length < 2)
-                return new ResponseMessage(false, "No database is specified for '" + split[0] + "'");
-            if (split[0].ToLower().CompareTo("hdb") == 0)
-                return await HdbHandler.GetAttributeValuesOfAllComponents(attrPath);
-            else if (split[0].ToLower().CompareTo("cdp") == 0)
-                return await CdpHandler.GetAttributeValuesOfAllComponents(attrPath);
-            return new ResponseMessage(false, "Database '" + split[0] + "' specified for '" + split[1] + "' is unknown");
+            return await PerformDBAction(HdbHandler.GetAttributeValuesOfAllComponents, CdpHandler.GetAttributeValuesOfAllComponents, args);
+            //string[] split = attrPath[0].Split(Settings.DBNameCompSplitter);
+            //if (split.Length < 2)
+            //    return new ResponseMessage(false, "No database is specified for '" + split[0] + "'");
+            //if (split[0].ToLower().CompareTo("hdb") == 0)
+            //    return await HdbHandler.GetAttributeValuesOfAllComponents(attrPath);
+            //else if (split[0].ToLower().CompareTo("cdp") == 0)
+            //    return await CdpHandler.GetAttributeValuesOfAllComponents(attrPath);
+            //return new ResponseMessage(false, "Database '" + split[0] + "' specified for '" + split[1] + "' is unknown");
         }
     }
 }

@@ -2,40 +2,36 @@ info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[0]
       User profile is available. Using 'C:\Users\lnztha01\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
 Hosting environment: Development
 Content root path: C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway
-Now listening on: http://127.0.0.1:19632
+Now listening on: http://127.0.0.1:4973
 Application started. Press Ctrl+C to shut down.
-info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
-      Request starting HTTP/1.1 DEBUG http://localhost:2664/  0
-info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
-      Request finished in 122.1477ms 200 
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
       Request starting HTTP/1.1 OPTIONS http://localhost:44317/ExcelAddin/  
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
-      Request finished in 107.718ms 404 
+      Request finished in 80.5152ms 404 
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
       Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/Home.html?_host_Info=Excel$Win32$16.01$en-US  
-info: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware[2]
-      Sending file. Request path: '/ExcelAddin/Home.html'. Physical path: 'C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\wwwroot\ExcelAddin\Home.html'
+info: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware[6]
+      The file /ExcelAddin/Home.html was not modified
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
-      Request finished in 35.7835ms 200 text/html
+      Request finished in 13.3183ms 304 text/html
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
       Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/Scripts/FabricUI/MessageBanner.js  
 info: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware[6]
       The file /ExcelAddin/Scripts/FabricUI/MessageBanner.js was not modified
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
-      Request finished in 10.0586ms 304 application/javascript
+      Request finished in 1.2199ms 304 application/javascript
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
       Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/Home.css  
 info: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware[6]
       The file /ExcelAddin/Home.css was not modified
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
-      Request finished in 6.6714ms 304 text/css
+      Request finished in 0.4819ms 304 text/css
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
       Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/bundle/Home.js  
 info: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware[6]
       The file /ExcelAddin/bundle/Home.js was not modified
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
-      Request finished in 4.1098ms 304 application/javascript
+      Request finished in 0.5357ms 304 application/javascript
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
       Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/api/loadhdbcomponentids  
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
@@ -45,15 +41,15 @@ info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[1]
       Executing action method APIGateway.Controllers.LoadHdbComponentIdsController.Get (APIGateway) - Validation state: Valid
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
-      Executed action method APIGateway.Controllers.LoadHdbComponentIdsController.Get (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 6954.0269ms.
+      Executed action method APIGateway.Controllers.LoadHdbComponentIdsController.Get (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 4324.796ms.
 info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
       Executing ObjectResult, writing value of type 'APIGateway.Models.ResponseMessage'.
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
-      Executed action APIGateway.Controllers.LoadHdbComponentIdsController.Get (APIGateway) in 7232.1785ms
+      Executed action APIGateway.Controllers.LoadHdbComponentIdsController.Get (APIGateway) in 4411.232ms
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
       Executed endpoint 'APIGateway.Controllers.LoadHdbComponentIdsController.Get (APIGateway)'
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
-      Request finished in 7286.2582ms 200 application/json; charset=utf-8
+      Request finished in 4441.3362ms 200 application/json; charset=utf-8
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
       Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/api/loadcdpprojectids  
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
@@ -63,15 +59,15 @@ info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[1]
       Executing action method APIGateway.Controllers.LoadCdpProjectIdsController.GetAsync (APIGateway) - Validation state: Valid
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
-      Executed action method APIGateway.Controllers.LoadCdpProjectIdsController.GetAsync (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 1771.228ms.
+      Executed action method APIGateway.Controllers.LoadCdpProjectIdsController.GetAsync (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 1279.9718ms.
 info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
       Executing ObjectResult, writing value of type 'APIGateway.Models.ResponseMessage'.
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
-      Executed action APIGateway.Controllers.LoadCdpProjectIdsController.GetAsync (APIGateway) in 1815.4225ms
+      Executed action APIGateway.Controllers.LoadCdpProjectIdsController.GetAsync (APIGateway) in 1280.9796ms
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
       Executed endpoint 'APIGateway.Controllers.LoadCdpProjectIdsController.GetAsync (APIGateway)'
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
-      Request finished in 1837.5649ms 200 application/json; charset=utf-8
+      Request finished in 1286.8724ms 200 application/json; charset=utf-8
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
       Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/api/loadhdbprojectnames  
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
@@ -81,17 +77,17 @@ info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[1]
       Executing action method APIGateway.Controllers.LoadHdbProjectNamesController.GetAsync (APIGateway) - Validation state: Valid
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
-      Executed action method APIGateway.Controllers.LoadHdbProjectNamesController.GetAsync (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 12627.7082ms.
+      Executed action method APIGateway.Controllers.LoadHdbProjectNamesController.GetAsync (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 11835.8228ms.
 info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
       Executing ObjectResult, writing value of type 'APIGateway.Models.ResponseMessage'.
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
-      Executed action APIGateway.Controllers.LoadHdbProjectNamesController.GetAsync (APIGateway) in 12671.9094ms
+      Executed action APIGateway.Controllers.LoadHdbProjectNamesController.GetAsync (APIGateway) in 11837.0064ms
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
       Executed endpoint 'APIGateway.Controllers.LoadHdbProjectNamesController.GetAsync (APIGateway)'
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
-      Request finished in 12697.4525ms 200 application/json; charset=utf-8
+      Request finished in 11840.4071ms 200 application/json; charset=utf-8
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
-      Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/api/loadparameters/?propNames=hdb:components/designForProjectName,hdb:components/designByPersonName,hdb:components/comment,hdb:components/group,hdb:components/resources/0/group,hdb:components/locked,hdb:components/properties/0/value,hdb:projects/properties/54/value,hdb:projects/properties/54/symbol,hdb:projects/properties/57/value,hdb:projects/properties/57/symbol,hdb:projects/name,cdp:projects/name,cdp:projects/modifiedBy,cdp:projects/modifiedAt,cdp:projects/description&searchValues=hdb:components/componentID=4771,cdp:projects/id=36021,hdb:projects/name=Gouvaes%202016%20(pt04)  
+      Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/api/loadparameters/?propNames=hdb:components/designForProjectName,hdb:components/designByPersonName,hdb:components/comment,hdb:components/group,hdb:components/resources/0/group,hdb:components/locked,hdb:components/properties/0/value,hdb:projects/properties/54/value,hdb:projects/properties/54/symbol,hdb:projects/properties/57/value,hdb:projects/properties/57/symbol,hdb:projects/name,cdp:projects/name,cdp:projects/modifiedBy,cdp:projects/modifiedAt,cdp:projects/description&searchValues=hdb:components/componentID=4771,cdp:projects/id=36022,hdb:projects/name=Gouvaes%202016%20(pt04)  
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
       Executing endpoint 'APIGateway.Controllers.LoadParametersController.Get (APIGateway)'
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
@@ -99,17 +95,17 @@ info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[1]
       Executing action method APIGateway.Controllers.LoadParametersController.Get (APIGateway) - Validation state: Valid
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
-      Executed action method APIGateway.Controllers.LoadParametersController.Get (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 907.6972ms.
+      Executed action method APIGateway.Controllers.LoadParametersController.Get (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 430.8508ms.
 info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
       Executing ObjectResult, writing value of type 'APIGateway.Models.ResponseMessage'.
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
-      Executed action APIGateway.Controllers.LoadParametersController.Get (APIGateway) in 959.8419ms
+      Executed action APIGateway.Controllers.LoadParametersController.Get (APIGateway) in 444.3315ms
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
       Executed endpoint 'APIGateway.Controllers.LoadParametersController.Get (APIGateway)'
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
-      Request finished in 992.1287ms 200 application/json; charset=utf-8
+      Request finished in 459.3953ms 200 application/json; charset=utf-8
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
-      Request starting HTTP/1.1 PUT http://localhost:44317/ExcelAddin/api/updateparameters/?propNames=hdb:components/comment,cdp:projects/name,cdp:projects/description application/json; charset=utf-8 41
+      Request starting HTTP/1.1 PUT http://localhost:44317/ExcelAddin/api/updateparameters/?propNames=hdb:components/comment,cdp:projects/name,cdp:projects/description application/json; charset=utf-8 30
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
       Executing endpoint 'APIGateway.Controllers.UpdateParametersController.Put (APIGateway)'
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
@@ -117,17 +113,17 @@ info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[1]
       Executing action method APIGateway.Controllers.UpdateParametersController.Put (APIGateway) - Validation state: Valid
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
-      Executed action method APIGateway.Controllers.UpdateParametersController.Put (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 895.3677ms.
+      Executed action method APIGateway.Controllers.UpdateParametersController.Put (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 978.8377ms.
 info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
       Executing ObjectResult, writing value of type 'APIGateway.Models.ResponseMessage'.
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
-      Executed action APIGateway.Controllers.UpdateParametersController.Put (APIGateway) in 945.4908ms
+      Executed action APIGateway.Controllers.UpdateParametersController.Put (APIGateway) in 994.7875ms
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
       Executed endpoint 'APIGateway.Controllers.UpdateParametersController.Put (APIGateway)'
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
-      Request finished in 961.6441ms 200 application/json; charset=utf-8
+      Request finished in 999.8751ms 200 application/json; charset=utf-8
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
-      Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/api/loadparameters/?propNames=hdb:components/designForProjectName,hdb:components/designByPersonName,hdb:components/comment,hdb:components/group,hdb:components/resources/0/group,hdb:components/locked,hdb:components/properties/0/value,hdb:projects/properties/54/value,hdb:projects/properties/54/symbol,hdb:projects/properties/57/value,hdb:projects/properties/57/symbol,hdb:projects/name,cdp:projects/name,cdp:projects/modifiedBy,cdp:projects/modifiedAt,cdp:projects/description&searchValues=hdb:components/componentID=4771,cdp:projects/id=36021,hdb:projects/name=Gouvaes%202016%20(pt04)  
+      Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/api/loadparameters/?propNames=hdb:components/designForProjectName,hdb:components/designByPersonName,hdb:components/comment,hdb:components/group,hdb:components/resources/0/group,hdb:components/locked,hdb:components/properties/0/value,hdb:projects/properties/54/value,hdb:projects/properties/54/symbol,hdb:projects/properties/57/value,hdb:projects/properties/57/symbol,hdb:projects/name,cdp:projects/name,cdp:projects/modifiedBy,cdp:projects/modifiedAt,cdp:projects/description&searchValues=hdb:components/componentID=4771,cdp:projects/id=36022,hdb:projects/name=Gouvaes%202016%20(pt04)  
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
       Executing endpoint 'APIGateway.Controllers.LoadParametersController.Get (APIGateway)'
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
@@ -135,15 +131,15 @@ info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[1]
       Executing action method APIGateway.Controllers.LoadParametersController.Get (APIGateway) - Validation state: Valid
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
-      Executed action method APIGateway.Controllers.LoadParametersController.Get (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 273.4823ms.
+      Executed action method APIGateway.Controllers.LoadParametersController.Get (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 128.4426ms.
 info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
       Executing ObjectResult, writing value of type 'APIGateway.Models.ResponseMessage'.
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
-      Executed action APIGateway.Controllers.LoadParametersController.Get (APIGateway) in 303.3ms
+      Executed action APIGateway.Controllers.LoadParametersController.Get (APIGateway) in 128.8684ms
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
       Executed endpoint 'APIGateway.Controllers.LoadParametersController.Get (APIGateway)'
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
-      Request finished in 318.2705ms 200 application/json; charset=utf-8
+      Request finished in 129.4717ms 200 application/json; charset=utf-8
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
       Request starting HTTP/1.1 PUT http://localhost:44317/ExcelAddin/api/updateparameters/?propNames=hdb:components/comment,cdp:projects/name,cdp:projects/description application/json; charset=utf-8 10
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
@@ -153,17 +149,17 @@ info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[1]
       Executing action method APIGateway.Controllers.UpdateParametersController.Put (APIGateway) - Validation state: Valid
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
-      Executed action method APIGateway.Controllers.UpdateParametersController.Put (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 296.9379ms.
+      Executed action method APIGateway.Controllers.UpdateParametersController.Put (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 213.8708ms.
 info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
       Executing ObjectResult, writing value of type 'APIGateway.Models.ResponseMessage'.
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
-      Executed action APIGateway.Controllers.UpdateParametersController.Put (APIGateway) in 342.4297ms
+      Executed action APIGateway.Controllers.UpdateParametersController.Put (APIGateway) in 214.5709ms
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
       Executed endpoint 'APIGateway.Controllers.UpdateParametersController.Put (APIGateway)'
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
-      Request finished in 360.0558ms 200 application/json; charset=utf-8
+      Request finished in 215.0995ms 200 application/json; charset=utf-8
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
-      Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/api/loadparameters/?propNames=hdb:components/designForProjectName,hdb:components/designByPersonName,hdb:components/comment,hdb:components/group,hdb:components/resources/0/group,hdb:components/locked,hdb:components/properties/0/value,hdb:projects/properties/54/value,hdb:projects/properties/54/symbol,hdb:projects/properties/57/value,hdb:projects/properties/57/symbol,hdb:projects/name,cdp:projects/name,cdp:projects/modifiedBy,cdp:projects/modifiedAt,cdp:projects/description&searchValues=hdb:components/componentID=4771,cdp:projects/id=36021,hdb:projects/name=Gouvaes%202016%20(pt04)  
+      Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/api/loadparameters/?propNames=hdb:components/designForProjectName,hdb:components/designByPersonName,hdb:components/comment,hdb:components/group,hdb:components/resources/0/group,hdb:components/locked,hdb:components/properties/0/value,hdb:projects/properties/54/value,hdb:projects/properties/54/symbol,hdb:projects/properties/57/value,hdb:projects/properties/57/symbol,hdb:projects/name,cdp:projects/name,cdp:projects/modifiedBy,cdp:projects/modifiedAt,cdp:projects/description&searchValues=hdb:components/componentID=4771,cdp:projects/id=36022,hdb:projects/name=Gouvaes%202016%20(pt04)  
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
       Executing endpoint 'APIGateway.Controllers.LoadParametersController.Get (APIGateway)'
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
@@ -171,33 +167,15 @@ info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[1]
       Executing action method APIGateway.Controllers.LoadParametersController.Get (APIGateway) - Validation state: Valid
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
-      Executed action method APIGateway.Controllers.LoadParametersController.Get (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 249.7568ms.
+      Executed action method APIGateway.Controllers.LoadParametersController.Get (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 127.8089ms.
 info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
       Executing ObjectResult, writing value of type 'APIGateway.Models.ResponseMessage'.
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
-      Executed action APIGateway.Controllers.LoadParametersController.Get (APIGateway) in 283.6045ms
+      Executed action APIGateway.Controllers.LoadParametersController.Get (APIGateway) in 128.1001ms
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
       Executed endpoint 'APIGateway.Controllers.LoadParametersController.Get (APIGateway)'
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
-      Request finished in 303.0744ms 200 application/json; charset=utf-8
-info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
-      Request starting HTTP/1.1 PUT http://localhost:44317/ExcelAddin/api/updateparameters/?propNames=hdb:components/comment,cdp:projects/name,cdp:projects/description,hdb:projects/properties/57/value application/json; charset=utf-8 17
-info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
-      Executing endpoint 'APIGateway.Controllers.UpdateParametersController.Put (APIGateway)'
-info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
-      Route matched with {action = "Put", controller = "UpdateParameters", page = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[APIGateway.Models.ResponseMessage] Put(System.String, System.String) on controller APIGateway.Controllers.UpdateParametersController (APIGateway).
-info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[1]
-      Executing action method APIGateway.Controllers.UpdateParametersController.Put (APIGateway) - Validation state: Valid
-info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
-      Executed action method APIGateway.Controllers.UpdateParametersController.Put (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 436.0137ms.
-info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
-      Executing ObjectResult, writing value of type 'APIGateway.Models.ResponseMessage'.
-info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
-      Executed action APIGateway.Controllers.UpdateParametersController.Put (APIGateway) in 467.7968ms
-info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
-      Executed endpoint 'APIGateway.Controllers.UpdateParametersController.Put (APIGateway)'
-info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
-      Request finished in 482.0772ms 200 application/json; charset=utf-8
+      Request finished in 128.7274ms 200 application/json; charset=utf-8
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
       Request starting HTTP/1.1 PUT http://localhost:44317/ExcelAddin/api/updateparameters/?propNames=hdb:components/comment,cdp:projects/name,cdp:projects/description,hdb:components/properties/0/value application/json; charset=utf-8 16
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
@@ -207,17 +185,17 @@ info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[1]
       Executing action method APIGateway.Controllers.UpdateParametersController.Put (APIGateway) - Validation state: Valid
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
-      Executed action method APIGateway.Controllers.UpdateParametersController.Put (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 208.3981ms.
+      Executed action method APIGateway.Controllers.UpdateParametersController.Put (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 258.9802ms.
 info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
       Executing ObjectResult, writing value of type 'APIGateway.Models.ResponseMessage'.
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
-      Executed action APIGateway.Controllers.UpdateParametersController.Put (APIGateway) in 241.7931ms
+      Executed action APIGateway.Controllers.UpdateParametersController.Put (APIGateway) in 259.7371ms
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
       Executed endpoint 'APIGateway.Controllers.UpdateParametersController.Put (APIGateway)'
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
-      Request finished in 253.5834ms 200 application/json; charset=utf-8
+      Request finished in 260.2171ms 200 application/json; charset=utf-8
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
-      Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/api/loadparameters/?propNames=hdb:components/designForProjectName,hdb:components/designByPersonName,hdb:components/comment,hdb:components/group,hdb:components/resources/0/group,hdb:components/locked,hdb:components/properties/0/value,hdb:projects/properties/54/value,hdb:projects/properties/54/symbol,hdb:projects/properties/57/value,hdb:projects/properties/57/symbol,hdb:projects/name,cdp:projects/name,cdp:projects/modifiedBy,cdp:projects/modifiedAt,cdp:projects/description&searchValues=hdb:components/componentID=4771,cdp:projects/id=36021,hdb:projects/name=Gouvaes%202016%20(pt04)  
+      Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/api/loadparameters/?propNames=hdb:components/designForProjectName,hdb:components/designByPersonName,hdb:components/comment,hdb:components/group,hdb:components/resources/0/group,hdb:components/locked,hdb:components/properties/0/value,hdb:projects/properties/54/value,hdb:projects/properties/54/symbol,hdb:projects/properties/57/value,hdb:projects/properties/57/symbol,hdb:projects/name,cdp:projects/name,cdp:projects/modifiedBy,cdp:projects/modifiedAt,cdp:projects/description&searchValues=hdb:components/componentID=4771,cdp:projects/id=36022,hdb:projects/name=Gouvaes%202016%20(pt04)  
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
       Executing endpoint 'APIGateway.Controllers.LoadParametersController.Get (APIGateway)'
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
@@ -225,15 +203,15 @@ info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[1]
       Executing action method APIGateway.Controllers.LoadParametersController.Get (APIGateway) - Validation state: Valid
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
-      Executed action method APIGateway.Controllers.LoadParametersController.Get (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 257.0801ms.
+      Executed action method APIGateway.Controllers.LoadParametersController.Get (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 171.6454ms.
 info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
       Executing ObjectResult, writing value of type 'APIGateway.Models.ResponseMessage'.
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
-      Executed action APIGateway.Controllers.LoadParametersController.Get (APIGateway) in 290.2183ms
+      Executed action APIGateway.Controllers.LoadParametersController.Get (APIGateway) in 172.1222ms
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
       Executed endpoint 'APIGateway.Controllers.LoadParametersController.Get (APIGateway)'
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
-      Request finished in 303.1297ms 200 application/json; charset=utf-8
+      Request finished in 172.5406ms 200 application/json; charset=utf-8
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
       Request starting HTTP/1.1 PUT http://localhost:44317/ExcelAddin/api/updateparameters/?propNames=hdb:components/comment,cdp:projects/name,cdp:projects/description,hdb:components/properties/0/value application/json; charset=utf-8 16
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
@@ -243,17 +221,17 @@ info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[1]
       Executing action method APIGateway.Controllers.UpdateParametersController.Put (APIGateway) - Validation state: Valid
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
-      Executed action method APIGateway.Controllers.UpdateParametersController.Put (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 332.6855ms.
+      Executed action method APIGateway.Controllers.UpdateParametersController.Put (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 250.0759ms.
 info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
       Executing ObjectResult, writing value of type 'APIGateway.Models.ResponseMessage'.
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
-      Executed action APIGateway.Controllers.UpdateParametersController.Put (APIGateway) in 362.4807ms
+      Executed action APIGateway.Controllers.UpdateParametersController.Put (APIGateway) in 250.4224ms
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
       Executed endpoint 'APIGateway.Controllers.UpdateParametersController.Put (APIGateway)'
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
-      Request finished in 372.9787ms 200 application/json; charset=utf-8
+      Request finished in 250.8783ms 200 application/json; charset=utf-8
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
-      Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/api/loadparameters/?propNames=hdb:components/designForProjectName,hdb:components/designByPersonName,hdb:components/comment,hdb:components/group,hdb:components/resources/0/group,hdb:components/locked,hdb:components/properties/0/value,hdb:projects/properties/54/value,hdb:projects/properties/54/symbol,hdb:projects/properties/57/value,hdb:projects/properties/57/symbol,hdb:projects/name,cdp:projects/name,cdp:projects/modifiedBy,cdp:projects/modifiedAt,cdp:projects/description&searchValues=hdb:components/componentID=4771,cdp:projects/id=36021,hdb:projects/name=Gouvaes%202016%20(pt04)  
+      Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/api/loadparameters/?propNames=hdb:components/designForProjectName,hdb:components/designByPersonName,hdb:components/comment,hdb:components/group,hdb:components/resources/0/group,hdb:components/locked,hdb:components/properties/0/value,hdb:projects/properties/54/value,hdb:projects/properties/54/symbol,hdb:projects/properties/57/value,hdb:projects/properties/57/symbol,hdb:projects/name,cdp:projects/name,cdp:projects/modifiedBy,cdp:projects/modifiedAt,cdp:projects/description&searchValues=hdb:components/componentID=4771,cdp:projects/id=36022,hdb:projects/name=Gouvaes%202016%20(pt04)  
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
       Executing endpoint 'APIGateway.Controllers.LoadParametersController.Get (APIGateway)'
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
@@ -261,147 +239,12 @@ info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[1]
       Executing action method APIGateway.Controllers.LoadParametersController.Get (APIGateway) - Validation state: Valid
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
-      Executed action method APIGateway.Controllers.LoadParametersController.Get (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 272.7984ms.
+      Executed action method APIGateway.Controllers.LoadParametersController.Get (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 196.7978ms.
 info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
       Executing ObjectResult, writing value of type 'APIGateway.Models.ResponseMessage'.
 info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
-      Executed action APIGateway.Controllers.LoadParametersController.Get (APIGateway) in 316.6444ms
+      Executed action APIGateway.Controllers.LoadParametersController.Get (APIGateway) in 197.1775ms
 info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
       Executed endpoint 'APIGateway.Controllers.LoadParametersController.Get (APIGateway)'
 info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
-      Request finished in 331.699ms 200 application/json; charset=utf-8
-info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
-      Request starting HTTP/1.1 PUT http://localhost:44317/ExcelAddin/api/updateparameters/?propNames=hdb:components/comment,cdp:projects/name,cdp:projects/description,hdb:components/properties/0/value application/json; charset=utf-8 16
-info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
-      Executing endpoint 'APIGateway.Controllers.UpdateParametersController.Put (APIGateway)'
-info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
-      Route matched with {action = "Put", controller = "UpdateParameters", page = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[APIGateway.Models.ResponseMessage] Put(System.String, System.String) on controller APIGateway.Controllers.UpdateParametersController (APIGateway).
-info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[1]
-      Executing action method APIGateway.Controllers.UpdateParametersController.Put (APIGateway) - Validation state: Valid
-info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
-      Executed action method APIGateway.Controllers.UpdateParametersController.Put (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 317.9031ms.
-info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
-      Executing ObjectResult, writing value of type 'APIGateway.Models.ResponseMessage'.
-info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
-      Executed action APIGateway.Controllers.UpdateParametersController.Put (APIGateway) in 356.6741ms
-info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
-      Executed endpoint 'APIGateway.Controllers.UpdateParametersController.Put (APIGateway)'
-info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
-      Request finished in 371.0627ms 200 application/json; charset=utf-8
-info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
-      Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/api/loadparameters/?propNames=hdb:components/designForProjectName,hdb:components/designByPersonName,hdb:components/comment,hdb:components/group,hdb:components/resources/0/group,hdb:components/locked,hdb:components/properties/0/value,hdb:projects/properties/54/value,hdb:projects/properties/54/symbol,hdb:projects/properties/57/value,hdb:projects/properties/57/symbol,hdb:projects/name,cdp:projects/name,cdp:projects/modifiedBy,cdp:projects/modifiedAt,cdp:projects/description&searchValues=hdb:components/componentID=4771,cdp:projects/id=36021,hdb:projects/name=Gouvaes%202016%20(pt04)  
-info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
-      Executing endpoint 'APIGateway.Controllers.LoadParametersController.Get (APIGateway)'
-info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
-      Route matched with {action = "Get", controller = "LoadParameters", page = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[APIGateway.Models.ResponseMessage] Get(System.String, System.String) on controller APIGateway.Controllers.LoadParametersController (APIGateway).
-info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[1]
-      Executing action method APIGateway.Controllers.LoadParametersController.Get (APIGateway) - Validation state: Valid
-info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
-      Executed action method APIGateway.Controllers.LoadParametersController.Get (APIGateway), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 282.6829ms.
-info: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
-      Executing ObjectResult, writing value of type 'APIGateway.Models.ResponseMessage'.
-info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
-      Executed action APIGateway.Controllers.LoadParametersController.Get (APIGateway) in 320.1518ms
-info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
-      Executed endpoint 'APIGateway.Controllers.LoadParametersController.Get (APIGateway)'
-info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
-      Request finished in 335.2451ms 200 application/json; charset=utf-8
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+      Request finished in 197.6547ms 200 application/json; charset=utf-8
