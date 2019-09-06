@@ -1,0 +1,40 @@
+﻿@model LinksDBManager.Models.ProjectLinkModel
+
+@{
+    ViewData["Title"] = "UpdateProjectLink";
+}
+
+<h1>UpdateProjectLink</h1>
+
+<h4>ProjectLinkModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="SaveProjectLink">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CdpProjectId" class="control-label"></label>
+                <input asp-for="CdpProjectId" class="form-control" />
+                <span asp-validation-for="CdpProjectId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HdbProjectId" class="control-label"></label>
+                <input asp-for="HdbProjectId" class="form-control" />
+                <span asp-validation-for="HdbProjectId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
