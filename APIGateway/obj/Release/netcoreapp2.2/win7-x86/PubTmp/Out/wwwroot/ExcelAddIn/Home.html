@@ -46,17 +46,6 @@
                         <h3>Search criteria</h3>
                     </td>
                 </tr>
-                <!-- CDP Project IDs data list -->
-                <tr>
-                    <td>
-                        <span class="ms-Datalist-label" id="cdp-project-datalist-text"></span>
-                    </td>
-                    <td>
-                        <div class="ui-widget">
-                            <input type="text" id="projectIdsList" />
-                        </div>
-                    </td>
-                </tr>
                 <!-- Component IDs data list -->
                 <tr>
                     <td>
@@ -64,21 +53,51 @@
                     </td>
                     <td>
                         <div class="ui-widget">
-                            <input type="text" id="componentIdsList" />
+                            <input type="text" list="componentIdsList" id="componentIds"/>
+                            <datalist id="componentIdsList"></datalist>
                         </div>
                     </td>
                 </tr>
-                <!-- HDB Project names data list -->
+                <!-- CDP Project names data list -->
                 <tr>
                     <td>
-                        <span class="ms-Datalist-label" id="hdb-project-datalist-text"></span>
+                        <span class="ms-Datalist-label" id="cdp-project-datalist-text"></span>
                     </td>
                     <td>
                         <div class="ui-widget">
-                            <input type="text" id="projectNamesList" />
+                            <input type="text" list="projectNamesList" id="projectNames"/>
+                            <datalist id="projectNamesList">
+                            </datalist>
                         </div>
                     </td>
                 </tr>
+                <!-- CDP Project variants list -->
+                <tr>
+                    <td>
+                        <span class="ms-Datalist-label" id="cdp-project-variant-datalist-text"></span>
+                    </td>
+                    <td>
+                        <div class="ui-widget">
+                            <input type="text" list="projectVariantsList" id="projectVariants"/>
+                            <datalist id="projectVariantsList">
+                            </datalist>
+                        </div>
+                    </td>
+                </tr>
+                <!-- CDP Project revisions list -->
+                <tr>
+                    <td>
+                        <span class="ms-Datalist-label" id="cdp-project-revision-datalist-text"></span>
+                    </td>
+                    <td>
+                        <div class="ui-widget">
+                            <input type="text" list="projectVersionsList" id="projectVersions"/>
+                            <datalist id="projectVersionsList">
+                            </datalist>
+                        </div>
+                    </td>
+                </tr>
+
                 <tr>
                     <td colspan="5" style="text-align: left;">
                         <button class="ms-Button ms-Button--primary" id="fetch-button">

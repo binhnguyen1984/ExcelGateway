@@ -9,7 +9,12 @@
     "webpack-cli": "^3.3.5"
   },
   "scripts": {
-    "build": "webpack"
+    "webpack-script": "webpack"
+  },
+  "-vs-binding": {
+    "BeforeBuild": [
+      "webpack-script"
+    ]
   },
   "dependencies": {
     "@types/jqueryui": "^1.12.7",

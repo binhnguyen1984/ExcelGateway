@@ -1,0 +1,56 @@
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[0]
+      User profile is available. Using 'C:\Users\lnztha01\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+Hosting environment: Development
+Content root path: C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway
+Now listening on: http://127.0.0.1:47173
+Application started. Press Ctrl+C to shut down.
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      Request starting HTTP/1.1 GET http://localhost:44317/ExcelAddin/api/loadattributevaluesbyid?apiPath=hdb:&componentID=3300&attrPath=projects  
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'APIGateway.Controllers.LoadAttributeValuesByIdController.GetAsync (APIGateway)'
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[3]
+      Route matched with {action = "GetAsync", controller = "LoadAttributeValuesById", page = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[APIGateway.Models.ResponseMessage] GetAsync(System.String, System.String, System.String) on controller APIGateway.Controllers.LoadAttributeValuesByIdController (APIGateway).
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[1]
+      Executing action method APIGateway.Controllers.LoadAttributeValuesByIdController.GetAsync (APIGateway) - Validation state: Valid
+info: Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker[2]
+      Executed action APIGateway.Controllers.LoadAttributeValuesByIdController.GetAsync (APIGateway) in 11865.2537ms
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'APIGateway.Controllers.LoadAttributeValuesByIdController.GetAsync (APIGateway)'
+fail: Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware[1]
+      An unhandled exception has occurred while executing the request.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at APIGateway.Models.JsonHelper.GetStringAttributeFromMultipleComponents(Object multComponentData, String[] attrPath) in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Models\JsonHelper.cs:line 67
+   at APIGateway.Models.HDBHandler.GetAttributeValuesByIdOrName(Object[] args) in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Models\HDBHandler.cs:line 87
+   at APIGateway.Models.DBHelper.PerformDBActionAsync(dbActionAsync hdbAction, dbActionAsync cdpAction, Object[] args) in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Models\DBHelper.cs:line 37
+   at APIGateway.Models.DBHelper.GetAttributeValuesByIdOrName(Object[] args) in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Models\DBHelper.cs:line 106
+   at APIGateway.Controllers.LoadAttributeValuesByIdController.GetAsync(String apiPath, String id, String attrPath) in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Controllers\LoadAttributeValuesByIdController.cs:line 18
+   at lambda_method(Closure , Object )
+   at Microsoft.Extensions.Internal.ObjectMethodExecutorAwaitable.Awaiter.GetResult()
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at System.Threading.Tasks.ValueTask`1.get_Result()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeNextActionFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextResourceFilter()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Rethrow(ResourceExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeFilterPipelineAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeAsync()
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.AspNetCore.Routing.EndpointRoutingMiddleware.Invoke(HttpContext httpContext)
+   at APIGateway.Middlewares.ImpersonationMiddleWare.<>c__DisplayClass2_0.<<Invoke>b__0>d.MoveNext() in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Middlewares\ImpersonationMiddleWare.cs:line 31
+--- End of stack trace from previous location where exception was thrown ---
+   at APIGateway.Middlewares.ImpersonationMiddleWare.Invoke(HttpContext context) in C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\Middlewares\ImpersonationMiddleWare.cs:line 24
+   at Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      Request finished in 12109.8368ms 500 text/html; charset=utf-8
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[1]
+      Request starting HTTP/1.1 GET http://localhost:44317/favicon.ico  
+info: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware[2]
+      Sending file. Request path: '/favicon.ico'. Physical path: 'C:\Users\lnztha01\source\repos\ExcelGateway\APIGateway\wwwroot\favicon.ico'
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      Request finished in 16.6866ms 200 image/x-icon

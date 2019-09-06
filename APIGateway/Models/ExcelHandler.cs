@@ -1,5 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using DataLibrary.BusinessLogic;
 using Syncfusion.XlsIO;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,26 +10,24 @@ namespace APIGateway.Models
 {
     public class ExcelHandler
     {
-        private const string StartSearchSectionHeader = "Components"; //the text appears first in the search section
-        private const string StartListPropsHeader = "List properties";
         private IRange range;
         private int RowCount, ColumnCount;
-        private IDictionary<string, string> SearchCompIDValues { get; set; }
-        private IDictionary<string, string> SearchCompDict { get; set; }
-        private IDictionary<string, JObject> ExportLoadedCompList { get; set; } // a dictionary of components loaded from the database which are to be updated
+        private IDictionary<string, string> CompIdNameDict { get; set; }
+        private IDictionary<string, string> DataLinksDict { get; set; }
+        private IDictionary<string, Component> LoadingCompDict { get; set; }
         private List<string[]> ListTypeProperties { get; set; }
         public ExcelHandler(string ConfigFile)
         {
             InitializeData();
             ReadConfiguration(ConfigFile);
-            InitializeExportLoadedCompList();
         }
+
         private void InitializeData()
         {
-            this.SearchCompDict = new Dictionary<string, string>();
-            this.SearchCompIDValues = new Dictionary<string, string>();
-            this.ListTypeProperties = new List<string[]>();
-            ExportLoadedCompList = new Dictionary<string, JObject>();
+            CompIdNameDict = new Dictionary<string, string>();
+            ListTypeProperties = new List<string[]>();
+            DataLinksDict = new Dictionary<string, string>();
+            LoadingCompDict = new Dictionary<string, Component>();
         }
 
         private void ReadConfiguration(string ConfigFile)
@@ -42,15 +41,10 @@ namespace APIGateway.Models
                 RowCount = ws.Rows.Length;
                 ColumnCount = ws.Columns.Length;
 
-                ReadConfiguration(StartSearchSectionHeader, ReadComponentAndDBNames, 1, 1);
-                ReadConfiguration(StartListPropsHeader, ReadListProperties, 1, 4);
+                ReadConfiguration(Settings.StartSearchSectionHeader, ReadComponentAndDBNames, 1, 1);
+                ReadConfiguration(Settings.StartListPropsHeader, ReadListProperties, 1, 4);
                 wb.Close();
             }
-        }
-        private void InitializeExportLoadedCompList()
-        {
-            foreach (string compName in SearchCompDict.Keys)
-                ExportLoadedCompList.Add(compName, null);
         }
 
         private void FindFirstRowStartWithText(string text, ref int firstRow, ref int firstCol)
@@ -79,16 +73,20 @@ namespace APIGateway.Models
 
         private void ReadComponentAndDBNames(ref int firstRow, ref int firstCol)
         {
-            object compNameValue, compIDNameValue;
+            object compNameValue, compIdNameValue, linkValue;
             if ((compNameValue = range[firstRow, firstCol].Value) != null &&
-                (compIDNameValue = range[firstRow, firstCol + 1].Value) != null)
+                (compIdNameValue = range[firstRow, firstCol + 1].Value) != null &&
+                (linkValue = range[firstRow, firstCol + 2].Value) != null)
             {
                 string compName = compNameValue.ToString();
-                string compIDName = compIDNameValue.ToString();
-                if (compName.Length > 0 && compIDName.Length > 0)
+                string compIdName = compIdNameValue.ToString();
+                string linkTo = linkValue.ToString();
+                if (compName.Length > 0 && compIdName.Length > 0)
                 {
-                    if (!SearchCompDict.ContainsKey(compName))
-                        SearchCompDict.Add(compName, compIDName);
+                    if (!CompIdNameDict.ContainsKey(compName))
+                        CompIdNameDict.Add(compName, compIdName);
+                    if (linkTo.Length > 0 && !DataLinksDict.ContainsKey(compName))
+                        DataLinksDict.Add(compName, linkTo);
                 }
                 else firstRow++;
             }
@@ -102,105 +100,157 @@ namespace APIGateway.Models
                 string propName = propNameValue.ToString();
                 if (propName.Length > 0)
                 {
-                    string[] path = propName.Split(Settings.PathSplitter);
-                    if (path.Length == 2)
-                        ListTypeProperties.Add(path);
+                    ResponseMessage response = Common.SplitPath(propName);
+                    if(response.IsSuccessful)
+                        ListTypeProperties.Add(response.Data as string[]);
                 }
                 else firstRow++;
             }
         }
 
-        /// <summary>
-        /// Store information about the components whose parameters are to be updated to the database
-        /// </summary>
-        /// <param name="compName"></param>
-        /// <param name="compIDName"></param>
-        /// <param name="componentDetails"></param>
-        private void StoreUpdateInfo(string compName, string compIDName, JObject componentDetails)
+        private ResponseMessage BuildImportParamDict(string[] propNames)
         {
-            //store the loaded component for update later
-            ExportLoadedCompList[compName] = componentDetails;
-
-            //we save the value of the ID of the component if its parameters are to be updated to the database
-            string compIDValue = (string)componentDetails[compIDName];
-            //store the value of the componentID which is used in update request
-            if (!SearchCompIDValues.ContainsKey(compIDName)) SearchCompIDValues.Add(compIDName, compIDValue);
-            else SearchCompIDValues[compIDName] = compIDValue;
-        }
-
-        private IDictionary<string, List<ParamCell>> BuildParamDict(string[] propNames)
-        {
-            IDictionary<string, List<ParamCell>> paramDict = new Dictionary<string, List<ParamCell>>();
+            IDictionary<string, List<Parameter>> paramDict = new Dictionary<string, List<Parameter>>();
             foreach (string propName in propNames)
             {
-                string[] path = propName.Split(Settings.PathSplitter);
+                ResponseMessage response = Common.SplitPath(propName);
+                if (!response.IsSuccessful) return response;
+                string[] path = response.Data as string[];
                 if (paramDict.ContainsKey(path[0]))
-                    paramDict[path[0]].Add(new ParamCell(path));
-                else paramDict.Add(path[0], new List<ParamCell> { new ParamCell(path) });
+                    paramDict[path[0]].Add(new Parameter(path));
+                else paramDict.Add(path[0], new List<Parameter> { new Parameter(path) });
             }
-            return paramDict;
+            return new ResponseMessage(true, paramDict);
         }
 
-        private IDictionary<string, List<ParamCell>> BuildParamValueDict(string[] paramNames, string[] paramValues)
+        private ResponseMessage BuildParamValueDict(string[] paramNames, string[] paramValues)
         {
-            IDictionary<string, List<ParamCell>> paramValueDict = new Dictionary<string, List<ParamCell>>();
+            IDictionary<string, List<Parameter>> paramValueDict = new Dictionary<string, List<Parameter>>();
             for (int i = 0; i < paramNames.Length; i++)
             {
-                string[] path = paramNames[i].Split(Settings.PathSplitter);
+                ResponseMessage response = Common.SplitPath(paramNames[i]);
+                if (!response.IsSuccessful) return response;
+                string[] path = response.Data as string[];
                 if (paramValueDict.ContainsKey(path[0]))
-                    paramValueDict[path[0]].Add(new ParamCell(path, paramValues[i]));
-                else paramValueDict.Add(path[0], new List<ParamCell> { new ParamCell(path, paramValues[i]) });
+                    paramValueDict[path[0]].Add(new Parameter(path, paramValues[i]));
+                else paramValueDict.Add(path[0], new List<Parameter> { new Parameter(path, paramValues[i]) });
             }
-            return paramValueDict;
+            return new ResponseMessage(true, paramValueDict);
         }
 
-        private IDictionary<string, (List<string>, List<string>)> BuildSearchParamDict(string[] searchValues)
+        private IDictionary<string, Constraint> BuildSearchConstraintsDict(string[] searchValues)
         {
-            IDictionary<string, (List<string>, List<string>)> searchParamDict = new Dictionary<string, (List<string>, List<string>)>();
+            IDictionary<string, Constraint> searchConstraintsDict = new Dictionary<string, Constraint>();
             foreach (string val in searchValues)
             {
                 string[] propAndVal = val.Split(Settings.PropValueSplitter);
-                string[] path = propAndVal[0].Split(Settings.PathSplitter);
-                if (searchParamDict.ContainsKey(path[0]))
+                if (propAndVal.Length == 2 && propAndVal[1].Length > 0)
                 {
-                    (List<string>, List<string>) listPair = searchParamDict[path[0]];
-                    listPair.Item1.Add(path[1]);
-                    listPair.Item2.Add(propAndVal[1]);
+                    string[] path = propAndVal[0].Split(Settings.PathSplitter);
+                    if (searchConstraintsDict.ContainsKey(path[0]))
+                    {
+                        Constraint constraint = searchConstraintsDict[path[0]];
+                        constraint.Properties.Add(path[1]);
+                        constraint.Values.Add(propAndVal[1]);
+                    }
+                    else searchConstraintsDict.Add(path[0], new Constraint { Properties = new List<string> { path[1] }, Values = new List<string> { propAndVal[1] } });
                 }
-                else searchParamDict.Add(path[0], (new List<string> { path[1] }, new List<string> { propAndVal[1] }));
             }
-            return searchParamDict;
+            return searchConstraintsDict;
         }
 
+        private ResponseMessage DeriveCompIdFromLinkedComponent(string dBAndCompNames)
+        {
+            if (DataLinksDict.ContainsKey(dBAndCompNames))
+            {
+                //get the component name this is linked to this component
+                string linkedComponentName = DataLinksDict[dBAndCompNames];
+
+                //check if the linked component was already loaded
+                if (LoadingCompDict.ContainsKey(linkedComponentName))
+                {
+                    //get the linked component id value
+                    //string linkedCompIdName = CompIdNameDict[linkedCompName];
+                    string linkedComponentIdValue = LoadingCompDict[linkedComponentName].GetIdValue();
+                    //get the component id value that is associated to the linked component id's value
+                    //string compIdName = CompIdNameDict[dBAndCompNames];
+                    ResponseMessage response = Common.SplitDBAndCompNames(dBAndCompNames);
+                    if (!response.IsSuccessful) return response;
+                    string[] split = response.Data as string[];
+                    List<string> componentIdValues;
+                    if (split[0].ToLower().CompareTo("cdp") == 0)
+                        componentIdValues = ProjectLinkProcessor.GetCdpProjectId(linkedComponentIdValue);
+                    else if (split[0].ToLower().CompareTo("hdb") == 0)
+                        componentIdValues = ProjectLinkProcessor.GetHdbProjectId(Int32.Parse(linkedComponentIdValue));
+                    else return new ResponseMessage(false, "Database '"+split[0]+"' is unknown") ;
+                    if (componentIdValues==null || componentIdValues.Count == 0) return new ResponseMessage(false, "Component '" + linkedComponentName + "' and '" + dBAndCompNames + "' are not linked to each other");
+                    else if (componentIdValues.Count > 1) return new ResponseMessage(false,"Multiple components '"+ dBAndCompNames+"' are linked to the same component '"+ linkedComponentName + "'");
+                    return new ResponseMessage(true, componentIdValues[0]);
+                }
+            }
+            return new ResponseMessage(false, "Component '" + dBAndCompNames + "' is not linked to any component in the search");
+        }
+
+        private ResponseMessage GetLoadingComponents(IDictionary<string, List<Parameter>> impParamDict, IDictionary<string, Constraint> searchConstraintsDict)
+        {
+            LoadingCompDict.Clear();
+            HashSet<string> allComponents = new HashSet<string>();
+            foreach (string compName in searchConstraintsDict.Keys)
+                allComponents.Add(compName);
+            foreach (string compName in impParamDict.Keys)
+                allComponents.Add(compName);
+            foreach (string dBAndCompNames in allComponents)
+            {
+                Constraint constraint = searchConstraintsDict.ContainsKey(dBAndCompNames) ? searchConstraintsDict[dBAndCompNames] : null;
+                if (!CompIdNameDict.ContainsKey(dBAndCompNames))
+                    return new ResponseMessage(false, "Unique Id is not found for component '" + dBAndCompNames + "'");
+                string idName = CompIdNameDict[dBAndCompNames];
+                List<Parameter> impParams = impParamDict.ContainsKey(dBAndCompNames) ? impParamDict[dBAndCompNames] : null;
+                ResponseMessage response = Component.CreateComponent(dBAndCompNames);
+                if (!response.IsSuccessful) return response;
+                Component component = response.Data as Component;
+                component.IdName = idName;
+                component.ImportParams = impParams;
+                component.Constraint = constraint;
+                LoadingCompDict.Add(dBAndCompNames, component);
+            }
+            return new ResponseMessage(true, null);
+        }
         /// <summary>
         /// Fetch data from the database 
         /// note that the import parameters must be ordered so that parameters that belong to the same component are grouped together
         /// </summary>
-        public async Task<ResponseMessage> FetchParamsFromDBAsync(string[] propNames, string[] searchValues)
-        {
+        public async Task<ResponseMessage> LoadParametersAsync(string[] importParams, string[] searchConstraints)
+        {            
+            ResponseMessage response;
             List<object> result = new List<object>();
-            IDictionary<string, List<ParamCell>> impParamDict = BuildParamDict(propNames);
-            IDictionary<string, (List<string>, List<string>)> searchParamDict = BuildSearchParamDict(searchValues);
-            foreach (KeyValuePair<string, List<ParamCell>> impParamsEntry in impParamDict)
+            response = BuildImportParamDict(importParams);
+            if (!response.IsSuccessful) return response;
+            IDictionary<string, List<Parameter>> impParamDict = response.Data as IDictionary<string, List<Parameter>>;
+            IDictionary<string, Constraint> searchConstraintsDict = BuildSearchConstraintsDict(searchConstraints);
+
+            //get all components w.r.t the search criteria
+            response = GetLoadingComponents(impParamDict, searchConstraintsDict);
+            if (!response.IsSuccessful) return response;
+
+            //Load these components from the databases
+            foreach (KeyValuePair<string, Component> loadingComp in LoadingCompDict)
             {
-                string DBAndCompNames = impParamsEntry.Key;
-                //find all the parameters that come from the same component
-                List<ParamCell> impParams = impParamsEntry.Value;
-                if (!searchParamDict.ContainsKey(DBAndCompNames))
-                    return new ResponseMessage(false, "Component '" + DBAndCompNames + "' is out of scope (database name may be missing)");
-                (List<string>, List<string>) propsAndValues = searchParamDict[DBAndCompNames];
-                if (!SearchCompDict.ContainsKey(DBAndCompNames))
-                    return new ResponseMessage(false, "Missing unique ID information for component '" + DBAndCompNames + "'");
-                string compIdName = SearchCompDict[DBAndCompNames];
-                //make a query to the corresponding database server
-                ResponseMessage response = await DBHelper.UpdateComponentWithFetchedValues(DBAndCompNames, propsAndValues.Item1, propsAndValues.Item2, impParams);
-                if (!response.IsSuccessful)
-                    return response;
-                //store the loaded component for update later
-                StoreUpdateInfo(DBAndCompNames, compIdName, response.Data as JObject);
+                string dBAndCompNames = loadingComp.Key;
+                Component searchComp = loadingComp.Value;
+                if (searchComp.Constraint == null)
+                {
+                    response = DeriveCompIdFromLinkedComponent(dBAndCompNames);
+                    if (!response.IsSuccessful) return response;
+                    string compId = response.Data as string;
+                    searchComp.Constraint = new Constraint { Properties = new List<string> { searchComp.IdName}, Values = new List<string> { compId} };
+                    //response = await searchComp.LoadParametersByCompId(compId);
+                }
+                response = await searchComp.LoadParameters();
+                if (!response.IsSuccessful) return response;
 
                 //add parameters to the result
-                result.AddRange(impParams.Select(param => param.Value));
+                result.AddRange(searchComp.ImportParams.Select(param => param.Value));
             }
             return new ResponseMessage(true, result);
         }
@@ -212,51 +262,30 @@ namespace APIGateway.Models
         /// <returns></returns>
         public async Task<ResponseMessage> UpdateParametersAsync(string[] paramNames, string[] paramValues)
         {
-            IDictionary<string, List<ParamCell>> exportParamDict = BuildParamValueDict(paramNames, paramValues);
-            foreach (KeyValuePair<string, List<ParamCell>> exportParamEntry in exportParamDict)
+            ResponseMessage response = BuildParamValueDict(paramNames, paramValues);
+            if (!response.IsSuccessful) return response;
+            IDictionary<string, List<Parameter>> exportParamDict = response.Data as IDictionary<string, List<Parameter>>;
+            foreach (KeyValuePair<string, List<Parameter>> exportParamEntry in exportParamDict)
             {
-                string DBAndCompNames = exportParamEntry.Key;
-                List<ParamCell> exportParams = exportParamEntry.Value;
-                if (!ExportLoadedCompList.ContainsKey(DBAndCompNames))
-                    return new ResponseMessage(false, "Component '" + DBAndCompNames + "' was not loaded and thus cannot be updated");
-                if (!SearchCompDict.ContainsKey(DBAndCompNames))
-                    return new ResponseMessage(false, "No information about component '" + DBAndCompNames + "' was found");
+                string dBAndCompNames = exportParamEntry.Key;
+                if (!LoadingCompDict.ContainsKey(dBAndCompNames))
+                    return new ResponseMessage(false, "Component '" + dBAndCompNames + "' was not loaded and thus cannot be updated");
+                if (!CompIdNameDict.ContainsKey(dBAndCompNames))
+                    return new ResponseMessage(false, "No information about component '" + dBAndCompNames + "' was found");
 
-                JObject loadedComp = ExportLoadedCompList[DBAndCompNames];
-                string compIdName = SearchCompDict[DBAndCompNames]; ;
-                string compIdValue = SearchCompIDValues[compIdName]; ;
-
+                Component searchComp = LoadingCompDict[dBAndCompNames];
+                searchComp.ExportParams = exportParamEntry.Value;
                 //update parameters
-                ResponseMessage response = UpdateParamsWithNewValues(compIdName, compIdValue, loadedComp, exportParams);
+                response = searchComp.UpdateParamsWithNewValues();
                 if (!response.IsSuccessful)
                     return response;
                 //make a query to the corresponding database server
-                response = await DBHelper.UpdateComponentToDB(DBAndCompNames, loadedComp, compIdValue);
+                response = await searchComp.UpdateComponentToDB();
                 if (!response.IsSuccessful)
                     return response;// update failed
             }
             return new ResponseMessage(true, null); // update succeeded
         }
-
-        /// <summary>
-        /// Update the component with new parameters
-        /// </summary>
-        /// <param name="compIdName"></param>
-        /// <param name="compIdValue"></param>
-        /// <param name="loadedCompDetails"></param>
-        /// <param name="exportParams"></param>
-        /// <returns></returns>
-        private ResponseMessage UpdateParamsWithNewValues(string compIdName, string compIdValue, JObject loadedCompDetails, List<ParamCell> exportParams)
-        {
-            //update the loaded component with new values
-            foreach (ParamCell paramCell in exportParams)
-            {
-                ResponseMessage updateStatus = paramCell.UpdateValueTo(loadedCompDetails, compIdName, compIdValue);
-                if (!updateStatus.IsSuccessful) return updateStatus;
-            }
-            return new ResponseMessage(true, null);
-        }
-
         public HashSet<string> GetListTypeProps(IEnumerable<string[]> props)
         {
             HashSet<string> listTypeProps = new HashSet<string>();

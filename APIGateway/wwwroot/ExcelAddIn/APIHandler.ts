@@ -9,13 +9,13 @@
     xhr.send(null);
 }
 
-export function syncApiGetCall(apiURL,callback ) {
+export function syncApiGetCall(apiURL, callback, ...args) {
     let xhr = new XMLHttpRequest();
     xhr.overrideMimeType("application/json");
     xhr.open("GET", apiURL, false);
     xhr.onload = function () {
         if (xhr.readyState == 4 && xhr.status == 200 && callback!=null)
-            callback(xhr.responseText);
+            callback(xhr.responseText, ...args);
     }
     xhr.send(null);
 }

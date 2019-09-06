@@ -1,5 +1,6 @@
 ﻿using APIGateway.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Principal;
 using System.Threading.Tasks;
 
 namespace APIGateway.Controllers
@@ -13,7 +14,9 @@ namespace APIGateway.Controllers
         {
             if (searchValues == null) return new ResponseMessage(false, "No search values are specified");
             if (propNames == null) return new ResponseMessage(false, "No import parameters are specified");
-            return await DBHelper.ExcelHandlerInst.FetchParamsFromDBAsync(propNames.Split(","), searchValues.Split(','));
+            var callerIdentity = User.Identity as WindowsIdentity;
+            return await WindowsIdentity.RunImpersonated(callerIdentity.AccessToken,
+                async () => await GlobalResources.ExcelHandlerInst.LoadParametersAsync(propNames.Split(","), searchValues.Split(',')));
         }
     }
 }

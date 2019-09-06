@@ -1,28 +1,25 @@
 ﻿using HtmlAgilityPack;
 using IdentityModel.OidcClient;
 using IdentityModel.OidcClient.Results;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace APIGateway.Models
 {
-    public class CDPHandler : DBHandler
+    public class CDPHandler : IDbHandler
     {
-        private static OidcClientInfo CurrentOidcClientInfo = null;
-        private static HtmlDocument htmlDoc = null;
+        private static readonly OidcClientInfo CurrentOidcClientInfo = new OidcClientInfo(new OidcClient(InitOpenIdConnectOps()));
+        private static readonly HtmlDocument htmlDoc = new HtmlDocument();
+
         public CDPHandler()
         {
-            CurrentOidcClientInfo = new OidcClientInfo(new OidcClient(InitOpenIdConnectOps()));
-            htmlDoc = new HtmlDocument();
         }
 
-        protected override string GetAllComponentUrl(string compName)
+        public static Task<ResponseMessage> GetVersionsByProjectAndVariant(string projectName, string variantName)
         {
-            return Settings.CDPApiUrl + compName;
+            throw new NotImplementedException();
         }
 
         private static string ExtractDataUrl(string content)
@@ -42,15 +39,9 @@ namespace APIGateway.Models
                 return loc.IsAbsoluteUri ? headers.Location.AbsoluteUri : requestUri.GetLeftPart(UriPartial.Authority) + loc.ToString();
             return response.RequestMessage.RequestUri.AbsoluteUri;
         }
-
-        public override async Task<ResponseMessage> GetAttributeValuesOfAllComponents(params object[] args)
-        {
-            await RequestAccessTokenForOpenIDConnect();
-            return await base.GetAttributeValuesOfAllComponents(args);
-        }
         public static async Task<string> GetAuthTokens(string Url)
         {
-            using (HttpResponseMessage response = await ApiHandler.GetAsync(Url))
+            using (HttpResponseMessage response = await GlobalResources.ApiHandler.GetAsync(Url))
             {
                 string content = await response.Content.ReadAsStringAsync();
                 if (response.StatusCode == System.Net.HttpStatusCode.Found)
@@ -63,7 +54,7 @@ namespace APIGateway.Models
                     string dataUrl = ExtractDataUrl(content);
                     var lastUrl = response.RequestMessage.RequestUri.GetLeftPart(UriPartial.Authority) + dataUrl;
                     lastUrl = System.Web.HttpUtility.HtmlDecode(lastUrl);
-                    using (HttpResponseMessage lastResponse = await ApiHandler.GetAsync(lastUrl))
+                    using (HttpResponseMessage lastResponse = await GlobalResources.ApiHandler.GetAsync(lastUrl))
                         return lastResponse.Headers.Location.Query;
                 }
             }
@@ -71,7 +62,7 @@ namespace APIGateway.Models
         }
 
 
-        private OidcClientOptions InitOpenIdConnectOps()
+        private static OidcClientOptions InitOpenIdConnectOps()
         {
             // we do not need browser interaction to send authentication request
             //var browser = new SystemBrowser(Settings.CDPRedirecPort);
@@ -87,7 +78,6 @@ namespace APIGateway.Models
                 ResponseMode = OidcClientOptions.AuthorizeResponseMode.Redirect
             };
         }
-
         public class OidcClientInfo
         {
             public string AccessToken { get; set; }
@@ -100,7 +90,7 @@ namespace APIGateway.Models
                 OidcClient = oidcClient;
             }
         }
-        private async Task Login()
+        private static async Task Login()
         {
             // create a redirect URI using an available port on the loopback address.
             var state = await CurrentOidcClientInfo.OidcClient.PrepareLoginAsync();
@@ -115,59 +105,70 @@ namespace APIGateway.Models
         }
 
 
-        private async Task RequestAccessTokenForOpenIDConnect()
+        private static async Task RequestAccessTokenForOpenIDConnect()
         {
             if (CurrentOidcClientInfo.AccessToken == null)
             {
                 await Login();
-                ApiHandler.SetBearerToken(CurrentOidcClientInfo.AccessToken);
+                GlobalResources.ApiHandler.SetBearerToken(CurrentOidcClientInfo.AccessToken);
             }
             else if (DateTime.Now >= CurrentOidcClientInfo.ValidDate)
             {
                 RefreshAccessToken();
-                ApiHandler.SetBearerToken(CurrentOidcClientInfo.AccessToken);
+                GlobalResources.ApiHandler.SetBearerToken(CurrentOidcClientInfo.AccessToken);
             }
         }
 
-        private void RefreshAccessToken()
+        private static void RefreshAccessToken()
         {
             RefreshTokenResult refreshTokenResult = AsyncFuncHelper.RunSync<RefreshTokenResult>(async () => await CurrentOidcClientInfo.OidcClient.RefreshTokenAsync(CurrentOidcClientInfo.RefreshToken));
             CurrentOidcClientInfo.AccessToken = refreshTokenResult.AccessToken;
             CurrentOidcClientInfo.RefreshToken = refreshTokenResult.RefreshToken;
             CurrentOidcClientInfo.ValidDate = refreshTokenResult.AccessTokenExpiration;
         }
-
-        /// <summary>
-        /// Currently, CDP only supports searching conditioned on a single property
-        /// </summary>
-        /// <param name="compName"></param>
-        /// <param name="searchValues"></param>
-        /// <returns></returns>
-        protected override string GetSearchURL(params object[] args)
+        public static async Task<ResponseMessage> FetchDataFromDB(string url)
         {
-            string compName = args[0] as string;
-            List<string> searchValues = args[2] as List<string>;
-            string searchUrl = Settings.CDPApiUrl + compName;
-            if (searchValues.Count > 0) searchUrl += "/" + searchValues[0];
-            return searchUrl;
-        }
-
-        protected override object ExtractResponseBody(params object[] args)
-        {
-            return args[0];
-        }
-
-        protected override string GetPutUrl(params object[] args)
-        {
-            return Settings.CDPApiUrl + (args[0] as string);
-        }
-        public override async Task<ResponseMessage> UpdateComponentToDB(params object[] args)
-        {
-            string compName = args[0] as string;
-            JObject loadedCompDetails = args[1] as JObject;
-            string updateUrl = GetPutUrl(compName);
             await RequestAccessTokenForOpenIDConnect();
-            return await ApiHandler.UpdateDataToDB(updateUrl, loadedCompDetails.ToString());
+            return await GlobalResources.ApiHandler.ExecuteGetAsync(url);
         }
+
+        async Task<ResponseMessage> IDbHandler.FetchDataFromDB(string url) => await CDPHandler.FetchDataFromDB(url);
+        public static async Task<ResponseMessage> UpdateComponentToDB(string updateUrl, string updateData)
+        {
+            await RequestAccessTokenForOpenIDConnect();
+            return await GlobalResources.ApiHandler.ExecutePutAsync(updateUrl, updateData);
+        }
+        async Task<ResponseMessage> IDbHandler.UpdateComponentToDB(string updateUrl, string updateData) => await CDPHandler.UpdateComponentToDB(updateUrl, updateData);
+
+        public static object ExtractResponseBody(object jsonData) => jsonData;
+        object IDbHandler.ExtractResponseBody(object jsonData, string compName) => CDPHandler.ExtractResponseBody(jsonData); 
+        public static async Task<ResponseMessage> GetAttributeValuesOfAllComponents(string[] attrPath)
+        {
+            string apiUrl = GetAllComponenstUrl(attrPath[0]);
+            await RequestAccessTokenForOpenIDConnect();
+            ResponseMessage response = await GlobalResources.ApiHandler.ExecuteGetAsync(apiUrl);
+            if (!response.IsSuccessful) return response;
+            object data = ExtractResponseBody(response.Data);
+            return JsonHelper.GetStringAttributeFromMultipleComponents(data, attrPath);
+        }
+        async Task<ResponseMessage> IDbHandler.GetAttributeValuesOfAllComponents(string[] attrPath) => 
+            await CDPHandler.GetAttributeValuesOfAllComponents(attrPath);
+        public static string GetAllComponenstUrl(string compName) => Settings.CDPApiUrl + compName;
+        string IDbHandler.GetAllComponenstUrl(string compName) => CDPHandler.GetAllComponenstUrl(compName);
+        public static async Task<ResponseMessage> GetAttributeValuesByIdOrName(string apiPath, string IdOrName, string[] attrPath, string filter)
+        {
+            string apiUrl = Settings.CDPApiUrl + attrPath[0] + "/";
+            if (apiPath != null) apiUrl += apiPath;
+            apiUrl += $"{IdOrName}";
+            if (filter != null && filter.Length > 0) apiUrl += "?" + filter;
+            await RequestAccessTokenForOpenIDConnect();
+            ResponseMessage response = await GlobalResources.ApiHandler.ExecuteGetAsync(apiUrl);
+            if (!response.IsSuccessful) return response;
+            return JsonHelper.GetStringAttributeFromMultipleComponents(response.Data, attrPath);
+        }
+        async Task<ResponseMessage> IDbHandler.GetAttributeValuesByIdOrName(string apiPath, string IdOrName, string[] attrPath, string filter) => 
+            await CDPHandler.GetAttributeValuesByIdOrName(apiPath, IdOrName, attrPath, filter);
+        public static async Task<ResponseMessage> GetVariantsByProjectName(string projectName) => await Task.FromResult<ResponseMessage>(null);
+
     }
 }

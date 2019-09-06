@@ -1,12 +1,11 @@
 using APIGateway.Middlewares;
+using DataLibrary.DataAccess;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-//using ProxyKit;
-//using System.Net.Http;
 
 namespace APIGateway
 {
@@ -15,6 +14,7 @@ namespace APIGateway
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            SqlDataAccess.ConnectionString = Configuration["ConnectionStrings"];
         }
 
         public IConfiguration Configuration { get; }
@@ -45,8 +45,6 @@ namespace APIGateway
                 .WithRazorPagesRoot("/HomePage")
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddAuthentication(options => ConfigureAuthentication(options));
-            //services.AddProxy(httpClientBuilder =>
-            //httpClientBuilder.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { ServerCertificateCustomValidationCallback = (_, __, ___, ____) => true, UseDefaultCredentials = true }));
         }
 
         private static void ConfigureAuthentication(Microsoft.AspNetCore.Authentication.AuthenticationOptions options)
@@ -135,7 +133,7 @@ namespace APIGateway
             app.UseAuthentication();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-            app.UseImpersonationMiddleWare();
+            //app.UseImpersonationMiddleWare();
             app.UseMvc();
             //app.Map("/api/hdb", app1 =>
             //{

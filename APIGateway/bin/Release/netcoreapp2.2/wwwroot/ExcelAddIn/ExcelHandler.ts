@@ -3,25 +3,12 @@ import * as Common from "./Common";
 
 const importStartCol = 0;
 const exportStartCol = 3;
-export function getHdbComponentIdsList(callback) {
-    APIHandler.syncApiGetCall("api/loadhdbcomponentids", callback);
-}
-
-export function getCdpProjectIdsList(callback) {
-    APIHandler.syncApiGetCall("api/loadcdpprojectids", callback);
-}
-
-export function getHdbProjectNamesList(callback) {
-    APIHandler.syncApiGetCall("api/loadhdbprojectnames", callback);
-}
-
-
 export async function loadParameters(searchValues) {
     Common.showNotification("Message", "Data is loading ...");
     let importProps = await getImportPropNames();
     let propNames = importProps[0];
     let importValueLocs = importProps[1];
-    APIHandler.asyncApiGetCall("api/loadparameters/" + "?propNames=" + propNames.toString() + "&searchValues=" + searchValues, setImportParameters, importValueLocs);
+    APIHandler.asyncApiGetCall("api/loadparameters?propNames=" + propNames.toString() + "&searchValues=" + searchValues, setImportParameters, importValueLocs);
 }
 
 export async function updateParameters() {

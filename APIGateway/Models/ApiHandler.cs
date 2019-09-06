@@ -30,7 +30,7 @@ namespace APIGateway.Models
         {
             ApiClient.SetBearerToken(accessToken);
         }
-        public async Task<ResponseMessage> FetchDataFromDB(string Url)
+        public async Task<ResponseMessage> ExecuteGetAsync(string Url)
         {
             using (HttpResponseMessage response = await ApiClient.GetAsync(Url))
             {
@@ -44,7 +44,7 @@ namespace APIGateway.Models
             }
         }
 
-        public async Task<ResponseMessage> UpdateDataToDB(string Url, string data)
+        public async Task<ResponseMessage> ExecutePutAsync(string Url, string data)
         {
             StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
             using (var response = await ApiClient.PutAsync(Url, content))

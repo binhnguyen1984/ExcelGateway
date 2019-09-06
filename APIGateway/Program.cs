@@ -10,7 +10,7 @@ namespace APIGateway
         public static void Main(string[] args)
         {
             AppContext.SetSwitch("System.Net.Http.UseSocketsHttpHandler", false); //this is for impersonation to work
-            DBHelper.InitializeDbHelper();
+            GlobalResources.InitializeGlobalResources();
             CreateWebHostBuilder(args).Build().Run();
         }
 

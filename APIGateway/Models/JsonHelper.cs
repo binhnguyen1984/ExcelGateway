@@ -43,6 +43,34 @@ namespace APIGateway.Models
             return new ResponseMessage(true, componentData);
         }
 
+        private static string GetJValueAsString(object jValue)
+        {
+            JValue valueObj = (jValue as JValue);
+            return valueObj.Value != null ? valueObj.Value.ToString() : "null";
+        }
+
+        private static ResponseMessage GetAttributeValuesAsString(JToken values, string[] attrPath)
+        {
+            ResponseMessage response = GetJsonAttributeFromOneComponent(values, attrPath);
+            if (!response.IsSuccessful) return response;
+            if (response.Data is JValue)
+            {
+                return new ResponseMessage(true, GetJValueAsString(response.Data));
+            }
+            else if (response.Data is JArray)
+            {
+                string result = "[";
+                foreach (JToken token in (response.Data as JArray))
+                {
+                    if (token is JValue)
+                        result += GetJValueAsString(token);
+                    else result += token!=null?token.ToString():"null";
+                }
+                result += "]";
+                return new ResponseMessage(true, result);
+            }
+            else return new ResponseMessage(true, response.Data.ToString());
+        }
         /// <summary>
         /// Extract attribute values of multiple components
         /// </summary>
@@ -55,16 +83,16 @@ namespace APIGateway.Models
             {
                 foreach (JToken comp in (JArray)multComponentData)
                 {
-                    ResponseMessage response = GetJsonAttributeFromOneComponent(comp, attrPath);
+                    ResponseMessage response = GetAttributeValuesAsString(comp, attrPath);
                     if (!response.IsSuccessful) return response;
-                    idList.Add((response.Data as JValue).Value.ToString());
+                    idList.Add(response.Data as string);
                 }
             }
             else
             {
-                ResponseMessage response = GetJsonAttributeFromOneComponent(multComponentData, attrPath);
+                ResponseMessage response = GetAttributeValuesAsString(multComponentData as JToken, attrPath);
                 if (!response.IsSuccessful) return response;
-                idList.Add((response.Data as JValue).Value.ToString());
+                idList.Add(response.Data as string);
             }
             return new ResponseMessage(true, idList);
         }
