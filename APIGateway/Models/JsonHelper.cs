@@ -29,13 +29,19 @@ namespace APIGateway.Models
                 else if (componentData is JArray)
                 {
                     JArray dataArr = componentData as JArray;
-                    if (Int32.TryParse(attrPath[i], out int index))
-                    {
-                        if (index >= dataArr.Count)
-                            return new ResponseMessage(false, "Index of parameter '" + attrPath[i - 1] + "' is out of range");
-                        componentData = dataArr[index];
-                    }
-                    else return new ResponseMessage(false, "'" + attrPath[i] + "' is not a valid index");
+                    //if (Int32.TryParse(attrPath[i], out int index))
+                    //{
+                    //    if (index >= dataArr.Count)
+                    //        return new ResponseMessage(false, "Index of parameter '" + attrPath[i - 1] + "' is out of range");
+                    //    componentData = dataArr[index];
+                    //}
+                    //else return new ResponseMessage(false, "'" + attrPath[i] + "' is not a valid index");
+                    string[] fieldAndValue = attrPath[i].Split(Settings.ListPropFilterSplitter);
+                    if (fieldAndValue.Length != 2) return new ResponseMessage(false, $"Property name {attrPath[i]} is not a valid filter for list property");
+                    ResponseMessage response = FilterListProperty(dataArr, fieldAndValue);
+                    if (!response.IsSuccessful) return response;
+                    componentData = response.Data;
+
                 }
                 else return new ResponseMessage(false, "Datatype of parameter '" + attrPath[i] + "' is unknown");
                 i++;
@@ -43,6 +49,16 @@ namespace APIGateway.Models
             return new ResponseMessage(true, componentData);
         }
 
+        private static ResponseMessage FilterListProperty(JArray listProp, string[] fieldAndValue)
+        {
+            foreach (JToken token in listProp)
+            {
+                var fieldValue = token[fieldAndValue[0]];
+                if (fieldValue != null && fieldValue.ToString().CompareTo(fieldAndValue[1]) == 0)
+                    return new ResponseMessage(true, token);
+            }
+            return new ResponseMessage(false, $"No data with {fieldAndValue[0]}={fieldAndValue[1]}");
+        }
         private static string GetJValueAsString(object jValue)
         {
             JValue valueObj = (jValue as JValue);

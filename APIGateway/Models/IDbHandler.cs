@@ -10,5 +10,6 @@ namespace APIGateway.Models
         Task<ResponseMessage> GetAttributeValuesOfAllComponents(string[] attrPath);
         string GetAllComponenstUrl(string compName);
         Task<ResponseMessage> GetAttributeValuesByIdOrName(string apiPath, string IdOrName, string[] attrPath, string filter);
+        Task<ResponseMessage> LoadParametersByCompId(string compName, string compId);
     }
 }

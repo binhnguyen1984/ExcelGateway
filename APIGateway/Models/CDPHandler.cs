@@ -141,7 +141,7 @@ namespace APIGateway.Models
         async Task<ResponseMessage> IDbHandler.UpdateComponentToDB(string updateUrl, string updateData) => await CDPHandler.UpdateComponentToDB(updateUrl, updateData);
 
         public static object ExtractResponseBody(object jsonData) => jsonData;
-        object IDbHandler.ExtractResponseBody(object jsonData, string compName) => CDPHandler.ExtractResponseBody(jsonData); 
+        object IDbHandler.ExtractResponseBody(object jsonData, string dataName) => ExtractResponseBody(jsonData); 
         public static async Task<ResponseMessage> GetAttributeValuesOfAllComponents(string[] attrPath)
         {
             string apiUrl = GetAllComponenstUrl(attrPath[0]);
@@ -154,7 +154,7 @@ namespace APIGateway.Models
         async Task<ResponseMessage> IDbHandler.GetAttributeValuesOfAllComponents(string[] attrPath) => 
             await CDPHandler.GetAttributeValuesOfAllComponents(attrPath);
         public static string GetAllComponenstUrl(string compName) => Settings.CDPApiUrl + compName;
-        string IDbHandler.GetAllComponenstUrl(string compName) => CDPHandler.GetAllComponenstUrl(compName);
+        string IDbHandler.GetAllComponenstUrl(string compName) => GetAllComponenstUrl(compName);
         public static async Task<ResponseMessage> GetAttributeValuesByIdOrName(string apiPath, string IdOrName, string[] attrPath, string filter)
         {
             string apiUrl = Settings.CDPApiUrl + attrPath[0] + "/";
@@ -169,6 +169,12 @@ namespace APIGateway.Models
         async Task<ResponseMessage> IDbHandler.GetAttributeValuesByIdOrName(string apiPath, string IdOrName, string[] attrPath, string filter) => 
             await CDPHandler.GetAttributeValuesByIdOrName(apiPath, IdOrName, attrPath, filter);
         public static async Task<ResponseMessage> GetVariantsByProjectName(string projectName) => await Task.FromResult<ResponseMessage>(null);
-
+        public static async Task<ResponseMessage> LoadParametersByCompId(string compName, string compId)
+        {
+            string searchUrl = GetAllComponenstUrl(compName);
+            searchUrl += "/" + compId;
+            return await FetchDataFromDB(searchUrl);
+        }
+        async Task<ResponseMessage> IDbHandler.LoadParametersByCompId(string compName, string compId) => await LoadParametersByCompId(compName, compId);
     }
 }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Principal;
 using System.Threading.Tasks;
 
 namespace APIGateway.Models
@@ -15,7 +16,7 @@ namespace APIGateway.Models
         private IDictionary<string, string> CompIdNameDict { get; set; }
         private IDictionary<string, string> DataLinksDict { get; set; }
         private IDictionary<string, Component> LoadingCompDict { get; set; }
-        private List<string[]> ListTypeProperties { get; set; }
+        private List<string> ListTypeProperties { get; set; }
         public ExcelHandler(string ConfigFile)
         {
             InitializeData();
@@ -25,7 +26,7 @@ namespace APIGateway.Models
         private void InitializeData()
         {
             CompIdNameDict = new Dictionary<string, string>();
-            ListTypeProperties = new List<string[]>();
+            ListTypeProperties = new List<string>();
             DataLinksDict = new Dictionary<string, string>();
             LoadingCompDict = new Dictionary<string, Component>();
         }
@@ -99,11 +100,7 @@ namespace APIGateway.Models
             {
                 string propName = propNameValue.ToString();
                 if (propName.Length > 0)
-                {
-                    ResponseMessage response = Common.SplitPath(propName);
-                    if(response.IsSuccessful)
-                        ListTypeProperties.Add(response.Data as string[]);
-                }
+                    ListTypeProperties.Add(propName);
                 else firstRow++;
             }
         }
@@ -220,7 +217,7 @@ namespace APIGateway.Models
         /// Fetch data from the database 
         /// note that the import parameters must be ordered so that parameters that belong to the same component are grouped together
         /// </summary>
-        public async Task<ResponseMessage> LoadParametersAsync(string[] importParams, string[] searchConstraints)
+        public async Task<ResponseMessage> LoadParametersAsync(WindowsIdentity callerIdentity, string[] importParams, string[] searchConstraints)
         {            
             ResponseMessage response;
             List<object> result = new List<object>();
@@ -243,10 +240,12 @@ namespace APIGateway.Models
                     response = DeriveCompIdFromLinkedComponent(dBAndCompNames);
                     if (!response.IsSuccessful) return response;
                     string compId = response.Data as string;
-                    searchComp.Constraint = new Constraint { Properties = new List<string> { searchComp.IdName}, Values = new List<string> { compId} };
-                    //response = await searchComp.LoadParametersByCompId(compId);
+                    //searchComp.Constraint = new Constraint { Properties = new List<string> { searchComp.IdName}, Values = new List<string> { compId} };
+                    await WindowsIdentity.RunImpersonated(callerIdentity.AccessToken,
+                        async() => response = await searchComp.LoadParametersByCompId(compId));
                 }
-                response = await searchComp.LoadParameters();
+                else response = await WindowsIdentity.RunImpersonated(callerIdentity.AccessToken,
+                    async()=> await searchComp.LoadParameters(null));
                 if (!response.IsSuccessful) return response;
 
                 //add parameters to the result
@@ -286,17 +285,27 @@ namespace APIGateway.Models
             }
             return new ResponseMessage(true, null); // update succeeded
         }
+
+        /// <summary>
+        /// Get a list of list properties
+        /// this is particurlarly used for HDB as list properties need to be expanded explicitly in the query
+        /// </summary>
+        /// <param name="props"></param>
+        /// <returns></returns>
         public HashSet<string> GetListTypeProps(IEnumerable<string[]> props)
         {
             HashSet<string> listTypeProps = new HashSet<string>();
             foreach (var prop in props)
             {
-                if (prop.Length > 2 && prop[2].Length > 0 && prop[2].All(char.IsDigit))
+                if (prop.Length > 2 /*prop[2].All(char.IsDigit)*/)
                 {
-                    foreach (var typeProp in this.ListTypeProperties)
+                    string name = "";
+                    for (int i = 1; i < prop.Length - 1; i++)
                     {
-                        if (typeProp[0].CompareTo(prop[0]) == 0 && typeProp[1].CompareTo(prop[1]) == 0)
-                            listTypeProps.Add(prop[1]);
+                        name += prop[i - 1] + "/";
+                        if (prop[i].Contains(Settings.ListPropFilterSplitter[0]) &&
+                            ListTypeProperties.FirstOrDefault(propName => propName.CompareTo(name.Substring(0, name.Length - 1)) == 0) != null)
+                            listTypeProps.Add(prop[i - 1]);
                     }
                 }
             }

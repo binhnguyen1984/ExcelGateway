@@ -15,5 +15,6 @@
         public static string PathSplitter = "/"; //splitter between parents and children nodes
         public static string PropValueSplitter = "="; // spliter between a property name and its value
         public static string DBNameCompSplitter = ":"; //spliter between a database name and a component name
+        public static string ListPropFilterSplitter = "$"; //spliter between a list property field and its value
     }
 }

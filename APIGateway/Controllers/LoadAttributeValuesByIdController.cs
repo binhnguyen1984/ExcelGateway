@@ -14,9 +14,8 @@ namespace APIGateway.Controllers
         {
             if (id == null || attrPath == null)
                 return new ResponseMessage(false, "Invalid query");
-            var callerIdentity = User.Identity as WindowsIdentity;
-            return await WindowsIdentity.RunImpersonated(callerIdentity.AccessToken, 
-                async () => await LoadAttributeValuesById(apiPath, id, attrPath));
+            return await WindowsIdentity.RunImpersonated((User.Identity as WindowsIdentity).AccessToken, 
+                async() => await LoadAttributeValuesById(apiPath, id, attrPath));
         }
         private async Task<ResponseMessage> LoadAttributeValuesById(string apiPath, string id, string attrPath)
         {

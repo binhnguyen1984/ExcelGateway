@@ -14,9 +14,7 @@ namespace APIGateway.Controllers
         {
             if (searchValues == null) return new ResponseMessage(false, "No search values are specified");
             if (propNames == null) return new ResponseMessage(false, "No import parameters are specified");
-            var callerIdentity = User.Identity as WindowsIdentity;
-            return await WindowsIdentity.RunImpersonated(callerIdentity.AccessToken,
-                async () => await GlobalResources.ExcelHandlerInst.LoadParametersAsync(propNames.Split(","), searchValues.Split(',')));
+            return await GlobalResources.ExcelHandlerInst.LoadParametersAsync(User.Identity as WindowsIdentity, propNames.Split(","), searchValues.Split(','));
         }
     }
 }

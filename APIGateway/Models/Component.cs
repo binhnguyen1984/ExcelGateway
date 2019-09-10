@@ -30,7 +30,7 @@ namespace APIGateway.Models
         protected virtual string GetPutUrl(string idValue) => "";
         protected virtual string GetAllComponenstUrl() => "";
 
-        protected async Task<ResponseMessage> SearchForComponentAsync()
+        protected async Task<ResponseMessage> SearchForComponentAsync(string dataName)
         {
             //fetch parameters based on the search criteria
             string searchUrl = GetSearchURL();
@@ -38,12 +38,12 @@ namespace APIGateway.Models
             if (!respObject.IsSuccessful) return respObject;
 
             //update parameters with the values fetched from the databases
-            return SaveImportParameters(respObject);
+            return SaveImportParameters(respObject, dataName);
         }
 
-        public ResponseMessage SaveImportParameters(ResponseMessage respObject)
+        public ResponseMessage SaveImportParameters(ResponseMessage respObject, string dataName)
         {
-            JObject componentDetails = GetUpdateComponent(respObject.Data);
+            JObject componentDetails = GetUpdateComponent(respObject.Data, dataName);
             if (componentDetails == null) return new ResponseMessage(false, "No results for component '" + CompName + "' were found");
             foreach (Parameter impParam in ImportParams)
             {
@@ -52,9 +52,9 @@ namespace APIGateway.Models
             }
             return new ResponseMessage(true, componentDetails);
         }
-        private JObject GetUpdateComponent(object jsonData)
+        private JObject GetUpdateComponent(object jsonData, string dataName)
         {
-            object data = ExtractResponseBody(jsonData);
+            object data = ExtractResponseBody(jsonData, dataName);
             if (data is JArray)
             {
                 JArray dataArr = data as JArray;
@@ -62,27 +62,17 @@ namespace APIGateway.Models
             }
             return data as JObject;
         }
-        protected virtual object ExtractResponseBody(object jsonData) => null;
+        protected virtual object ExtractResponseBody(object jsonData, string dataName) => null;
 
-        public async Task<ResponseMessage> LoadParameters()
+        public async Task<ResponseMessage> LoadParameters(string dataName = null)
         {
-            ResponseMessage response = await SearchForComponentAsync();
+            ResponseMessage response = await SearchForComponentAsync(dataName ?? CompName);
             if (!response.IsSuccessful) return response;
             ComponentDetails = response.Data as JObject;
             return response;
         }
 
-        public async Task<ResponseMessage> LoadParametersByCompId(string compId)
-        {
-            string searchUrl = GetAllComponenstUrl();
-            searchUrl += "/" + compId;
-            ResponseMessage respObject = await FetchDataFromDB(searchUrl);
-            if (!respObject.IsSuccessful) return respObject;
-
-            //update parameters with the values fetched from the databases
-            return SaveImportParameters(respObject);
-        }
-
+        public virtual async Task<ResponseMessage> LoadParametersByCompId(string compId) => await Task.FromResult<ResponseMessage>(null);
         /// <summary>
         /// Update the component with new parameters
         /// </summary>

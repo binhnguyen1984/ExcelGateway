@@ -53,7 +53,7 @@ namespace APIGateway.Models
 
         public override async Task<ResponseMessage> FetchDataFromDB(string url) => await HDBHandler.FetchDataFromDB(url);
 
-        protected override object ExtractResponseBody(object jsonData) => HDBHandler.ExtractResponseBody(jsonData, CompName);
+        protected override object ExtractResponseBody(object jsonData, string dataName) => HDBHandler.ExtractResponseBody(jsonData, dataName);
         protected override string GetPutUrl(string idValue)
         {
             return Settings.HDBApiUrl + CompName + "(" + idValue + ")";
@@ -65,5 +65,13 @@ namespace APIGateway.Models
             return await HDBHandler.UpdateComponentToDB(updateUrl, ComponentDetails.ToString());
         }
         protected override string GetAllComponenstUrl() => HDBHandler.GetAllComponenstUrl(CompName);
+        public override async Task<ResponseMessage> LoadParametersByCompId(string compId)
+        {
+            ResponseMessage response = await HDBHandler.LoadParametersByCompId(CompName, compId);
+            if (!response.IsSuccessful) return response;
+            //update parameters with the values fetched from the databases
+            return SaveImportParameters(response, CompName.Substring(0, CompName.Length - 1));
+        }
+
     }
 }

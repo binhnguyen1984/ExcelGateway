@@ -5,12 +5,12 @@ namespace APIGateway.Models
 {
     public class HDBHandler : IDbHandler
     {
-        public static object ExtractResponseBody(object jsonData, string compName)
+        public static object ExtractResponseBody(object jsonData, string dataName)
         {
             JObject responseBody = (jsonData as JObject)["message"] as JObject;
-            return responseBody[compName];
+            return responseBody[dataName];
         }
-        object IDbHandler.ExtractResponseBody(object jsonData, string compName) => ExtractResponseBody(jsonData, compName);
+        object IDbHandler.ExtractResponseBody(object jsonData, string dataName) => ExtractResponseBody(jsonData, dataName);
         public static async Task<ResponseMessage> UpdateComponentToDB(string updateUrl, string updateData) =>
             await GlobalResources.ApiHandler.ExecutePutAsync(updateUrl, updateData);
 
@@ -43,5 +43,13 @@ namespace APIGateway.Models
 
         public static async Task<ResponseMessage> FetchDataFromDB(string url) => await GlobalResources.ApiHandler.ExecuteGetAsync(url);
         async Task<ResponseMessage> IDbHandler.FetchDataFromDB(string url) => await FetchDataFromDB(url);
+        
+        public static async Task<ResponseMessage> LoadParametersByCompId(string compName, string compId)
+        {
+            string searchUrl = GetAllComponenstUrl(compName);
+            searchUrl += "(" + compId+").json?";
+            return await FetchDataFromDB(searchUrl);
+        }
+        async Task<ResponseMessage> IDbHandler.LoadParametersByCompId(string compName, string compId) => await LoadParametersByCompId(compName, compId);
     }
 }

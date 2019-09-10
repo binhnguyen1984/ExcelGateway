@@ -42,7 +42,7 @@ namespace APIGateway.Models
         }
 
         protected override string GetAllComponenstUrl() => CDPHandler.GetAllComponenstUrl(CompName);
-        protected override object ExtractResponseBody(object jsonData) => CDPHandler.ExtractResponseBody(jsonData);
+        protected override object ExtractResponseBody(object jsonData, string dataName = null) => CDPHandler.ExtractResponseBody(jsonData);
 
         protected override string GetPutUrl(string idValue)
         {
@@ -53,6 +53,13 @@ namespace APIGateway.Models
         {
             string updateUrl = GetPutUrl(CompName);
             return await CDPHandler.UpdateComponentToDB(updateUrl, ComponentDetails.ToString());
+        }
+        public override async Task<ResponseMessage> LoadParametersByCompId(string compId)
+        {
+            ResponseMessage response = await CDPHandler.LoadParametersByCompId(CompName, compId);
+            if (!response.IsSuccessful) return response;
+            //update parameters with the values fetched from the databases
+            return SaveImportParameters(response, null);
         }
     }
 }
