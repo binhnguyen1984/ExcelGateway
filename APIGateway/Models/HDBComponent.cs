@@ -1,46 +1,60 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace APIGateway.Models
 {
     public class HDBComponent : Component
     {
-        public HDBComponent(string compName)
+        public HDBComponent(string compName) : base(compName) { }
+        protected override string GetSearchURL(IEnumerable<string[]> paramPaths, out string dataName)
         {
-            CompName = compName;
-        }
-        protected override string GetSearchURL()
-        {
-            List<string> searchProps = Constraint.Properties;
-            List<string> searchValues = Constraint.Values;
-            IEnumerable<string[]> impPaths = ImportParams.Select(param => param.PropPath);
-
             string searchUrl = GetAllComponenstUrl();
-            searchUrl += ".json?";
-            string filter = CreateFilter(searchProps, searchValues);
-            string expansion = CreateExpansion(impPaths);
+            string idValue = ExtractIdValue();
+            if (idValue != null)
+            {
+                searchUrl += $"({idValue}).json";
+                dataName = CompName.Substring(0, CompName.Length - 1);
+            }
+            else
+            {
+                searchUrl += ".json";
+                dataName = CompName;
+            }
+            searchUrl += GetFilterAndExpansion(paramPaths);
+            return searchUrl;
+        }
+        private string GetFilterAndExpansion(IEnumerable<string[]> paramPaths)
+        {
+            string result = "";
+            string filter = CreateFilter();
+            string expansion = CreateExpansion(paramPaths);
             if (filter.Length > 0)
             {
-                searchUrl += "$filter=" + filter;
+                result += "?$filter=" + filter;
                 if (expansion.Length > 0)
-                    searchUrl += "&$expand=" + expansion;
+                    result += "&$expand=" + expansion;
             }
             else if (expansion.Length > 0)
-                searchUrl += "$expand=" + expansion;
-            return searchUrl;
+                result += "$expand=" + expansion;
+            return result;
         }
         private string CreateExpansion(IEnumerable<string[]> paths)
         {
-            HashSet<string> typeProps = GlobalResources.ExcelHandlerInst.GetListTypeProps(paths);
             string expansion = "";
-            foreach (var prop in typeProps)
-                expansion += prop + ",";
+            HashSet<string> typeProps = GlobalResources.ExcelHandlerInst.GetListTypeProps(paths);
+            if (typeProps != null)
+            {
+                foreach (var prop in typeProps)
+                    expansion += prop + ",";
+            }
             return expansion.Length > 0 ? expansion.Substring(0, expansion.Length - 1) : expansion;
         }
 
-        private string CreateFilter(List<string> searchProps, List<string> searchValues)
+        private string CreateFilter()
         {
+            List<string> searchProps = Constraint.Properties;
+            List<string> searchValues = Constraint.Values;
+
             // create a filter
             string filter = "";
             for (int i = 0; i < searchProps.Count; i++)
@@ -52,7 +66,6 @@ namespace APIGateway.Models
         }
 
         public override async Task<ResponseMessage> FetchDataFromDB(string url) => await HDBHandler.FetchDataFromDB(url);
-
         protected override object ExtractResponseBody(object jsonData, string dataName) => HDBHandler.ExtractResponseBody(jsonData, dataName);
         protected override string GetPutUrl(string idValue)
         {
@@ -65,13 +78,12 @@ namespace APIGateway.Models
             return await HDBHandler.UpdateComponentToDB(updateUrl, ComponentDetails.ToString());
         }
         protected override string GetAllComponenstUrl() => HDBHandler.GetAllComponenstUrl(CompName);
-        public override async Task<ResponseMessage> LoadParametersByCompId(string compId)
+        public override async Task<ResponseMessage> LoadParametersByCompId(string compId, List<Parameter> paramList)
         {
             ResponseMessage response = await HDBHandler.LoadParametersByCompId(CompName, compId);
             if (!response.IsSuccessful) return response;
             //update parameters with the values fetched from the databases
-            return SaveImportParameters(response, CompName.Substring(0, CompName.Length - 1));
+            return SaveImportParameters(response, CompName.Substring(0, CompName.Length - 1), paramList);
         }
-
     }
 }

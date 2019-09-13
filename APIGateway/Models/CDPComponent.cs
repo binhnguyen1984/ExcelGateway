@@ -5,10 +5,7 @@ namespace APIGateway.Models
 {
     public class CDPComponent : Component
     {
-        public CDPComponent(string compName)
-        {
-            CompName = compName;
-        }
+        public CDPComponent(string compName) : base(compName) { }
         public override async Task<ResponseMessage> FetchDataFromDB(string url)
         {
             return await CDPHandler.FetchDataFromDB(url);
@@ -18,20 +15,22 @@ namespace APIGateway.Models
         /// Currently, CDP only supports searching conditioned on a single property
         /// </summary>
         /// <returns></returns>
-        protected override string GetSearchURL()
+        protected override string GetSearchURL(IEnumerable<string[]> paramPaths, out string dataName)
         {
-            List<string> searchProps = Constraint.Properties;
-            List<string> searchValues = Constraint.Values;
             string searchUrl = Settings.CDPApiUrl + CompName;
-            searchUrl += "?";
-            string filter = CreateFilter(searchProps, searchValues);
+            string idValue = ExtractIdValue();
+            searchUrl += idValue != null ? $"/{idValue}?" : "?";
+            string filter = CreateFilter();
             if (filter.Length > 0) searchUrl += filter;
+            dataName = CompName;
             return searchUrl;
         }
 
-        private string CreateFilter(List<string> searchProps, List<string> searchValues)
+        private string CreateFilter()
         {
             // create a filter
+            List<string> searchProps = Constraint.Properties;
+            List<string> searchValues = Constraint.Values;
             string filter = "";
             for (int i = 0; i < searchProps.Count; i++)
             {
@@ -54,12 +53,12 @@ namespace APIGateway.Models
             string updateUrl = GetPutUrl(CompName);
             return await CDPHandler.UpdateComponentToDB(updateUrl, ComponentDetails.ToString());
         }
-        public override async Task<ResponseMessage> LoadParametersByCompId(string compId)
+        public override async Task<ResponseMessage> LoadParametersByCompId(string compId, List<Parameter> ImportParams)
         {
             ResponseMessage response = await CDPHandler.LoadParametersByCompId(CompName, compId);
             if (!response.IsSuccessful) return response;
             //update parameters with the values fetched from the databases
-            return SaveImportParameters(response, null);
+            return SaveImportParameters(response, null, ImportParams);
         }
     }
 }

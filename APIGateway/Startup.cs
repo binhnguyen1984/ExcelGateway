@@ -1,4 +1,3 @@
-using APIGateway.Middlewares;
 using DataLibrary.DataAccess;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

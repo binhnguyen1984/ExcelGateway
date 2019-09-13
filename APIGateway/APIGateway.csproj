@@ -6,6 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Database\**" />
+    <Content Remove="Database\**" />
+    <EmbeddedResource Remove="Database\**" />
+    <None Remove="Database\**" />
+    <TypeScriptCompile Remove="Database\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="wwwroot\DBLoader.ts" />
     <Content Remove="wwwroot\ExcelAddIn\CDPLoader.ts" />
     <Content Remove="wwwroot\ExcelAddIn\HDBLoader.ts" />

@@ -43,11 +43,11 @@ namespace APIGateway.Models
 
         public static async Task<ResponseMessage> FetchDataFromDB(string url) => await GlobalResources.ApiHandler.ExecuteGetAsync(url);
         async Task<ResponseMessage> IDbHandler.FetchDataFromDB(string url) => await FetchDataFromDB(url);
-        
+
         public static async Task<ResponseMessage> LoadParametersByCompId(string compName, string compId)
         {
             string searchUrl = GetAllComponenstUrl(compName);
-            searchUrl += "(" + compId+").json?";
+            searchUrl += "(" + compId + ").json?";
             return await FetchDataFromDB(searchUrl);
         }
         async Task<ResponseMessage> IDbHandler.LoadParametersByCompId(string compName, string compId) => await LoadParametersByCompId(compName, compId);

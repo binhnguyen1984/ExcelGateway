@@ -1,10 +1,4 @@
-﻿using DataLibrary.BusinessLogic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace APIGateway.Models
+﻿namespace APIGateway.Models
 {
     public class GlobalResources
     {

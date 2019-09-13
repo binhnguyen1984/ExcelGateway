@@ -1,6 +1,4 @@
-﻿using DataLibrary.BusinessLogic;
-using Syncfusion.XlsIO;
-using System;
+﻿using Syncfusion.XlsIO;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -167,41 +165,40 @@ namespace APIGateway.Models
                 if (LoadedCompDict.ContainsKey(linkedComponentName))
                 {
                     //get the linked component id value
-                    string linkedComponentIdValue = LoadedCompDict[linkedComponentName].GetIdValue();
-                    if(linkedComponentIdValue==null)
-                    {
-
-                    }
+                    //string linkedComponentIdValue = LoadedCompDict[linkedComponentName].GetIdValue();
                     //get the component id value that is associated to the linked component id's value
                     ResponseMessage response = Common.SplitDBAndCompNames(dBAndCompNames);
                     if (!response.IsSuccessful) return response;
                     string[] split = response.Data as string[];
                     List<string> componentIdValues;
                     if (split[0].ToLower().CompareTo("cdp") == 0)
-                        componentIdValues = ProjectLinkProcessor.GetCdpProjectId(linkedComponentIdValue);
+                    {
+                        //componentIdValues = ProjectLinkProcessor.GetCdpProjectId(linkedComponentIdValue);
+                        componentIdValues = new List<string> { "36005" }; //hard-code this for testing purpose
+                    }
                     else if (split[0].ToLower().CompareTo("hdb") == 0)
                     {
-                        int cdpComponentId;
-                        try
-                        {
-                            cdpComponentId = Int32.Parse(linkedComponentIdValue);
-                        }
-                        catch (Exception)
-                        {
-                            return new ResponseMessage(false, $"{linkedComponentName} has non-numeric identifier");
-                        }
-                        componentIdValues = ProjectLinkProcessor.GetHdbProjectId(cdpComponentId);
+                        //try
+                        //{
+                        //    int cdpComponentId = Int32.Parse(linkedComponentIdValue);
+                        //    componentIdValues = ProjectLinkProcessor.GetHdbProjectId(cdpComponentId);
+                        //}
+                        //catch (Exception e)
+                        //{
+                        //    return new ResponseMessage(false, e.Message);
+                        //}
+                        componentIdValues = new List<string> { "fc6b1c42-865c-472f-ae59-000364028f43" }; //hard-code this value for testing purpose
                     }
                     else return new ResponseMessage(false, "Database '" + split[0] + "' is unknown");
-                    if (componentIdValues==null || componentIdValues.Count == 0) return new ResponseMessage(false, "Component '" + linkedComponentName + "' and '" + dBAndCompNames + "' are not linked to each other");
-                    else if (componentIdValues.Count > 1) return new ResponseMessage(false,"Multiple components '"+ dBAndCompNames+"' are linked to the same component '"+ linkedComponentName + "'");
+                    if (componentIdValues == null || componentIdValues.Count == 0) return new ResponseMessage(false, "Component '" + linkedComponentName + "' and '" + dBAndCompNames + "' are not linked to each other");
+                    else if (componentIdValues.Count > 1) return new ResponseMessage(false, "Multiple components '" + dBAndCompNames + "' are linked to the same component '" + linkedComponentName + "'");
                     return new ResponseMessage(true, componentIdValues[0]);
                 }
             }
             return new ResponseMessage(false, "Component '" + dBAndCompNames + "' is not linked to any component in the search");
         }
 
-        private ResponseMessage CreateComponent(string dBAndCompNames, List<Parameter> impParams, Constraint constraint)
+        private ResponseMessage CreateComponent(string dBAndCompNames, Constraint constraint)
         {
             if (!CompIdNameDict.ContainsKey(dBAndCompNames))
                 return new ResponseMessage(false, "Unique Id is not found for component '" + dBAndCompNames + "'");
@@ -210,36 +207,48 @@ namespace APIGateway.Models
             if (!response.IsSuccessful) return response;
             Component component = response.Data as Component;
             component.IdName = idName;
-            component.ImportParams = impParams;
             component.Constraint = constraint;
             return new ResponseMessage(true, component);
         }
 
         private async Task<ResponseMessage> LoadSearchComponents(WindowsIdentity callerIdentity, IDictionary<string, List<Parameter>> impParamDict, IDictionary<string, Constraint> searchConstraintsDict)
         {
-            foreach(KeyValuePair<string,Constraint> searchComp in searchConstraintsDict)
+            foreach (KeyValuePair<string, Constraint> searchComp in searchConstraintsDict)
             {
                 string dBAndCompName = searchComp.Key;
                 List<Parameter> impParams = impParamDict.ContainsKey(dBAndCompName) ? impParamDict[dBAndCompName] : null;
-                ResponseMessage response = CreateComponent(dBAndCompName, impParams, searchComp.Value);
+                ResponseMessage response = CreateComponent(dBAndCompName, searchComp.Value);
                 if (!response.IsSuccessful) return response;
                 Component component = response.Data as Component;
+                var paramPaths = impParams?.Select(param => param.PropPath);
                 response = await WindowsIdentity.RunImpersonated(callerIdentity.AccessToken,
-                    async () => await component.LoadParameters(null));
+                    async () => await component.LoadParameters(paramPaths, impParams));
                 if (!response.IsSuccessful) return response;
                 LoadedCompDict.Add(searchComp.Key, component);
             }
             return new ResponseMessage(true, null);
         }
-        /// <summary>
-        /// Fetch data from the database 
-        /// note that the import parameters must be ordered so that parameters that belong to the same component are grouped together
-        /// </summary>
-        public async Task<ResponseMessage> LoadParametersAsync(WindowsIdentity callerIdentity, string[] importParams, string[] searchConstraints)
-        {            
-            ResponseMessage response;
-            List<object> result = new List<object>();
-            response = BuildImportParamDict(importParams);
+
+        private async Task<ResponseMessage> LoadLinkedComponent(WindowsIdentity callerIdentity, string dBAndCompNames, List<Parameter> impParams)
+        {
+            ResponseMessage response = DeriveCompIdFromLinkedComponent(dBAndCompNames);
+            if (!response.IsSuccessful) return response;
+            string compId = response.Data as string;
+
+            //get the component object
+            response = CreateComponent(dBAndCompNames, null);
+            if (!response.IsSuccessful) return response;
+            Component component = response.Data as Component;
+            //searchComp.Constraint = new Constraint { Properties = new List<string> { searchComp.IdName}, Values = new List<string> { compId} };
+            response = await WindowsIdentity.RunImpersonated(callerIdentity.AccessToken,
+                async () => await component.LoadParametersByCompId(compId, impParams));
+            if (!response.IsSuccessful) return response;
+            return new ResponseMessage(true, component);
+        }
+
+        private async Task<ResponseMessage> LoadImportParamsFromSearchComponents(WindowsIdentity callerIdentity, string[] importParams, string[] searchConstraints)
+        {
+            ResponseMessage response = BuildImportParamDict(importParams);
             if (!response.IsSuccessful) return response;
             IDictionary<string, List<Parameter>> impParamDict = response.Data as IDictionary<string, List<Parameter>>;
             IDictionary<string, Constraint> searchConstraintsDict = BuildSearchConstraintsDict(searchConstraints);
@@ -248,66 +257,80 @@ namespace APIGateway.Models
             LoadedCompDict.Clear();
             response = await LoadSearchComponents(callerIdentity, impParamDict, searchConstraintsDict);
             if (!response.IsSuccessful) return response;
+            return new ResponseMessage(true, impParamDict);
+        }
 
+        private async Task<ResponseMessage> LoadParamsFromLinkedComponents(WindowsIdentity callerIdentity, string dBAndCompNames, List<Parameter> paramList)
+        {
+            ResponseMessage response = await LoadLinkedComponent(callerIdentity, dBAndCompNames, paramList);
+            if (!response.IsSuccessful) return response;
+            Component component = response.Data as Component;
+            LoadedCompDict.Add(dBAndCompNames, component);
+            return new ResponseMessage(true, component);
+        }
+        /// <summary>
+        /// Fetch data from the database 
+        /// note that the import parameters must be ordered so that parameters that belong to the same component are grouped together
+        /// </summary>
+        public async Task<ResponseMessage> LoadParametersAsync(WindowsIdentity callerIdentity, string[] importParams, string[] searchConstraints)
+        {
+            ResponseMessage response = await LoadImportParamsFromSearchComponents(callerIdentity, importParams, searchConstraints);
+            if (!response.IsSuccessful) return response;
+            IDictionary<string, List<Parameter>> impParamDict = response.Data as IDictionary<string, List<Parameter>>;
             //Load these components from the databases
+            List<object> result = new List<object>();
             foreach (KeyValuePair<string, List<Parameter>> impParam in impParamDict)
             {
-                string dBAndCompNames = impParam.Key;
-                Component component;
-                if (LoadedCompDict.ContainsKey(dBAndCompNames))
-                    component = LoadedCompDict[dBAndCompNames];
-                else
+                if (!LoadedCompDict.ContainsKey(impParam.Key))
                 {
-                    //get id of the component
-                    response = DeriveCompIdFromLinkedComponent(dBAndCompNames);
+                    response = await LoadParamsFromLinkedComponents(callerIdentity, impParam.Key, impParam.Value);
                     if (!response.IsSuccessful) return response;
-                    string compId = response.Data as string;
-
-                    //get the component object
-                    response = CreateComponent(dBAndCompNames, impParam.Value, null);
-                    if (!response.IsSuccessful) return response;
-                    component = response.Data as Component;
-                    //searchComp.Constraint = new Constraint { Properties = new List<string> { searchComp.IdName}, Values = new List<string> { compId} };
-                    await WindowsIdentity.RunImpersonated(callerIdentity.AccessToken,
-                        async () => response = await component.LoadParametersByCompId(compId));
-                    if (!response.IsSuccessful) return response;
-                    LoadedCompDict.Add(dBAndCompNames, component);
                 }
-
                 //add parameters to the result
-                result.AddRange(component.ImportParams.Select(param => param.Value));
+                result.AddRange(impParam.Value.Select(param => param.Value));
             }
             return new ResponseMessage(true, result);
         }
 
+        private async Task<ResponseMessage> UpdateComponent(WindowsIdentity callerIdentity, Component component, List<Parameter> exportParams)
+        {
+            ResponseMessage response = component.UpdateParamsWithNewValues(exportParams);
+            if (!response.IsSuccessful)
+                return response;
+            //make a query to the corresponding database server
+            return await WindowsIdentity.RunImpersonated(callerIdentity.AccessToken, async () => await component.UpdateComponentToDB());
+        }
+        private async Task<ResponseMessage> UpdateLinkedComponentParams(WindowsIdentity callerIdentity, string dBAndCompNames, List<Parameter> exportParams)
+        {
+            ResponseMessage response = await LoadParamsFromLinkedComponents(callerIdentity, dBAndCompNames, null);
+            if (!response.IsSuccessful) return response;
+            Component linkedComp = response.Data as Component;
+            return await UpdateComponent(callerIdentity, linkedComp, exportParams);
+        }
+        private async Task<ResponseMessage> UpdateLoadedComponentParams(WindowsIdentity callerIdentity, string dBAndCompNames, List<Parameter> exportParams)
+        {
+            Component searchComp = LoadedCompDict[dBAndCompNames];
+            return await UpdateComponent(callerIdentity, searchComp, exportParams);
+        }
         /// <summary>
         /// Update parameters to the database
         /// </summary>
         /// <param name="paramValues"></param>
         /// <returns></returns>
-        public async Task<ResponseMessage> UpdateParametersAsync(string[] paramNames, string[] paramValues)
+        public async Task<ResponseMessage> UpdateParametersAsync(WindowsIdentity callerIdentity, string[] paramNames, string[] paramValues)
         {
             ResponseMessage response = BuildParamValueDict(paramNames, paramValues);
             if (!response.IsSuccessful) return response;
             IDictionary<string, List<Parameter>> exportParamDict = response.Data as IDictionary<string, List<Parameter>>;
             foreach (KeyValuePair<string, List<Parameter>> exportParamEntry in exportParamDict)
             {
-                string dBAndCompNames = exportParamEntry.Key;
-                if (!LoadedCompDict.ContainsKey(dBAndCompNames))
-                    return new ResponseMessage(false, "Component '" + dBAndCompNames + "' was not loaded and thus cannot be updated");
-                if (!CompIdNameDict.ContainsKey(dBAndCompNames))
-                    return new ResponseMessage(false, "No information about component '" + dBAndCompNames + "' was found");
-
-                Component searchComp = LoadedCompDict[dBAndCompNames];
-                searchComp.ExportParams = exportParamEntry.Value;
-                //update parameters
-                response = searchComp.UpdateParamsWithNewValues();
+                if (!CompIdNameDict.ContainsKey(exportParamEntry.Key))
+                    return new ResponseMessage(false, "No information about component '" + exportParamEntry.Key + "' was found");
+                if (!LoadedCompDict.ContainsKey(exportParamEntry.Key))
+                    response = await UpdateLinkedComponentParams(callerIdentity, exportParamEntry.Key, exportParamEntry.Value);
+                else response = await UpdateLoadedComponentParams(callerIdentity, exportParamEntry.Key, exportParamEntry.Value);
                 if (!response.IsSuccessful)
                     return response;
-                //make a query to the corresponding database server
-                response = await searchComp.UpdateComponentToDB();
-                if (!response.IsSuccessful)
-                    return response;// update failed
             }
             return new ResponseMessage(true, null); // update succeeded
         }
@@ -320,22 +343,29 @@ namespace APIGateway.Models
         /// <returns></returns>
         public HashSet<string> GetListTypeProps(IEnumerable<string[]> props)
         {
-            HashSet<string> listTypeProps = new HashSet<string>();
-            foreach (var prop in props)
+            if (props != null)
             {
-                if (prop.Length > 2 /*prop[2].All(char.IsDigit)*/)
+                HashSet<string> listTypeProps = new HashSet<string>();
+                foreach (var prop in props)
+                    AddTypeProp2List(listTypeProps, prop);
+                return listTypeProps;
+            }
+            return null;
+        }
+
+        private void AddTypeProp2List(HashSet<string> listTypeProps, string[] prop)
+        {
+            if (prop.Length > 2 /*prop[2].All(char.IsDigit)*/)
+            {
+                string name = "";
+                for (int i = 1; i < prop.Length - 1; i++)
                 {
-                    string name = "";
-                    for (int i = 1; i < prop.Length - 1; i++)
-                    {
-                        name += prop[i - 1] + "/";
-                        if (prop[i].Contains(Settings.ListPropFilterSplitter[0]) &&
-                            ListTypeProperties.FirstOrDefault(propName => propName.CompareTo(name.Substring(0, name.Length - 1)) == 0) != null)
-                            listTypeProps.Add(prop[i - 1]);
-                    }
+                    name += prop[i - 1] + "/";
+                    if (prop[i].Contains(Settings.ListPropFilterSplitter[0]) &&
+                        ListTypeProperties.FirstOrDefault(propName => propName.CompareTo(name.Substring(0, name.Length - 1)) == 0) != null)
+                        listTypeProps.Add(prop[i - 1]);
                 }
             }
-            return listTypeProps;
         }
     }
 }

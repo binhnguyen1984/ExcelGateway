@@ -12,7 +12,7 @@ namespace APIGateway.Controllers
         public async Task<ResponseMessage> GetAsync(string projectName)
         {
             return await WindowsIdentity.RunImpersonated((User.Identity as WindowsIdentity).AccessToken,
-                async() => await CDPHandler.GetVariantsByProjectName(projectName));
+                async () => await CDPHandler.GetVariantsByProjectName(projectName));
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 
 namespace APIGateway.Models
@@ -80,7 +79,7 @@ namespace APIGateway.Models
                 {
                     if (token is JValue)
                         result += GetJValueAsString(token);
-                    else result += token!=null?token.ToString():"null";
+                    else result += token != null ? token.ToString() : "null";
                 }
                 result += "]";
                 return new ResponseMessage(true, result);

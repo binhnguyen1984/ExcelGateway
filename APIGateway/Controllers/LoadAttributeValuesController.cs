@@ -14,7 +14,7 @@ namespace APIGateway.Controllers
         public async Task<ResponseMessage> GetAsync(string attrPath)
         {
             return await WindowsIdentity.RunImpersonated((User.Identity as WindowsIdentity).AccessToken,
-                async() => await LoadAttributeValues(attrPath));
+                async () => await LoadAttributeValues(attrPath));
         }
 
         private async Task<ResponseMessage> LoadAttributeValues(string attrPath)

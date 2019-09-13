@@ -78,7 +78,7 @@ namespace APIGateway.Models
                 ResponseMode = OidcClientOptions.AuthorizeResponseMode.Redirect
             };
         }
-        public class OidcClientInfo
+        private sealed class OidcClientInfo
         {
             public string AccessToken { get; set; }
             public string RefreshToken { get; set; }
@@ -103,8 +103,6 @@ namespace APIGateway.Models
                 CurrentOidcClientInfo.ValidDate = loginResult.AccessTokenExpiration;
             }
         }
-
-
         private static async Task RequestAccessTokenForOpenIDConnect()
         {
             if (CurrentOidcClientInfo.AccessToken == null)
@@ -121,7 +119,7 @@ namespace APIGateway.Models
 
         private static void RefreshAccessToken()
         {
-            RefreshTokenResult refreshTokenResult = AsyncFuncHelper.RunSync<RefreshTokenResult>(async () => await CurrentOidcClientInfo.OidcClient.RefreshTokenAsync(CurrentOidcClientInfo.RefreshToken));
+            RefreshTokenResult refreshTokenResult = AsyncFuncHelper.RunSync(async () => await CurrentOidcClientInfo.OidcClient.RefreshTokenAsync(CurrentOidcClientInfo.RefreshToken));
             CurrentOidcClientInfo.AccessToken = refreshTokenResult.AccessToken;
             CurrentOidcClientInfo.RefreshToken = refreshTokenResult.RefreshToken;
             CurrentOidcClientInfo.ValidDate = refreshTokenResult.AccessTokenExpiration;
@@ -132,16 +130,16 @@ namespace APIGateway.Models
             return await GlobalResources.ApiHandler.ExecuteGetAsync(url);
         }
 
-        async Task<ResponseMessage> IDbHandler.FetchDataFromDB(string url) => await CDPHandler.FetchDataFromDB(url);
+        async Task<ResponseMessage> IDbHandler.FetchDataFromDB(string url) => await FetchDataFromDB(url);
         public static async Task<ResponseMessage> UpdateComponentToDB(string updateUrl, string updateData)
         {
             await RequestAccessTokenForOpenIDConnect();
             return await GlobalResources.ApiHandler.ExecutePutAsync(updateUrl, updateData);
         }
-        async Task<ResponseMessage> IDbHandler.UpdateComponentToDB(string updateUrl, string updateData) => await CDPHandler.UpdateComponentToDB(updateUrl, updateData);
+        async Task<ResponseMessage> IDbHandler.UpdateComponentToDB(string updateUrl, string updateData) => await UpdateComponentToDB(updateUrl, updateData);
 
         public static object ExtractResponseBody(object jsonData) => jsonData;
-        object IDbHandler.ExtractResponseBody(object jsonData, string dataName) => ExtractResponseBody(jsonData); 
+        object IDbHandler.ExtractResponseBody(object jsonData, string dataName) => ExtractResponseBody(jsonData);
         public static async Task<ResponseMessage> GetAttributeValuesOfAllComponents(string[] attrPath)
         {
             string apiUrl = GetAllComponenstUrl(attrPath[0]);
@@ -151,7 +149,7 @@ namespace APIGateway.Models
             object data = ExtractResponseBody(response.Data);
             return JsonHelper.GetStringAttributeFromMultipleComponents(data, attrPath);
         }
-        async Task<ResponseMessage> IDbHandler.GetAttributeValuesOfAllComponents(string[] attrPath) => 
+        async Task<ResponseMessage> IDbHandler.GetAttributeValuesOfAllComponents(string[] attrPath) =>
             await CDPHandler.GetAttributeValuesOfAllComponents(attrPath);
         public static string GetAllComponenstUrl(string compName) => Settings.CDPApiUrl + compName;
         string IDbHandler.GetAllComponenstUrl(string compName) => GetAllComponenstUrl(compName);
@@ -166,8 +164,8 @@ namespace APIGateway.Models
             if (!response.IsSuccessful) return response;
             return JsonHelper.GetStringAttributeFromMultipleComponents(response.Data, attrPath);
         }
-        async Task<ResponseMessage> IDbHandler.GetAttributeValuesByIdOrName(string apiPath, string IdOrName, string[] attrPath, string filter) => 
-            await CDPHandler.GetAttributeValuesByIdOrName(apiPath, IdOrName, attrPath, filter);
+        async Task<ResponseMessage> IDbHandler.GetAttributeValuesByIdOrName(string apiPath, string IdOrName, string[] attrPath, string filter) =>
+            await GetAttributeValuesByIdOrName(apiPath, IdOrName, attrPath, filter);
         public static async Task<ResponseMessage> GetVariantsByProjectName(string projectName) => await Task.FromResult<ResponseMessage>(null);
         public static async Task<ResponseMessage> LoadParametersByCompId(string compName, string compId)
         {

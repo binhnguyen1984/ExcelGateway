@@ -4,14 +4,17 @@ using System.Threading.Tasks;
 
 namespace APIGateway.Models
 {
-    public class Component
+    public abstract class Component
     {
-        public List<Parameter> ImportParams { get; set; }
-        public List<Parameter> ExportParams { get; set; }
         public string CompName { get; set; }
         public string IdName { get; set; }
         public JObject ComponentDetails { get; set; }
         public Constraint Constraint { get; set; }
+        public Component(string compName)
+        {
+            CompName = compName;
+        }
+
         public static ResponseMessage CreateComponent(string dBAndCompNames)
         {
             ResponseMessage response = Common.SplitDBAndCompNames(dBAndCompNames);
@@ -26,31 +29,39 @@ namespace APIGateway.Models
 
         public string GetIdValue() => ComponentDetails != null ? (string)ComponentDetails[IdName] : null;
         public virtual async Task<ResponseMessage> FetchDataFromDB(string Url) => await Task.FromResult<ResponseMessage>(null);
-        protected virtual string GetSearchURL() => "";
-        protected virtual string GetPutUrl(string idValue) => "";
-        protected virtual string GetAllComponenstUrl() => "";
-
-        protected async Task<ResponseMessage> SearchForComponentAsync(string dataName)
+        protected abstract string GetSearchURL(IEnumerable<string[]> paramPaths, out string dataName);
+        protected abstract string GetPutUrl(string idValue);
+        protected abstract string GetAllComponenstUrl();
+        protected string ExtractIdValue()
         {
-            //fetch parameters based on the search criteria
-            string searchUrl = GetSearchURL();
-            ResponseMessage respObject = await FetchDataFromDB(searchUrl);
-            if (!respObject.IsSuccessful) return respObject;
-
-            //update parameters with the values fetched from the databases
-            return SaveImportParameters(respObject, dataName);
+            List<string> props = Constraint.Properties;
+            List<string> values = Constraint.Values;
+            for (int i = 0; i < props.Count; i++)
+            {
+                if (props[i] != null && props[i].CompareTo(IdName) == 0)
+                {
+                    string idValue = values[i];
+                    props.RemoveAt(i);
+                    values.RemoveAt(i);
+                    return idValue;
+                }
+            }
+            return null;
         }
 
-        public ResponseMessage SaveImportParameters(ResponseMessage respObject, string dataName)
+        public ResponseMessage SaveImportParameters(ResponseMessage respObject, string dataName, List<Parameter> ImportParams)
         {
-            JObject componentDetails = GetUpdateComponent(respObject.Data, dataName);
-            if (componentDetails == null) return new ResponseMessage(false, "No results for component '" + CompName + "' were found");
-            foreach (Parameter impParam in ImportParams)
+            ComponentDetails = GetUpdateComponent(respObject.Data, dataName);
+            if (ComponentDetails == null) return new ResponseMessage(false, "No results for component '" + CompName + "' were found");
+            if (ImportParams != null)
             {
-                ResponseMessage savingStatus = impParam.SaveValue(componentDetails);
-                if (!savingStatus.IsSuccessful) return savingStatus;
+                foreach (Parameter impParam in ImportParams)
+                {
+                    ResponseMessage savingStatus = impParam.SaveValue(ComponentDetails);
+                    if (!savingStatus.IsSuccessful) return savingStatus;
+                }
             }
-            return new ResponseMessage(true, componentDetails);
+            return new ResponseMessage(true, null);
         }
         private JObject GetUpdateComponent(object jsonData, string dataName)
         {
@@ -64,15 +75,18 @@ namespace APIGateway.Models
         }
         protected virtual object ExtractResponseBody(object jsonData, string dataName) => null;
 
-        public async Task<ResponseMessage> LoadParameters(string dataName = null)
+        public async Task<ResponseMessage> LoadParameters(IEnumerable<string[]> paramPaths, List<Parameter> ImportParams)
         {
-            ResponseMessage response = await SearchForComponentAsync(dataName ?? CompName);
-            if (!response.IsSuccessful) return response;
-            ComponentDetails = response.Data as JObject;
-            return response;
+            //fetch parameters based on the search criteria
+            string searchUrl = GetSearchURL(paramPaths, out string dataName);
+            ResponseMessage respObject = await FetchDataFromDB(searchUrl);
+            if (!respObject.IsSuccessful) return respObject;
+
+            //update parameters with the values fetched from the databases
+            return SaveImportParameters(respObject, dataName, ImportParams);
         }
 
-        public virtual async Task<ResponseMessage> LoadParametersByCompId(string compId) => await Task.FromResult<ResponseMessage>(null);
+        public virtual async Task<ResponseMessage> LoadParametersByCompId(string compId, List<Parameter> ImportParams) => await Task.FromResult<ResponseMessage>(null);
         /// <summary>
         /// Update the component with new parameters
         /// </summary>
@@ -81,7 +95,7 @@ namespace APIGateway.Models
         /// <param name="loadedCompDetails"></param>
         /// <param name="exportParams"></param>
         /// <returns></returns>
-        public ResponseMessage UpdateParamsWithNewValues()
+        public ResponseMessage UpdateParamsWithNewValues(List<Parameter> ExportParams)
         {
             //update the loaded component with new values
             foreach (Parameter paramCell in ExportParams)
