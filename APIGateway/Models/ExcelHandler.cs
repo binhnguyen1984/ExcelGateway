@@ -137,21 +137,24 @@ namespace APIGateway.Models
         {
             IDictionary<string, Constraint> searchConstraintsDict = new Dictionary<string, Constraint>();
             foreach (string val in searchValues)
-            {
-                string[] propAndVal = val.Split(Settings.PropValueSplitter);
-                if (propAndVal.Length == 2 && propAndVal[1].Length > 0)
-                {
-                    string[] path = propAndVal[0].Split(Settings.PathSplitter);
-                    if (searchConstraintsDict.ContainsKey(path[0]))
-                    {
-                        Constraint constraint = searchConstraintsDict[path[0]];
-                        constraint.Properties.Add(path[1]);
-                        constraint.Values.Add(propAndVal[1]);
-                    }
-                    else searchConstraintsDict.Add(path[0], new Constraint { Properties = new List<string> { path[1] }, Values = new List<string> { propAndVal[1] } });
-                }
-            }
+                AddConstraint2Dict(searchConstraintsDict, val);
             return searchConstraintsDict;
+        }
+
+        private static void AddConstraint2Dict(IDictionary<string, Constraint> searchConstraintsDict, string val)
+        {
+            string[] propAndVal = val.Split(Settings.PropValueSplitter);
+            if (propAndVal.Length == 2 && propAndVal[1].Length > 0)
+            {
+                string[] path = propAndVal[0].Split(Settings.PathSplitter);
+                if (searchConstraintsDict.ContainsKey(path[0]))
+                {
+                    Constraint constraint = searchConstraintsDict[path[0]];
+                    constraint.Properties.Add(path[1]);
+                    constraint.Values.Add(propAndVal[1]);
+                }
+                else searchConstraintsDict.Add(path[0], new Constraint { Properties = new List<string> { path[1] }, Values = new List<string> { propAndVal[1] } });
+            }
         }
 
         private ResponseMessage DeriveCompIdFromLinkedComponent(string dBAndCompNames)
@@ -329,8 +332,7 @@ namespace APIGateway.Models
                 if (!LoadedCompDict.ContainsKey(exportParamEntry.Key))
                     response = await UpdateLinkedComponentParams(callerIdentity, exportParamEntry.Key, exportParamEntry.Value);
                 else response = await UpdateLoadedComponentParams(callerIdentity, exportParamEntry.Key, exportParamEntry.Value);
-                if (!response.IsSuccessful)
-                    return response;
+                if (!response.IsSuccessful)  return response;
             }
             return new ResponseMessage(true, null); // update succeeded
         }
